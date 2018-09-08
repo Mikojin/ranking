@@ -517,7 +517,7 @@ class UserDao extends AbstractDao {
 		$this->close($mysqli);
 
 		$sql = "select u.login, u.password, u.right
-			from User u
+			from user u
 			where u.login   ='$username'
 			  and u.password='$password'";
 

@@ -6,7 +6,7 @@
  * Page principale aiguillant vers les pages finale
  *****************************************************************************/
 
- require_once "./lib/lib_tools.php";
+require_once "./lib/lib_tools.php";
 
 require_once "./panel/loginPanel.php";
 require_once "./panel/menuPanel.php";
@@ -27,11 +27,6 @@ class MasterPage {
 		$this->menuPanel 	= new MenuPanel();
 		$this->adminPanel 	= new AdminPanel();
 	}
-
-	
-	//#########################################################################
-	// Implements
-	//#########################################################################
 	
 	public function init() {
 		LibTools::init();
@@ -68,9 +63,6 @@ class MasterPage {
 		$playerListPanel 	= new PlayerListPanel($this->adminPanel);
 		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $this->adminPanel, $playerListPanel]);
 	}
-	
-	//#########################################################################
-	//#########################################################################
 	
 	public function printPage() {
 		$this->init();

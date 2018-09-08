@@ -9,7 +9,7 @@
 require_once "./lib/lib_tools.php";
 
 require_once "./panel/listPanel.php";
-require_once "./panel/AdminPanel.php";
+require_once "./panel/adminPanel.php";
 
 
 class PlayerListPanel extends ListPanel {
