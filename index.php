@@ -6,25 +6,13 @@
  * page d'accueil représentant l'écran de ranking
  *****************************************************************************/
 
-require_once "./panel/loginPanel.php";
-require_once "./panel/menuPanel.php";
-require_once "./panel/adminPanel.php";
-require_once "./panel/rankingPanel.php";
-require_once "./panel/page.php";
+require_once "./panel/MasterPage.php";
 
+$id_game = 1;
 
-// Init accessor
-$loginPanel 	= new LoginPanel();
-$menuPanel 		= new MenuPanel();
-$adminPanel 	= new AdminPanel();
-$rankingPanel 	= new RankingPanel($adminPanel);
+$page = new MasterPage($id_game);
 
-$g = array();
-$g['id_game'] = 1;
-
-$page = new Page($g, [$loginPanel, $menuPanel, $adminPanel, $rankingPanel]);
 
 $page->printPage();
-
 
 ?>

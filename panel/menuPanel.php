@@ -28,7 +28,7 @@ class MenuPanel implements IPanel {
 	}
 	
 	public function treatAction($g){
-		$this->treatLoginAction();
+		$this->treatMenuAction();
 		return $g;
 	}
 	
@@ -51,8 +51,16 @@ class MenuPanel implements IPanel {
 	/***********************************************************************
 	 * traitement des action du menu
 	 * */
-	function treatLoginAction() {
+	function treatMenuAction() {
 		$action = $_POST['action'];
+		switch($action) {
+			case 'pageRanking' :
+				LibTools::set('page', 'ranking');
+				return true;
+			case 'pagePlayerList' :
+				LibTools::set('page', 'playerList');
+				return true;
+		}
 		return false;
 	}
 	
@@ -95,9 +103,12 @@ class MenuPanel implements IPanel {
 	?>
 		<div id="menu" class="divTabMenu divTabMainMenu hiddenDiv">
 			<div class="divCellMenu ">
-				<input name="Ranking" id="ranking" type="button" value="Ranking" onclick="location.href='./';"/>
-				<input name="PlayerList" id="playerList" type="button" value="Player List" onclick="location.href='./playerList.php';"/>
-				<input name="Tournement" id="tournement" type="button" value="Tournement" onclick="location.href='./tournement.php';"/>
+				<input name="Ranking" 		id="ranking" 	type="button" value="Ranking" 
+					onclick="setAction('pageRanking');"/>
+				<input name="PlayerList" 	id="playerList" type="button" value="Player List" 
+					onclick="setAction('pagePlayerList');"/>
+				<input name="Tournement" 	id="tournement" type="button" value="Tournement" 
+					onclick="setAction('pageTournement');"/>
 			</div>
 		</div>
 	<?php 

@@ -48,6 +48,9 @@ class LibTools {
 	<?php 
 	}
 
+	/***********************************************************************
+	 * test si la variable est vide/null/non définie
+	 * */
 	static function isBlank($var) {
 		if(!isset($var) || $var == '') {
 			return true;
@@ -55,64 +58,7 @@ class LibTools {
 		return false;
 	}
 	
-	/*
-	 * recupere la variable $var de la session
-	 * */
-	static function get($var) {
-		return $_SESSION[$var];
-	}
-
-	/*
-	 * Affecte $value à la variable de session $var
-	 * */
-	static function set($var, $value) {
-		$_SESSION[$var] = $value;
-	}
-	static function issession($var) {
-		return isset($_SESSION) && isset($_SESSION[$var]);
-	}
-
-	static function setLog($msg) {
-		if(!LibTools::issession('msg_error')) {
-			LibTools::initLog();
-		}
-		$errors = LibTools::get('msg_error');
-		$errors[] = $msg;
-		LibTools::set('msg_error',$errors);
-	}
-
-	static function initLog() {
-		LibTools::set('msg_error', array());
-	}
-
-	static function getLog() {
-		$msg = '';
-		$errors = LibTools::get('msg_error');
-		foreach ($errors as $e) {
-			if($msg === '') {
-				$msg = $e;
-			} else {
-				$msg .= '<br>'.$e;
-			}
-		} 
-		return $msg;
-	}
-
-	/*
-	 * test si l'action du menu correspond à la valeur $value
-	 * */
-	static function isAction($value) {
-		return isset($_POST['action']) && ($_POST['action'] == $value);
-	}
-
-	static function clearAction() {
-		if(isset($_POST['action'])) {
-			unset($_POST['action']);
-		}
-	}
-
-
-	/*
+	/***********************************************************************
 	 * initialisation de l'application
 	 * */
 	static function init() {
@@ -134,6 +80,77 @@ class LibTools {
 		}
 	}
 
+	/***********************************************************************
+	 * recupere la variable $var de la session
+	 * */
+	static function get($var) {
+		return $_SESSION[$var];
+	}
+
+	/***********************************************************************
+	 * Affecte $value à la variable de session $var
+	 * */
+	static function set($var, $value) {
+		$_SESSION[$var] = $value;
+	}
+	
+	/***********************************************************************
+	 * test si la variable existe dans la session
+	 * */
+	static function issession($var) {
+		return isset($_SESSION) && isset($_SESSION[$var]);
+	}
+
+	/***********************************************************************
+	 * ecrit un message dans le log
+	 * */
+	static function setLog($msg) {
+		if(!LibTools::issession('msg_error')) {
+			LibTools::initLog();
+		}
+		$errors = LibTools::get('msg_error');
+		$errors[] = $msg;
+		LibTools::set('msg_error',$errors);
+	}
+
+	/***********************************************************************
+	 * initialise la variable de log
+	 * */
+	static function initLog() {
+		LibTools::set('msg_error', array());
+	}
+
+	/***********************************************************************
+	 * renvoie le texte de log
+	 * */
+	static function getLog() {
+		$msg = '';
+		$errors = LibTools::get('msg_error');
+		foreach ($errors as $e) {
+			if($msg === '') {
+				$msg = $e;
+			} else {
+				$msg .= '<br>'.$e;
+			}
+		} 
+		return $msg;
+	}
+
+	/***********************************************************************
+	 * test si l'action du menu correspond à la valeur $value
+	 * */
+	static function isAction($value) {
+		return isset($_POST['action']) && ($_POST['action'] == $value);
+	}
+
+	/***********************************************************************
+	 * nettoie les actions de la session
+	 * */
+	static function clearAction() {
+		if(isset($_POST['action'])) {
+			unset($_POST['action']);
+		}
+	}
 
 	/***********************************************************************
 	 * Test si l'utilisateur connecté est admin

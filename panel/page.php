@@ -71,7 +71,7 @@ class Page implements IPanel {
 	 * Initialise la page et les panels
 	 * */
 	function init($g) {
-		LibTools::init();
+		// LibTools::init();
 		foreach ($this->panels as $panel) {
 			$g = $panel->init($g);
 		}
