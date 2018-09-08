@@ -17,7 +17,7 @@ class AbstractDao {
 	 * Initialise la connexion à la base de donnée de Ranking
 	 * */
 	function open() {
-		$mysqli = $this->doOpenDataBase($database_host,$database_login,$database_password, $database_name);
+		$mysqli = $this->doOpenDataBase($GLOBALS['host'],$GLOBALS['login'],$GLOBALS['password'], $GLOBALS['name']);
 		return $mysqli;
 	}
 
@@ -35,23 +35,6 @@ class AbstractDao {
 		}
 		// mysql_select_db("SFV_DB", $conn);
 		return $mysqli;
-	}
-
-	/***********************************************************************
-	 * Ouvre une connexion sur la base local de test
-	 * */
-	function openDataBaseLocal() {
-		// local Tahar
-		//return doOpenDataBase("localhost","root","123456a*", "SFV_DB");
-		// local Sam
-		return $this->doOpenDataBase("localhost","root","", "ranking");
-	}
-
-	/***********************************************************************
-	 * Ouvre une connexion sur la base de prod
-	 * */
-	function openDataBaseProd() {
-		return $this->doOpenDataBase("tesatnsimbtesadb.mysql.db","tesatnsimbtesadb", "F3OgJ6025uf9LrR", "tesatnsimbtesadb");
 	}
 
 	/***********************************************************************
