@@ -1,0 +1,647 @@
+/*********************************************************
+ *  Tools
+ *********************************************************/
+
+.spaceRow {
+	background-color: rgba(0,0,0,0);
+	height:10px;
+	font-size:10px;
+} 
+
+.hiddenDiv {
+	visibility:hidden;
+	position:relative;
+	opacity:0;
+	left:0px;
+	top:0px;
+	width:0px;
+	height:0px;
+}
+
+.hiddenDivBloc {
+	display:none;
+}
+
+.center {
+	text-align:center;
+}
+
+.group {
+	border:2px solid rgba(255,255,255,0.3);
+	border-radius:8px;
+	margin: 2px 5px 2px 5px;
+	padding:5px 0px;
+}
+
+.row {
+	display:inline-block;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+/*********************************************************
+ *  Header
+ *********************************************************/
+body {
+	margin:0px;
+}
+
+.divTitle {
+	width: 1000px;
+	height:150px;
+	background-repeat : no-repeat;
+	background-position :  center;
+	background-attachment : scroll;
+	background-size: 95%;
+}
+
+/*
+Log
+*/
+.msg {
+	position: absolute;
+	left:0px;
+	top:60px;
+	color:black;
+	background-color:rgba(255,255,255,0.6);
+}
+
+
+/*********************************************************
+ *  Menu / Login
+ *********************************************************/
+.menuPanel {
+	text-align:center;
+	vertical-align:middle;
+	position:fixed;
+	border-radius:8px;
+}
+
+.menuPanel .buttonMenuLogin {
+	width: 30px;
+	height:30px;
+	display:table-cell;
+	text-align:center;
+	vertical-align:middle;
+	border-radius:8px;
+}
+
+.divTabMenu {
+	position:relative;
+	display:inline-block;
+	left:30px;
+	top:-30px;
+	padding:5px 5px;
+	text-align:right;
+	background-color : rgba(150,0,0,0.8);
+	border-radius:8px;
+}
+
+.loginPanel {
+	top: 30px;
+	left:0px;
+	z-index:2;
+}
+
+.loginPanel .buttonMenuLogin {
+	color: rgb(200, 200, 200);
+}
+
+.divTabLogin {
+	width:300px;
+}
+
+.mainMenuPanel {
+	top:0px;
+	left:0px;
+	z-index:3;
+}
+
+.mainMenuPanel .buttonMenuLogin {
+	font-weight: bold;
+	color: rgb(250, 250, 250);
+	background-color: rgba(150, 0, 0,0.8);
+}
+
+
+.divTabMainMenu {
+	/* width:150px; */
+}
+
+.divCellLogin {
+	text-align:center;
+}
+
+.divCellLogin label {
+	color:white;
+	width: 120px;
+	text-align:right;
+	margin:3px 5px;
+}
+
+.divCellLogin input {
+	text-align:center;
+	width: 150px;
+	margin:3px 5px;
+}
+
+.divCellMenu {
+	padding: 5px;
+}
+
+.divCellMenu input {
+	text-align:center;
+	width: 100px;
+	margin:3px 5px;
+}
+
+
+.buttonMenu input { 
+	width: 100px;
+	text-align:center;
+	margin:3px 5px;
+} 
+
+
+/*********************************************************
+ *  Admin class
+ *********************************************************/
+
+label {
+	display:inline-block;
+	color:white;
+	text-align:right;
+}
+
+.divAdminMenu  {
+	z-index:2;
+	top:0px;
+	position:sticky;
+	padding: 5px 0px;
+	background-color: rgba(150,0,0, 0.7);	
+}
+
+.divAdminTab {
+	text-align : center;
+	vertical-align: middle;
+	margin:0px 5px;
+}
+
+.divAdminTab .row {
+	padding-top:3px;
+	padding-bottom:3px;
+	width:100%;
+}
+
+.divAdminTab .row input {
+	padding-left:5px;
+	padding-right:5px;
+	margin-left:5px;
+	margin-right:5px;
+	width:175px;
+}
+
+.divAdminTab .row div {
+	display:inline-block;
+	position:relative;
+	text-align : right;
+	vertical-align: middle;
+	padding: 0px 2px;
+}
+
+.divAdminTab .row div.head {
+	text-align : right;
+	vertical-align: middle;
+	width:100px;
+}
+.divAdminTab .row div.head input {
+	width:40px;
+}
+
+.buttonMenuAdmin {
+	width : 120px;
+}
+
+.inputEditPoints {
+	text-align: center;
+	vertical-align: middle;
+	width:70px;
+	padding:0px;
+	margin:0px;
+}
+
+.addScore {
+	font-size : 12px;
+	font-family:monospace;
+	float:left;
+	padding:0px;
+	text-shadow: 0px 0px 0px black;
+	cursor: default;
+	margin:0px;
+	padding:0px;
+	text-align:center;
+	vertical-align:middle;
+}
+.addScoreButton {
+	background-color: rgba(0,0,0,0.5);
+	cursor: crosshair;
+	text-align:center;
+	vertical-align:middle;
+	width:18px;
+	height:18px;
+	margin:0px;
+	padding:0px;
+}
+.addScoreUp {
+	color: rgb(120, 255, 120);
+	border: 1px solid rgb(120, 255, 120);
+}
+.addScoreDown  {
+	color: rgb(255, 120, 120);
+	border: 1px solid rgb(255, 120, 120);
+}
+
+.divDeletePlayer {
+	text-align: center;
+	vertical-align: middle;
+	width:50px;
+	font-weight: bold;
+	color:red;
+	padding:0px;
+	margin:0px;
+}
+.deletePlayerRanking {
+	text-align: center;
+	vertical-align: middle;
+	width:20px;
+	font-weight: bold;
+	color:red;
+	padding:0px;
+	margin:0px;
+}
+
+/*********************************************************
+ *  Div Ranking
+ *********************************************************/
+.divTitle.rankingTitle {
+	background-image: url("./Images/Background/SFVR.png");
+}
+
+.rankingAdmin {
+	width: 1075px;	
+}
+
+.rankingPublic {
+	width: 1000px;
+}
+
+.ranking {
+	padding:5px;
+	border: 0px solid #1C6EA4;
+	text-align: left;
+	border-collapse: collapse;
+	background-image: url("./Images/Background/Block2.png");
+	-webkit-mask-image: -webkit-linear-gradient(bottom, 
+		rgba(0,0,0,0) 0%, 
+		rgba(0,0,0,1) 20px, 
+		rgba(0,0,0,1) 100%);
+	background-size: 100%;
+}
+
+.ranking .divTableCell, .ranking .divTableHead {
+  border: 0px solid #AAAAAA;
+  padding: 0px 0px;
+    
+}
+
+
+.ranking .spaceRow .divTableCell, .ranking .spaceRow {
+	background-color: rgba(0,0,0,0);
+	height:10px;
+	font-size:10px;
+} 
+
+/*********************************************************
+ *  Column description
+ *********************************************************/
+
+.progress {
+	width: 75px ;
+	text-align: center;
+	vertical-align: middle;	
+	background-repeat : no-repeat;
+	background-position :  center;
+	background-attachment : scroll;
+	-webkit-mask-image: -webkit-radial-gradient(center, circle, 
+		rgba(0,0,0,1) 0%, 
+		rgba(0,0,0,1) 32%, 
+		rgba(0,0,0,0) 45%);
+}
+
+.rank {
+	width: 75px;
+	text-align: center;
+	vertical-align: middle;	
+	font-weight: normal;
+	font-size: 40px;
+	color: rgb(255,255,150);
+	text-shadow: 4px 4px 3px black;
+	font-family:  font_rank, Arial, Helvetica, "Times New Roman";
+}
+
+.pseudoNom {
+	width:350px;
+	text-align:left;
+	vertical-align:middle;
+	font-weight: normal;
+	color:white;
+	text-shadow: 4px 4px 3px black;
+}
+.pseudoNom .pseudo {
+	text-align:left;
+	vertical-align:bottom;
+	height:40px;
+	font-size: 30px;
+	color:white;
+	font-family:  font_pseudo, Arial, Helvetica, "Times New Roman";
+}
+
+.pseudoNom .nom {
+	text-align:left;
+	text-indent:10%;
+	vertical-align:top;
+	height:25px;
+	font-size: 18px;
+	color:rgb(160,160,160);
+	font-family:  font_name, Arial, Helvetica, "Times New Roman";
+}
+
+.character {
+	width:350px;
+	position:relative;
+	left:0px;
+	height:65px;
+	background-repeat : no-repeat;
+	background-position :  right center;
+	background-attachment : scroll;
+	background-size: auto 100%;
+	-moz-mask-image: -moz-linear-gradient(left, 
+		rgba(0,0,0,0) 0%, 
+		rgba(0,0,0,1) 10%, 
+		rgba(0,0,0,1) 95%, 
+		rgba(0,0,0,0) 100%);
+	-webkit-mask-image: -webkit-linear-gradient(left, 
+		rgba(0,0,0,0) 0%, 
+		rgba(0,0,0,1) 5%, 
+		rgba(0,0,0,1) 95%, 
+		rgba(0,0,0,0) 100%);
+}
+
+.selectPlayerChar {
+	position:absolute;
+	top:10px;
+	left:20px;
+	float:left;
+}
+
+.points {
+	width:150px;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: normal;
+	font-size: 50px;
+	font-family:  font_score, Arial, Helvetica, "Times New Roman";
+	color: rgb(255,255,150);
+	text-shadow: 4px 4px 3px black;
+}
+
+.editPoints {
+	width:75px;
+	text-align: center;
+	color: rgb(255,255,150);
+	font-weight: bold;
+	vertical-align: middle;
+	font-family:  monospace;
+	margin:0px;
+	text-align: center;
+}
+
+/*********************************************************
+ *  Ranking Progress Background
+ *********************************************************/
+
+.ranksame {
+	background-image: url("./Images/Ranks/rank.png");
+	background-size: 50px;
+}
+
+.rankup {
+	background-image: url("./Images/Ranks/rank_up.png");
+	background-size: 50px;
+}
+
+.rankdown {
+	background-image: url("./Images/Ranks/rank_down.png");
+	background-size: 50px;
+}
+
+/*********************************************************
+ *  Div PlayerList
+ *********************************************************/
+
+.divTitle.playerListTitle {
+	background-image: url("./Images/Background/SFVR.png");
+}
+
+.playerList {
+	width: 1000px;
+	padding:5px;
+	border: 0px solid #1C6EA4;
+	text-align: left;
+	border-collapse: collapse;
+	background-image: url("./Images/Background/Block2.png");
+	-webkit-mask-image: -webkit-linear-gradient(bottom, 
+		rgba(0,0,0,0) 0%, 
+		rgba(0,0,0,1) 20px, 
+		rgba(0,0,0,1) 100%);
+	background-size: 100%;
+}
+
+.playerList .divTable {
+	width:100%
+}
+
+.playerList .spaceRow .divTableCell, .playerList .spaceRow {
+	height:5px;
+	font-size:5px;
+}
+
+.playerList .characterRow .divTableCell {
+	text-align:left;
+	vertical-align:middle;
+	height:40px;
+	font-size: 18px;
+	color:white;
+	padding-left:10px;
+	padding-right:5px;
+	font-weight:normal;
+	text-shadow: 4px 4px 3px black;
+	font-family:  font_name, Arial, Helvetica, "Times New Roman";
+}
+
+.playerList .divTableCell.pseudo.hidden {
+	font-size : 22px;
+	color: rgb(255,100,100);
+	font-family:  font_pseudo, Arial, Helvetica, "Times New Roman";
+}
+.playerList .divTableCell.pseudo {
+	font-size : 22px;
+	color: rgb(255,255,150);
+	font-family:  font_pseudo, Arial, Helvetica, "Times New Roman";
+}
+.playerList .divTableCell.email, .playerList .divTableCell.tel {
+	font-size : 14px;
+	color: rgb(200,200,200);
+	font-family:  Arial, Helvetica, "Times New Roman";
+}
+
+.edit input[type="button"] {
+	width:40px;
+}
+
+/*********************************************************
+ *  Edit Player
+ *********************************************************/
+
+#editPlayer {
+	width : 1000px;
+	position : absolute;
+	text-align:center;
+	vertical-align:middle;
+	
+	background-color: rgba(0,0,0, 1);	
+}
+
+
+#editPlayer .group {
+	text-align:center;
+	vertical-align:middle;
+}
+
+#editPlayer .row input[type="text"] {
+	padding-left:5px;
+	padding-right:5px;
+	margin:5px;
+	width:175px;
+}
+
+#editPlayer .row input[type="button"] {
+	padding-left:5px;
+	padding-right:5px;
+	margin:5px;
+	width:100px;
+}
+
+ /*********************************************************
+ *  Table Structure
+ *********************************************************/
+
+div.masterDiv {
+	width: 100%;
+	text-align: center;
+	text-align: -webkit-center;
+	text-align: -moz-center;
+	background-image: linear-gradient(top, white, rgb(255,150,150), rgb(255,150,150), white);
+	background-image: -webkit-linear-gradient(top, white, rgb(255,150,150), rgb(255,150,150), white);
+}
+
+.characterRow {
+	background-color: rgba(0,0,0,0);
+	background-image: -webkit-linear-gradient(top
+		,rgba(80,20,20,0.0) 
+		,rgba(80,20,20,0.6) 12%
+		,rgba(80,20,20,0.6) 88%
+		,rgba(80,20,20,0.0) 
+		);
+}
+
+.divHoriz {
+	float:left;
+}
+
+/*********************************************************
+ *  Table Header
+ *********************************************************/
+
+.divTable.ranking .divTableHeading {
+  background: #FF6EA4;
+  background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  border-bottom: 0px solid #444444;
+}
+
+.divTable.ranking .divTableHeading .divTableHead {
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  border-left: 0px solid #D0E4F5;
+}
+.divTable.ranking .divTableHeading .divTableHead:first-child {
+  border-left: none;
+}
+
+/*********************************************************
+ *  Table Footer
+ *********************************************************/
+.ranking .tableFootStyle {
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background: #D0E4F5;
+  background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  border-top: 2px solid #444444;
+}
+.ranking .tableFootStyle {
+  font-size: 14px;
+}
+.ranking .tableFootStyle .links {
+	 text-align: right;
+}
+.ranking .tableFootStyle .links a{
+  display: inline-block;
+  background: #1C6EA4;
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+.ranking.outerTableFooter {
+  border-top: none;
+}
+.ranking.outerTableFooter .tableFootStyle {
+  padding: 3px 5px; 
+}
+
+/*********************************************************
+ *  Table Definition
+ *********************************************************/
+/* DivTable.com */
+.divTable{ display: table; width:100%}
+.divTableRow { display: table-row; }
+.divTableHeading { display: table-header-group;}
+.divTableBody { display: table-row-group;}
+.divTableCell, .divTableHead { display: table-cell;}
+.divTableFoot { display: table-footer-group;}
+
+

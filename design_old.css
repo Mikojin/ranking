@@ -1,0 +1,444 @@
+
+/*********************************************************
+ *  Header
+ *********************************************************/
+body {
+	margin:0px;
+}
+
+.divTitle {
+	width: 1000px;
+	height:150px;
+	background-image: url("./Images/Background/SFVR.png");
+	background-repeat : no-repeat;
+	background-position :  center;
+	background-attachment : scroll;
+	background-size: 95%;
+}
+
+img.title {
+}
+
+.msg {
+	position: absolute;
+	left:30px;
+	top:0px;
+	color:black;
+	background-color:rgba(255,255,255,0.6);
+}
+
+/*********************************************************
+ *  Login
+ *********************************************************/
+.menu {
+	top:0px;
+	left:0px;
+	position:fixed;
+	z-index:2;
+}
+
+.divTabLogin {
+	position:relative;
+	width:400px;
+	left:20px;
+	top:10px;
+	padding:5px 5px;
+	text-align:center;
+	background-color : rgba(150,0,0,0.8);
+}
+
+.divTabLogin div {
+	width:100%;
+}
+
+.divTabLogin div .divCellLogin {
+	width: 45%;
+	text-align:center;
+	display:inline-block;
+	margin:3px 5px;
+}
+
+label.divCellLogin {
+	color:white;
+	text-align:right;
+}
+
+.buttonMenuLogin {
+	color: rgb(200, 200, 200);
+}
+
+/*********************************************************
+ *  Admin class
+ *********************************************************/
+.hiddenDiv {
+	display:none;
+}
+
+.center {
+	text-align:center;
+}
+
+label {
+	display:inline-block;
+	color:white;
+	text-align:right;
+}
+
+.divAdminMenu  {
+	z-index:2;
+	top:0px;
+	position:sticky;
+	padding-top: 5px;
+	padding-bottom:5px;
+	background-color: rgba(150,0,0, 0.7);	
+}
+
+.divAdminTab {
+	text-align : center;
+	vertical-align: middle;
+	width:100%;
+}
+
+.divAdminTab .row {
+	display:inline-block;
+	position:relative;
+	text-align : center;
+	vertical-align: middle;
+	padding-top:3px;
+	padding-bottom:3px;
+	width:100%;
+}
+
+.divAdminTab .row div {
+	display:inline-block;
+	position:relative;
+	text-align : right;
+	vertical-align: middle;
+	width:220px;
+}
+
+.divAdminTab .row div.head {
+	text-align : right;
+	vertical-align: middle;
+	width:100px;
+}
+
+.buttonMenu {
+	width : 120px;
+}
+
+.inputEditPoints {
+	text-align: center;
+	vertical-align: middle;
+	width:70px;
+	padding:0px;
+	margin:0px;
+}
+
+.addScore {
+	font-size : 12px;
+	font-family:monospace;
+	float:left;
+	padding:0px;
+	text-shadow: 0px 0px 0px black;
+	cursor: default;
+	margin:0px;
+	padding:0px;
+	text-align:center;
+	vertical-align:middle;
+}
+.addScoreButton {
+	background-color: rgba(0,0,0,0.5);
+	cursor: crosshair;
+	text-align:center;
+	vertical-align:middle;
+	width:18px;
+	height:18px;
+	margin:0px;
+	padding:0px;
+}
+.addScoreUp {
+	color: rgb(120, 255, 120);
+	border: 1px solid rgb(120, 255, 120);
+}
+.addScoreDown  {
+	color: rgb(255, 120, 120);
+	border: 1px solid rgb(255, 120, 120);
+}
+
+.divDeletePlayer {
+	text-align: center;
+	vertical-align: middle;
+	width:50px;
+	font-weight: bold;
+	color:red;
+	padding:0px;
+	margin:0px;
+}
+.deletePlayer {
+	text-align: center;
+	vertical-align: middle;
+	width:20px;
+	font-weight: bold;
+	color:red;
+	padding:0px;
+	margin:0px;
+}
+
+/*********************************************************
+ *  Column description
+ *********************************************************/
+
+.progress {
+	width: 75px ;
+	text-align: center;
+	vertical-align: middle;	
+	background-repeat : no-repeat;
+	background-position :  center;
+	background-attachment : scroll;
+	-webkit-mask-image: -webkit-radial-gradient(center, circle, 
+		rgba(0,0,0,1) 0%, 
+		rgba(0,0,0,1) 32%, 
+		rgba(0,0,0,0) 45%);
+}
+
+.rank {
+	width: 75px;
+	text-align: center;
+	vertical-align: middle;	
+	font-weight: normal;
+	font-size: 40px;
+	color: rgb(255,255,150);
+	text-shadow: 4px 4px 3px black;
+	font-family:  font_rank, Arial, Helvetica, "Times New Roman";
+}
+
+.pseudoNom {
+	width:350px;
+	text-align:left;
+	vertical-align:middle;
+	font-weight: normal;
+	color:white;
+	text-shadow: 4px 4px 3px black;
+}
+.pseudoNom .pseudo {
+	text-align:left;
+	vertical-align:bottom;
+	height:40px;
+	font-size: 30px;
+	color:white;
+	font-family:  font_pseudo, Arial, Helvetica, "Times New Roman";
+}
+.pseudoNom .nom {
+	text-align:left;
+	text-indent:10%;
+	vertical-align:top;
+	height:25px;
+	font-size: 18px;
+	color:rgb(160,160,160);
+	font-family:  font_name, Arial, Helvetica, "Times New Roman";
+}
+
+.character {
+	width:350px;
+	position:relative;
+	left:0px;
+	height:65px;
+	background-repeat : no-repeat;
+	background-position :  right center;
+	background-attachment : scroll;
+	background-size: auto 100%;
+	-moz-mask-image: -moz-linear-gradient(left, 
+		rgba(0,0,0,0) 0%, 
+		rgba(0,0,0,1) 10%, 
+		rgba(0,0,0,1) 95%, 
+		rgba(0,0,0,0) 100%);
+	-webkit-mask-image: -webkit-linear-gradient(left, 
+		rgba(0,0,0,0) 0%, 
+		rgba(0,0,0,1) 5%, 
+		rgba(0,0,0,1) 95%, 
+		rgba(0,0,0,0) 100%);
+}
+
+.selectPlayerChar {
+	position:absolute;
+	top:10px;
+	left:20px;
+	float:left;
+}
+
+.points {
+	width:150px;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: normal;
+	font-size: 50px;
+	font-family:  font_score, Arial, Helvetica, "Times New Roman";
+	color: rgb(255,255,150);
+	text-shadow: 4px 4px 3px black;
+}
+
+.editPoints {
+	width:75px;
+	text-align: center;
+	color: rgb(255,255,150);
+	font-weight: bold;
+	vertical-align: middle;
+	font-family:  monospace;
+	margin:0px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+/*********************************************************
+ *  Ranking Progress Background
+ *********************************************************/
+
+.ranksame {
+	background-image: url("./Images/Ranks/rank.png");
+	background-size: 50px;
+}
+
+.rankup {
+	background-image: url("./Images/Ranks/rank_up.png");
+	background-size: 50px;
+}
+
+.rankdown {
+	background-image: url("./Images/Ranks/rank_down.png");
+	background-size: 50px;
+}
+
+/*********************************************************
+ *  Table Structure
+ *********************************************************/
+
+div.masterDiv {
+	width: 100%;
+	text-align: center;
+	text-align: -webkit-center;
+	text-align: -moz-center;
+	background-image: linear-gradient(top, white, rgb(255,150,150), rgb(255,150,150), white);
+	background-image: -webkit-linear-gradient(top, white, rgb(255,150,150), rgb(255,150,150), white);
+}
+
+.rankingAdmin {
+	width: 1075px;	
+}
+
+.rankingPublic {
+	width: 1000px;
+}
+
+div.ranking {
+	border: 0px solid #1C6EA4;
+	text-align: left;
+	border-collapse: collapse;
+	background-image: url("./Images/Background/Block2.png");
+	-webkit-mask-image: -webkit-linear-gradient(bottom, 
+		rgba(0,0,0,0) 0%, 
+		rgba(0,0,0,1) 20px, 
+		rgba(0,0,0,1) 100%);
+	background-size: 100%;
+}
+
+.divTableBody {
+
+}
+
+.divTable.ranking .divTableCell, .divTable.ranking .divTableHead {
+  border: 0px solid #AAAAAA;
+  padding: 0px 0px;
+    
+}
+
+.divTable.ranking .divTableBody .divTableCell {
+}
+
+.divTable.ranking .divTableRow.characterRow {
+	background-color: rgba(0,0,0,0);
+	background-image: -webkit-linear-gradient(top
+		,rgba(80,20,20,0.0) 
+		,rgba(80,20,20,0.6) 12%
+		,rgba(80,20,20,0.6) 88%
+		,rgba(80,20,20,0.0) 
+		);
+}
+.divTable.ranking .divTableRow.spaceRow {
+	background-color: rgba(0,0,0,0);
+	height:10px;
+	font-size:10px;
+} 
+
+.divHoriz {
+	float:left;
+}
+
+/*********************************************************
+ *  Table Header
+ *********************************************************/
+
+.divTable.ranking .divTableHeading {
+  background: #FF6EA4;
+  background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  border-bottom: 0px solid #444444;
+}
+
+.divTable.ranking .divTableHeading .divTableHead {
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  border-left: 0px solid #D0E4F5;
+}
+.divTable.ranking .divTableHeading .divTableHead:first-child {
+  border-left: none;
+}
+
+/*********************************************************
+ *  Table Footer
+ *********************************************************/
+.ranking .tableFootStyle {
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background: #D0E4F5;
+  background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+  border-top: 2px solid #444444;
+}
+.ranking .tableFootStyle {
+  font-size: 14px;
+}
+.ranking .tableFootStyle .links {
+	 text-align: right;
+}
+.ranking .tableFootStyle .links a{
+  display: inline-block;
+  background: #1C6EA4;
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+.ranking.outerTableFooter {
+  border-top: none;
+}
+.ranking.outerTableFooter .tableFootStyle {
+  padding: 3px 5px; 
+}
+
+/*********************************************************
+ *  Table Definition
+ *********************************************************/
+/* DivTable.com */
+.divTable{ display: table; }
+.divTableRow { display: table-row; }
+.divTableHeading { display: table-header-group;}
+.divTableBody { display: table-row-group;}
+.divTableCell, .divTableHead { display: table-cell;}
+.divTableFoot { display: table-footer-group;}
+
+
