@@ -12,7 +12,6 @@ $id_game = 1;
 
 $page = new MasterPage($id_game);
 
-
 $page->printPage();
 
 ?>
