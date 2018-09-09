@@ -143,7 +143,7 @@ EOS;
 	/***********************************************************************
 	 * affiche le block d'un joueur
 	 * */
-	function printElement($g, $player) {
+	function printElement($g, $player, $i) {
 	?>	
 			<div class="divTableRow characterRow" >
 				<div class="divTableCell progress <?php echo $player->rank_classe;?>">&nbsp;</div>

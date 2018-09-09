@@ -87,7 +87,7 @@ class ParamDao extends AbstractDao {
 			 where p.group_name = '$group_name' 
 			   and p.variable   = '$variable'
 		";
-		$map = $this->fetch_one($sql, 'variable');
+		$map = $this->fetch_one($sql);
 		return $map['value'];
 	}
 
@@ -412,20 +412,24 @@ class ScoringDao extends AbstractDao {
 		$sql = " insert into scoring
 		(id_type_score, rank_top, rank_bottom, score)
 		values
-		($$id_type_score, $rank_top, $rank_bottom, $score)";
+		($id_type_score, $rank_top, $rank_bottom, $score)";
 		
-		$this->exec_query($result, "Insert type_score OK : $id");
+		$this->exec_query($sql, "Insert scoring OK : $id_type_score, $rank_top, $rank_bottom, $score");
 	}
 
 	/***********************************************************************
 	 * Renvoie la liste complete des scoring pour le type_score donnée
 	 * */
 	function getList($id_type_score) {
+		if(LibTools::isBlank($id_type_score)) {
+			return array();
+		}
 		$sql = "select s.* 
-		from `scoring` s
+		from scoring s
+		where s.id_type_score = $id_type_score
 		order by s.rank_top asc, s.rank_bottom asc";
 		
-		$arr = $this->fetch_array($sql);
+		$arr = $this->fetch_array($sql, 'mapperScoring');
 		
 		return $arr;
 	}
@@ -441,9 +445,39 @@ class ScoringDao extends AbstractDao {
 		  and s.rank_bottom >= $rank
 		order by s.rank_top asc, s.rank_bottom asc";
 		
-		$row = $this->fetch_on($sql);
+		$scoring = $this->fetch_one($sql, "mapperScoring");
 		
-		return $row;
+		return $scoring;
+	}
+	
+	/***********************************************************************
+	 * Renvoie la liste complete des type score
+	 * */
+	function getLastRank($idTypeScore) {
+		$sql = "select max(rank_bottom) rank_last 
+		from `scoring` 
+		where id_type_score = $idTypeScore ";
+		LibTools::setLog($sql);
+		$row = $this->fetch_one($sql);
+		if($row) {
+			return $row['rank_last'];
+		}
+		return null;
+	}
+
+
+	
+	/***********************************************************************
+	 * supprimer la liste de scoring pour le id type score donné
+	 */
+	function deleteScoringList($id_type_score) {
+		if(LibTools::isBlank($id_type_score)) {
+			return false;
+		}
+		$sql = " delete from scoring
+		where id_type_score=$id_type_score";
+		
+		return $this->exec_query($sql, "Delete scoring list OK : $id_type_score");
 	}
 }
 
@@ -461,7 +495,7 @@ class TournementDao extends AbstractDao {
 		values
 		($id_game, $group_name, $name, $id_type_score, $date_start, $date_end)";
 
-		$this->exec_query($result, "Insert tournement OK : $id");
+		$this->exec_query($sql, "Insert tournement OK : $id");
 	}
 }
 
@@ -474,13 +508,27 @@ class TypeScoreDao extends AbstractDao {
 	/***********************************************************************
 	 * insert un nouveau type score
 	 */
-	function insert($nom_type) {
-		$sql = " insert into type_score
-		(nom_type)
-		values
-		($nom_type)";
+	function insert($type_name) {
+		$mysqli = $this->open();
+		$type_name = stripslashes($type_name);
+		$type_name = $mysqli->real_escape_string($type_name);
+		$this->close($mysqli);
 		
-		$this->exec_query($result, "Insert type_score OK : $id");
+		$sql = " insert into type_score
+		(type_name)
+		values
+		('$type_name')";
+		
+		$ret = $this->exec_query($sql, "Insert type_score OK : $type_name");
+		if(!$ret) {
+			return false;
+		}
+		$sql = "select max(id) new_id from type_score";
+		$row = $this->fetch_one($sql);
+		if($row) {
+			return $row['new_id'];
+		}
+		return false;
 	}
 
 
@@ -496,6 +544,17 @@ class TypeScoreDao extends AbstractDao {
 		
 		return $arr;
 	}
+	
+	/***********************************************************************
+	 * supprime le type score pour l'ID donné
+	 */
+	function deleteTypeScore($id) {
+		$sql = " delete from type_score
+		where id=$id";
+		
+		return $this->exec_query($sql, "Delete type_score OK : $id");
+	}
+
 }
 
 /*######################################################################
@@ -593,6 +652,7 @@ class Dao {
 	public $playerDao;
 	public $rankingDao;	
 	public $scoringDao;
+	public $typeScoreDao;
 	public $tournementDao;
 	public $userDao;
 	public $otherDao;	
@@ -605,12 +665,13 @@ class Dao {
 		$this->playerDao 			= new PlayerDao();
 		$this->rankingDao			= new RankingDao();
 		$this->scoringDao			= new ScoringDao();
+		$this->typeScoreDao			= new TypeScoreDao();
 		$this->tournementDao		= new TournementDao();
 		$this->userDao				= new UserDao();
 		
 		$this->otherDao				= new OtherDao();
-		$this->otherDao->histoRankingDao = $this->histoRankingDao;
-		$this->otherDao->rankingDao = $this->rankingDao;
+		$this->otherDao->histoRankingDao 	= $this->histoRankingDao;
+		$this->otherDao->rankingDao 		= $this->rankingDao;
 	}
 }
 

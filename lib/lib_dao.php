@@ -161,7 +161,7 @@ class AbstractDao {
 	 * return map[column], 
 	 * prend le premier résultat de la liste si plusieur objet sont renvoyés
 	 * */
-	function fetch_one($sql) {	
+	function fetch_one($sql, callable $mapper=null) {	
 		$mysqli = $this->open();
 		
 		$result = $mysqli->query($sql);
@@ -175,6 +175,11 @@ class AbstractDao {
 		
 		$row = $result->fetch_assoc();
 
+		if($mapper) {
+			$obj = $mapper($row);
+		} else {
+			$obj = $row;
+		}
 		$this->close($mysqli);
 		return $row;
 	}

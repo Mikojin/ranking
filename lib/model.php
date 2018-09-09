@@ -25,8 +25,6 @@ class PlayerWrapper {
 	public $points;
 	public $new_points;
 	
-	function Player() {
-	}
 }
  
 
@@ -53,8 +51,6 @@ class Ranking {
 	public $rank;
 	public $rank_display;
 
-	function Ranking() {
-	}
 }
  
 class Player {
@@ -66,8 +62,6 @@ class Player {
 	public $telephone;
 	public $status;
 	
-	function Player() {
-	}
 }
 
 class Character {
@@ -80,11 +74,22 @@ class Character {
 	public $css_class;
 	public $filename;
 	
-	function Character() {
-	}
 }
 
-
+class Scoring {
+	public $id;
+	public $id_type_score;
+	public $rank_top;
+	public $rank_bottom;
+	public $score;
+	
+	function __construct($id_type_score=null, $rank_top=0, $rank_bottom=0, $score=0) {
+		$this->id_type_score 	= $id_type_score;
+		$this->rank_top			= $rank_top;
+		$this->rank_bottom		= $rank_bottom;
+		$this->score			= $score;
+	}
+}
 
 
 ?>

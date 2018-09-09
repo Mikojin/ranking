@@ -56,3 +56,15 @@ function mapperCharacter($row) {
 	
 	return $o;
 }
+
+function mapperScoring($row) {
+	$o = new Scoring();
+	
+	$o->id				=$row['id'];
+	$o->id_type_score   =$row['id_type_score'];
+	$o->rank_top        =$row['rank_top'];
+	$o->rank_bottom     =$row['rank_bottom'];
+	$o->score           =$row['score'];
+
+	return $o;
+}

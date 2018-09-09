@@ -118,7 +118,7 @@ class LoginPanel implements IPanel {
 				<input id="password" name="password" placeholder="**********" type="password"/>
 			</div>
 			<div class="divCellLogin buttonMenu">
-				<input name="login" id="login" type="submit" value="Login" onclick="setAction('login');"/>
+				<input name="login" id="login" type="button" value="Login" onclick="setAction('login');"/>
 			</div>
 		</div>
 	<?php 
@@ -129,9 +129,13 @@ class LoginPanel implements IPanel {
 	 * */
 	function printMenuForm() {
 	?>
-		<div id="login" class="divTabMenu hiddenDiv">
-			<div class="divCellLogin buttonMenu">
-				<input name="logout" id="logout" type="submit" value="Logout" onclick="setAction('logout');"/>
+		<div id="login" class="divTable divTabMenu hiddenDiv">
+			<div class="divTableBody">
+			<div class="divTableRow">
+			<div class="divTableCell divCellMenu ">
+				<input name="logout" id="logout" type="button" value="Logout" onclick="setAction('logout');"/>
+			</div>
+			</div>
 			</div>
 		</div>
 	<?php 

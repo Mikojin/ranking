@@ -308,9 +308,11 @@ class AdminPanel implements IPanel {
 	 * affiche le bloc d'insertion d'un joueur dans ranking
 	 * */
 	function printInsertPlayerRanking($g) {
-		if(LibTools::isAdmin()) {
-			$this->combobox->cssClass 			= '';
-			$this->combobox->id_select			= '';
+		if(!LibTools::isAdmin()) {
+			return $g;
+		}
+		$this->combobox->cssClass 			= '';
+		$this->combobox->id_select			= '';
 	?>	
 		<div class="group">
 		<div class="row">
@@ -349,7 +351,6 @@ class AdminPanel implements IPanel {
 		</div>
 		</div>
 	<?php
-		}
 	}
 
 	/***********************************************************************
@@ -440,7 +441,7 @@ class AdminPanel implements IPanel {
 				</div>
 			</div>
 			<div class="divDeletePlayer divTableCell " title="remove player from this ranking">
-				<input class="deletePlayerRanking" type="button" 
+				<input class="delete" type="button" 
 					value="X" 
 					onclick="setVar('deletePlayerRanking', <?php echo $player->id; ?>);setActionTest('deletePlayerRanking');"
 					/>

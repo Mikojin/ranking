@@ -84,7 +84,11 @@ class LibTools {
 	 * recupere la variable $var de la session
 	 * */
 	static function get($var) {
-		return $_SESSION[$var];
+		if(LibTools::issession($var)) {
+			return $_SESSION[$var];
+		}
+		return null;
+			
 	}
 
 	/***********************************************************************

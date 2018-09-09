@@ -47,6 +47,36 @@
                                   supported by Chrome and Opera */
 }
 
+input {
+}
+
+input[type="number"] {
+	text-align:center;
+}
+
+input[type="button"]{
+	width:auto;
+	border-radius:5px;
+	padding:2px 5px;
+	font-weight:bold;
+	background-image: -webkit-linear-gradient(top, rgb(250,240,240), rgb(250,200,200));
+	background-image: linear-gradient(top, rgb(250,240,240), rgb(250,200,200));;
+}
+
+input[type="button"].delete {
+	text-align: center;
+	vertical-align: middle;
+	width:30px;
+	font-weight: bold;
+	color:red;
+	padding:2px;
+	background-image:none;
+	background-color:#D0D0D0;
+}
+
+.buffer {
+}
+
 /*********************************************************
  *  Header
  *********************************************************/
@@ -69,8 +99,9 @@ Log
 .msg {
 	position: absolute;
 	left:0px;
-	top:60px;
+	top:80px;
 	color:black;
+	z-index:10;
 	background-color:rgba(255,255,255,0.6);
 }
 
@@ -83,6 +114,8 @@ Log
 	vertical-align:middle;
 	position:fixed;
 	border-radius:8px;
+	width: 30px;
+	height:30px;
 }
 
 .menuPanel .buttonMenuLogin {
@@ -96,11 +129,10 @@ Log
 
 .divTabMenu {
 	position:relative;
-	display:inline-block;
 	left:30px;
 	top:-30px;
 	padding:5px 5px;
-	text-align:right;
+	text-align:center;
 	background-color : rgba(150,0,0,0.8);
 	border-radius:8px;
 }
@@ -131,10 +163,6 @@ Log
 	background-color: rgba(150, 0, 0,0.8);
 }
 
-
-.divTabMainMenu {
-	/* width:150px; */
-}
 
 .divCellLogin {
 	text-align:center;
@@ -186,6 +214,7 @@ label {
 	top:0px;
 	position:sticky;
 	padding: 5px 0px;
+	border-radius:8px;
 	background-color: rgba(150,0,0, 0.7);	
 }
 
@@ -250,21 +279,22 @@ label {
 	text-align:center;
 	vertical-align:middle;
 }
-.addScoreButton {
+input[type="button"].addScoreButton {
 	background-color: rgba(0,0,0,0.5);
+	background-image:none;
 	cursor: crosshair;
 	text-align:center;
 	vertical-align:middle;
-	width:18px;
+	width:20px;
 	height:18px;
 	margin:0px;
 	padding:0px;
 }
-.addScoreUp {
+input[type="button"].addScoreUp {
 	color: rgb(120, 255, 120);
 	border: 1px solid rgb(120, 255, 120);
 }
-.addScoreDown  {
+input[type="button"].addScoreDown  {
 	color: rgb(255, 120, 120);
 	border: 1px solid rgb(255, 120, 120);
 }
@@ -278,7 +308,7 @@ label {
 	padding:0px;
 	margin:0px;
 }
-.deletePlayerRanking {
+input[type="button"].deletePlayerRanking {
 	text-align: center;
 	vertical-align: middle;
 	width:20px;
@@ -527,7 +557,7 @@ label {
 	text-align:center;
 	vertical-align:middle;
 	
-	background-color: rgba(0,0,0, 1);	
+	background-color: rgba(0,0,0, 0.75);	
 }
 
 
@@ -543,14 +573,73 @@ label {
 	width:175px;
 }
 
-#editPlayer .row input[type="button"] {
+#editPlayer .row .button {
 	padding-left:5px;
 	padding-right:5px;
 	margin:5px;
 	width:100px;
 }
 
- /*********************************************************
+/*********************************************************
+ *  Scoring
+ *********************************************************/
+.divTitle.scoring {
+	vertical-align:middle;
+	display:table-cell;
+	font-size : 70px;
+	font-weight:bold;
+	color:rgba(150,0,0,0.75);
+}
+
+#typeScoreList {
+	width:fit-content;
+	text-align:center;
+}
+
+#typeScoreList .divTable {
+	background-color:rgb(150,0,0);
+	padding:10px;
+	border-radius:8px;
+	margin:auto;
+}
+
+#divAdminScoring {
+	border-radius:8px;
+	padding:5px;
+	margin:auto;
+}
+
+#divAdminScoring input[type="button"]{
+	width:auto;
+	padding:2px 5px;
+	border-radius:8px;
+}
+
+#divAdminScoring .row > div {
+	padding:0px 5px;
+}
+
+#typeScoreList .listHeader {
+	color: yellow;
+	font-size : 20px;
+	font-weight:bold;
+}
+
+#typeScoreList .divTableCell {
+	padding:10px 5px;;
+}
+
+#typeScoreList .scoringValue {
+	font-weight : bold;
+	color:white;
+	
+}
+
+#typeScoreList .divTableBody .divTableCell input {
+	width:5em;
+}
+
+/*********************************************************
  *  Table Structure
  *********************************************************/
 
@@ -564,6 +653,7 @@ div.masterDiv {
 }
 
 .characterRow {
+	border-radius:8px;
 	background-color: rgba(0,0,0,0);
 	background-image: -webkit-linear-gradient(top
 		,rgba(80,20,20,0.0) 
@@ -637,7 +727,7 @@ div.masterDiv {
  *  Table Definition
  *********************************************************/
 /* DivTable.com */
-.divTable{ display: table; width:100%}
+.divTable{ display: table;}
 .divTableRow { display: table-row; }
 .divTableHeading { display: table-header-group;}
 .divTableBody { display: table-row-group;}

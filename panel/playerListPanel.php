@@ -80,11 +80,8 @@ class PlayerListPanel extends ListPanel {
 	 * */
 	function printJS($g) {
 		// $jsonPlayerList = json_encode($g['playerList']);
-		// $script = 
-		// "<script>
-			// var players =  $jsonPlayerList;
-		// </script>";
 		
+		//var players = $jsonPlayerList ;
 		?>
 		<script>
 			function toggleDisplayEditPlayer() {
@@ -180,7 +177,7 @@ class PlayerListPanel extends ListPanel {
 	/***********************************************************************
 	 * affiche le block d'un joueur
 	 * */
-	function printElement($g, $player) {
+	function printElement($g, $player, $i) {
 		if(LibTools::isAdmin()) {
 			$this->printElementAdmin($g, $player);
 		} else {
@@ -239,21 +236,18 @@ class PlayerListPanel extends ListPanel {
 					<input type="text" 		id="savePlayer[tel]"	name="savePlayer[tel]"		placeholder="telephone"/>
 				</div>
 				<div class="row">
-					<input type="button" 
+					<input type="button" class="button"
 						title="Cancel change"
 						value="Cancel" onclick="toggleDisplayEditPlayer();;">
-					<input type="button" 
+					<input type="button" class="button"
 						title="update player informations"
 						value="Save" onclick="setActionTest('savePlayer')">
-					<input type="button" 
+					<input type="button" class="button"
 						title="Hide or Show the player from the public list"
 						value="Toggle Status" onclick="setActionTest('toggleStatusPlayer')">
-					<input type="button" 
+					<input type="button" class="delete"
 						title="delete player from the list : cannot be undone !!!"
-						value="Delete" onclick="setActionTest('deletePlayer')">
-					<input type="button" 
-						title="Cancel change"
-						value="Cancel" onclick="toggleDisplayEditPlayer();;">
+						value="X" onclick="setActionTest('deletePlayer')">
 				</div>
 			</div>
 		</div>

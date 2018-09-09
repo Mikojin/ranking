@@ -90,7 +90,6 @@ class ListPanel implements IPanel {
 	function printListHeader($g) {
 		?>	
 			<div class="spaceRow">&nbsp;</div>
-			<div class="spaceRow">&nbsp;</div>
 			<div class="divTable">
 				<div class="divTableBody">
 		<?php
@@ -103,8 +102,10 @@ class ListPanel implements IPanel {
 	function printListBody($g) {
 		// recupere la liste de classement des joueurs
 		$displayerList = $this->getDisplayedList($g);
+		$i = 0;
 		foreach ($displayerList as $element) {
-			$this->printElement($g, $element);
+			$this->printElement($g, $element, $i);
+			$i++;
 		}
 		return $g;
 	}
@@ -132,7 +133,7 @@ class ListPanel implements IPanel {
 	/***********************************************************************
 	 * affiche un element de la liste 
 	 * */
-	function printElement($g, $element) {
+	function printElement($g, $element, $i) {
 	?>	
 			<div class="divTableRow characterRow" >
 				<div class="divTableCell "><?php echo $element ?></div>

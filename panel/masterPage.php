@@ -47,6 +47,9 @@ class MasterPage {
 				break;
 			// case 'tournement' :
 				// break;
+			case 'scoring' :
+				$this->initPageScoring();
+				break;
 			default :
 				$this->initPageRanking();
 		}
@@ -64,6 +67,12 @@ class MasterPage {
 		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $this->adminPanel, $playerListPanel]);
 	}
 	
+	public function initPageScoring(){
+		require_once "./panel/scoringPanel.php";
+		$scoringPanel = new ScoringPanel();
+		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $scoringPanel]);
+	}
+
 	public function printPage() {
 		$this->init();
 		$this->page->printPage();

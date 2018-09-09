@@ -60,6 +60,12 @@ class MenuPanel implements IPanel {
 			case 'pagePlayerList' :
 				LibTools::set('page', 'playerList');
 				return true;
+			case 'pageTournement' :
+				LibTools::set('page', 'tournement');
+				return true;
+			case 'pageScoring' :
+				LibTools::set('page', 'scoring');
+				return true;
 		}
 		return false;
 	}
@@ -101,14 +107,26 @@ class MenuPanel implements IPanel {
 	 * */
 	function printMenuForm() {
 	?>
-		<div id="menu" class="divTabMenu divTabMainMenu hiddenDiv">
-			<div class="divCellMenu ">
+		<div id="menu" class="divTable divTabMenu hiddenDiv">
+			<div class="divTableBody">
+			<div class="divTableRow">
+			<div class="divTableCell divCellMenu ">
 				<input name="Ranking" 		id="ranking" 	type="button" value="Ranking" 
 					onclick="setAction('pageRanking');"/>
+			</div>
+			<div class="divTableCell divCellMenu ">
 				<input name="PlayerList" 	id="playerList" type="button" value="Player List" 
 					onclick="setAction('pagePlayerList');"/>
+			</div>
+			<div class="divTableCell divCellMenu ">
 				<input name="Tournement" 	id="tournement" type="button" value="Tournement" 
 					onclick="setAction('pageTournement');"/>
+			</div>
+			<div class="divTableCell divCellMenu ">
+				<input name="Tournement" 	id="scoring" type="button" value="Scoring" 
+					onclick="setAction('pageScoring');"/>
+			</div>
+			</div>
 			</div>
 		</div>
 	<?php 
