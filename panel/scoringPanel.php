@@ -2,8 +2,8 @@
 ?>
 <?php 
 /*****************************************************************************
- * playerListPanel.php
- * Page de la liste des joueurs
+ * ScoringPanel.php
+ * Page de gestion des types de scoring et de leur répartition de points
  *****************************************************************************/
 
 require_once "./lib/lib_tools.php";
@@ -60,11 +60,6 @@ class ScoringPanel extends ListPanel {
 		return $g;
 	}
 	
-	public function printHeader($g){
-		$g = parent::printHeader($g);
-		$g = $this->printJS($g);
-		return $g;
-	}
 	
 	//#########################################################################
 	//#########################################################################
@@ -91,22 +86,6 @@ class ScoringPanel extends ListPanel {
 		return $g;
 	}
 	
-	/***********************************************************************
-	 * imprime le javascript du panel
-	 * */
-	function printJS($g) {
-		// $jsonPlayerList = json_encode($g['playerList']);
-		
-		//var players = $jsonPlayerList ;
-		?>
-		<script>
-
-		</script>
-		<?php
-		
-		return $g;
-	}
-
 	/***********************************************************************
 	 * selectionne un TypeScore de la liste
 	 * */
@@ -292,9 +271,9 @@ class ScoringPanel extends ListPanel {
 	function printElementPublic($g, $scoring) {
 	?>	
 			<div class="divTableRow characterRow" >
-				<div class="divTableCell scoringValue" 	title="Top"		><?php echo $scoring->rank_top;?></div>
-				<div class="divTableCell scoringValue" 	title="Bottom"	><?php echo $scoring->rank_bottom; ?></div>
-				<div class="divTableCell scoringValue" 	title="Score"	><?php echo $scoring->score; ?></div>
+				<div class="divTableCell rowValue" 	title="Top"		><?php echo $scoring->rank_top;?></div>
+				<div class="divTableCell rowValue" 	title="Bottom"	><?php echo $scoring->rank_bottom; ?></div>
+				<div class="divTableCell rowValue" 	title="Score"	><?php echo $scoring->score; ?></div>
 			</div>
 	<?php
 	}
@@ -307,9 +286,9 @@ class ScoringPanel extends ListPanel {
 		
 	?>	
 			<div class="divTableRow characterRow" >
-				<div class="divTableCell scoringValue" 	title="Top"		><input type="number" name="scoringList[<?php echo $i;?>][top]" 	value="<?php echo $scoring->rank_top;?>"	/></div>
-				<div class="divTableCell scoringValue" 	title="Bottom"	><input type="number" name="scoringList[<?php echo $i;?>][bottom]" 	value="<?php echo $scoring->rank_bottom; ?>"/></div>
-				<div class="divTableCell scoringValue" 	title="Score"	><input type="number" name="scoringList[<?php echo $i;?>][score]" 	value="<?php echo $scoring->score; ?>"		/></div>
+				<div class="divTableCell rowValue" 	title="Ranking top (included)"		><input type="number" name="scoringList[<?php echo $i;?>][top]" 	value="<?php echo $scoring->rank_top;?>"	/></div>
+				<div class="divTableCell rowValue" 	title="Raning bottom (included)"	><input type="number" name="scoringList[<?php echo $i;?>][bottom]" 	value="<?php echo $scoring->rank_bottom; ?>"/></div>
+				<div class="divTableCell rowValue" 	title="Score"						><input type="number" name="scoringList[<?php echo $i;?>][score]" 	value="<?php echo $scoring->score; ?>"		/></div>
 			</div>
 	<?php
 	}

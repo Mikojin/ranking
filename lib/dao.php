@@ -118,15 +118,62 @@ class ParticipantDao extends AbstractDao {
 	/***********************************************************************
 	 * insert un nouveau participant
 	 */
-	function insert($id_player, $id_tournement) {
+	function insert($id_tournement, $id_player, $ranking=0) {
 		
-		$sql = " insert into tournement
-		(id_player, id_tournement)
+		$sql = " insert into participant
+		(id_tournement, id_player, ranking)
 		values
-		($id_player, $id_tournement)";
-		
+		($id_tournement, $id_player, $ranking)";
 
-		$this->exec_query($result, "Insert Participant OK : $id");
+		$this->exec_query($sql, "Insert Participant OK : $id_player");
+	}
+	
+	/***********************************************************************
+	 * sauvegarde le participant
+	 */
+	function save($id_tournement, $id_player, $ranking=0) {
+		
+		$sql = " update participant
+		  set ranking       = $ranking
+		where id_tournement = $id_tournement
+		  and id_player     = $id_player";
+
+		$this->exec_query($sql, "Save Participant OK : $id_tournement, $id_player, $ranking");
+	}
+	
+	/***********************************************************************
+	 * renvoie la liste des participants pour ce tournoi
+	 */
+	function getList($id_tournement) {
+		$sql = "select pp.*, p.*, s.score
+			from participant pp
+			join player p
+			  on p.id = pp.id_player
+			join tournement t
+			  on t.id = pp.id_tournement
+			join type_score ts
+			  on ts.id = t.id_type_score
+			left outer join scoring s
+			  on s.id_type_score = ts.id
+			 and pp.ranking >= s.rank_top
+			 and pp.ranking <= s.rank_bottom
+			where pp.id_tournement = $id_tournement
+			order by pp.ranking, p.pseudo, p.prenom, p.nom  ";
+		
+		LibTools::setLog("Participant.getList");
+		$participantList = $this->fetch_map($sql, 'id', 'mapperParticipant');
+		return $participantList;
+	}
+	
+	/***********************************************************************
+	 * supprime un participant
+	 */
+	function deleteParticipant($id_tournement, $id_player) {
+		$sql = " delete from participant
+		where id_tournement = $id_tournement
+		  and id_player     = $id_player";
+
+		$this->exec_query($sql, "delete Participant OK : $id_tournement, $id_player");
 	}
 }
 
@@ -272,6 +319,24 @@ class PlayerDao extends AbstractDao {
 		return $playerList;
 	}
 
+	/***********************************************************************
+	 * Renvoie la liste des joueurs disponible pour le tournois
+	 * */
+	function getListTournement($idTournement) {	
+		$sql = "select p.* 
+		from player p
+		left outer join participant pp
+		  on pp.id_tournement = $idTournement
+		 and pp.id_player = p.id
+		where p.status is null
+		and pp.id_player is null
+		order by p.pseudo, p.prenom, p.nom ";
+
+		$playerList = $this->fetch_map($sql, 'id', 'mapperPlayer');
+		
+		return $playerList;
+	}
+	
 	/***********************************************************************
 	 * Renvoie la liste des joueurs ne se trouvant pas dans le ranking du jeu
 	 * */
@@ -486,17 +551,117 @@ class ScoringDao extends AbstractDao {
  #######################################################################*/
 
 class TournementDao extends AbstractDao {
+	
 	/***********************************************************************
 	 * insert un nouveau tournoi
 	 */
 	function insert($id_game, $group_name, $name, $id_type_score, $date_start, $date_end) {
+		if(LibTools::isBlank($group_name)) {
+			LibTools::setLog("insert Tournement : group name is empty !!");
+			return $g;
+		}
+		if(LibTools::isBlank($name)) {
+			LibTools::setLog("insert Tournement : name is empty !!");
+			return $g;
+		}
+		if(LibTools::isBlank($id_type_score)) {
+			LibTools::setLog("insert Tournement : type score is empty !!");
+			return $g;
+		}
+		$mysqli = $this->open();
+		$group_name = stripslashes($group_name);
+		$name 		= stripslashes($name);
+		$date_start = stripslashes($date_start);
+		$date_end 	= stripslashes($date_end);
+		$group_name = $mysqli->real_escape_string($group_name);
+		$name 		= $mysqli->real_escape_string($name);
+		$date_start = $mysqli->real_escape_string($date_start);
+		$date_end 	= $mysqli->real_escape_string($date_end);
+		$this->close($mysqli);
+		
+		// LibTools::setLog("Insert tournement : id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
 		$sql = " insert into tournement
-		(id_game, group_name, name, id_type_score, date_start, date_end)
+		(id_game, group_name, `name`, id_type_score, date_start, date_end)
 		values
-		($id_game, $group_name, $name, $id_type_score, $date_start, $date_end)";
+		($id_game, '$group_name', '$name', $id_type_score, '$date_start', '$date_end')";
 
-		$this->exec_query($sql, "Insert tournement OK : $id");
+		return $this->exec_query($sql, "Insert tournement OK : id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
 	}
+	
+	/***********************************************************************
+	 * update le tournoi
+	 */
+	function save($id, $id_game, $group_name, $name, $id_type_score, $date_start, $date_end) {
+		if(LibTools::isBlank($group_name)) {
+			LibTools::setLog("update Tournement : group name is empty !!");
+			return $g;
+		}
+		if(LibTools::isBlank($name)) {
+			LibTools::setLog("update Tournement : name is empty !!");
+			return $g;
+		}
+		if(LibTools::isBlank($id_type_score)) {
+			LibTools::setLog("update Tournement : type score is empty !!");
+			return $g;
+		}
+		$mysqli = $this->open();
+		$group_name = stripslashes($group_name);
+		$name 		= stripslashes($name);
+		$date_start = stripslashes($date_start);
+		$date_end 	= stripslashes($date_end);
+		$group_name = $mysqli->real_escape_string($group_name);
+		$name 		= $mysqli->real_escape_string($name);
+		$date_start = $mysqli->real_escape_string($date_start);
+		$date_end 	= $mysqli->real_escape_string($date_end);
+		$this->close($mysqli);
+		
+		// LibTools::setLog("update tournement : id=$id, id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
+		$sql = " update tournement
+		set id_game=$id_game, group_name='$group_name', name='$name', id_type_score=$id_type_score, date_start='$date_start', date_end='$date_end'
+		where id=$id
+		";
+
+		return $this->exec_query($sql, "update tournement OK :  id=$id, id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
+	}
+	
+	
+	/***********************************************************************
+	 * Renvoie la liste de tout les tournois classé par date décroissante
+	 */
+	function getList($id_game) {
+		$sql = "select *
+		from tournement 
+		where id_game = $id_game
+		order by date_start";
+		
+		LibTools::setLog("Tournement.getList");
+		$arr = $this->fetch_map($sql, 'id', "mapperTournement");
+		return $arr;
+	}
+	
+	/***********************************************************************
+	 * Renvoie le tournois pour l'id donné
+	 */
+	function get($id) {
+		$sql = "select *
+		from tournement 
+		where id = $id";
+		
+		$tournement = $this->fetch_one($sql, "mapperTournement");
+		
+		return $tournement;
+	}
+	
+	/***********************************************************************
+	 * supprime le tournement pour l'ID donné
+	 */
+	function deleteTournement($id) {
+		$sql = " delete from tournement
+		where id=$id";
+		
+		return $this->exec_query($sql, "Delete tournement OK : $id");
+	}
+
 }
 
 /*######################################################################
@@ -540,8 +705,8 @@ class TypeScoreDao extends AbstractDao {
 		from `type_score` ts
 		order by ts.type_name ";
 		
-		$arr = $this->fetch_map($sql, 'id');
-		
+		LibTools::setLog("Tournement.getList");
+		$arr = $this->fetch_map($sql, 'id');		
 		return $arr;
 	}
 	

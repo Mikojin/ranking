@@ -37,11 +37,6 @@ class RankingPanel extends ListPanel {
 		return $g;
 	}
 	
-	public function printHeader($g){
-		$g = parent::printHeader($g);
-		$this->printRankingStyle($g);
-		return $g;
-	}
 	
 	//#########################################################################
 	//#########################################################################
@@ -60,13 +55,6 @@ class RankingPanel extends ListPanel {
 		$g = $this->prepareRankingList($g);
 
 		return $g;
-	}
-	
-	/***********************************************************************
-	 * imprime les styles lié au ranking
-	 * */
-	function printRankingStyle($g) {
-		CharacterCSS::writeCharacterCSS($g['charPath'], $g['charList']);
 	}
 
 	/***********************************************************************
@@ -123,8 +111,8 @@ EOS;
 			} else {
 				$player->rank_classe="ranksame";
 			}
-			//$player->classe = getClasseCharacter($g['id_game'], $player->character);	
-			$player->classe = $g['charList'][$player->id_char]['css_class'];
+			//$player->characterCSS = getClasseCharacter($g['id_game'], $player->character);	
+			$player->characterCSS = $g['charList'][$player->id_char]['css_class'];
 
 		}
 		$g['rankingList'] = $rankingList;

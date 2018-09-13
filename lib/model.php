@@ -53,6 +53,18 @@ class Ranking {
 
 }
  
+class Character {
+	public $id;
+	
+	public $id_game;
+	public $game;
+	
+	public $name;
+	public $css_class;
+	public $filename;
+	
+}
+
 class Player {
 	public $id;
 	public $pseudo;
@@ -64,16 +76,25 @@ class Player {
 	
 }
 
-class Character {
+class Participant extends Player {
+	public $id_player;
+	public $id_tournement;
+	public $ranking;
+}
+
+class Tournement {
 	public $id;
 	
 	public $id_game;
 	public $game;
+
+	public $id_type_score;
+	public $type_score;
 	
+	public $group_name;
 	public $name;
-	public $css_class;
-	public $filename;
-	
+	public $date_start;
+	public $date_end;
 }
 
 class Scoring {

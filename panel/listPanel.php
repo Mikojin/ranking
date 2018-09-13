@@ -37,10 +37,6 @@ class ListPanel implements IPanel {
 	}
 	
 	public function printHeader($g){
-		LibTools::printFontCss('font_rank' 		);
-		LibTools::printFontCss('font_score' 	);
-		LibTools::printFontCss('font_pseudo' 	);
-		LibTools::printFontCss('font_name' 		);
 		return $g;
 	}
 

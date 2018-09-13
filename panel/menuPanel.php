@@ -60,8 +60,8 @@ class MenuPanel implements IPanel {
 			case 'pagePlayerList' :
 				LibTools::set('page', 'playerList');
 				return true;
-			case 'pageTournement' :
-				LibTools::set('page', 'tournement');
+			case 'pageTournementList' :
+				LibTools::set('page', 'tournementList');
 				return true;
 			case 'pageScoring' :
 				LibTools::set('page', 'scoring');
@@ -111,19 +111,19 @@ class MenuPanel implements IPanel {
 			<div class="divTableBody">
 			<div class="divTableRow">
 			<div class="divTableCell divCellMenu ">
-				<input name="Ranking" 		id="ranking" 	type="button" value="Ranking" 
+				<input name="ranking" 		id="ranking" 	type="button" value="Ranking" 
 					onclick="setAction('pageRanking');"/>
 			</div>
 			<div class="divTableCell divCellMenu ">
-				<input name="PlayerList" 	id="playerList" type="button" value="Player List" 
+				<input name="playerList" 	id="playerList" type="button" value="Player List" 
 					onclick="setAction('pagePlayerList');"/>
 			</div>
 			<div class="divTableCell divCellMenu ">
-				<input name="Tournement" 	id="tournement" type="button" value="Tournement" 
-					onclick="setAction('pageTournement');"/>
+				<input name="tournement" 	id="tournement" type="button" value="Tournement" 
+					onclick="setAction('pageTournementList');"/>
 			</div>
 			<div class="divTableCell divCellMenu ">
-				<input name="Tournement" 	id="scoring" type="button" value="Scoring" 
+				<input name="scoring" 	id="scoring" type="button" value="Scoring" 
 					onclick="setAction('pageScoring');"/>
 			</div>
 			</div>

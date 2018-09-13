@@ -41,9 +41,12 @@ class Page implements IPanel {
 			exit();
 		}
 		?>
-		<html>
+		<html ng-app="ranking" ng-cloak>
 		<head>
+			<title>Ranking</title>
 			<link rel="stylesheet" type="text/css" href="design.css">
+			<link rel="stylesheet" type="text/css" href="font.css">
+			<link rel="stylesheet" type="text/css" href="character.css">
 		<?php
 		
 			$this->g = $this->printHeader($this->g);
@@ -129,7 +132,9 @@ class Page implements IPanel {
 			?>
 			<div class="msg" onclick="toggleDisplay('spanMsg', 'hiddenDivBloc');">display log<br>
 			<span id="spanMsg" class="hiddenDivBloc"><?php echo LibTools::getLog(); LibTools::initLog(); ?></span></div>
+
 			<?php 
+			// <script src="/libs/angular-1.7.4.min.js"></script>
 		}
 	}
 	

@@ -93,7 +93,7 @@ class AdminPanel implements IPanel {
 			case "refresh" :
 				return true;
 			case 'save' : 
-				$this->updateFont();
+				$g = $this->updateCSSFile($g);
 				$this->dao->rankingDao->saveNewPoint($id_game, $_POST["player"]);
 				return true;
 			case 'updateScore' :
@@ -119,11 +119,24 @@ class AdminPanel implements IPanel {
 	/***********************************************************************
 	 * update de la font
 	 * */
-	function updateFont() {
+	function updateCSSFile($g) {
 		$this->saveParamIfChange('font_rank');
 		$this->saveParamIfChange('font_score');
 		$this->saveParamIfChange('font_pseudo');
 		$this->saveParamIfChange('font_name');
+		
+		$out = LibTools::printFontCss('font_rank' 		);
+		$out .= LibTools::printFontCss('font_score' 	);
+		$out .= LibTools::printFontCss('font_pseudo' 	);
+		$out .= LibTools::printFontCss('font_name' 		);
+		LibTools::writeFile("./font.css", $out);
+		
+		$g['charPath'] 		= $this->dao->paramDao->load("PATH","character");
+		$g['charList'] 		= $this->dao->characterDao->getList($g['id_game']);
+
+		$out = CharacterCSS::writeCharacterCSS($g['charPath'], $g['charList']);
+		LibTools::writeFile("./character.css", $out);
+		return $g;
 	}
 
 	/***********************************************************************
@@ -388,7 +401,7 @@ class AdminPanel implements IPanel {
 			$id_char = $player->id_char;			
 	?>	
 			<div class="divTableCell character">
-				<div class="character <?php echo $player->classe; ?>" 
+				<div class="character <?php echo $player->characterCSS; ?>" 
 					title="<?php echo $player->character; ?> : click to edit"
 					onclick="toggleDisplay('<?php echo "player[$id][id_char]";?>');">&nbsp;</div>
 	<?php	
@@ -405,7 +418,7 @@ class AdminPanel implements IPanel {
 	<?php	
 		} else {
 	?>	
-			<div class="character <?php echo $player->classe; ?> divTableCell" title="<?php echo $player->character; ?>">&nbsp;</div>
+			<div class="character <?php echo $player->characterCSS; ?> divTableCell" title="<?php echo $player->character; ?>">&nbsp;</div>
 	<?php
 		}
 	}

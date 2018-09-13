@@ -1,0 +1,28 @@
+@font-face {
+	font-family: 'font_rank';
+	src: url('./font/painting_with_chocolate.woff2') format('woff2'),
+		 url('./font/painting_with_chocolate.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'font_score';
+	src: url('./font/levirebrushed.woff2') format('woff2'),
+		 url('./font/levirebrushed.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'font_pseudo';
+	src: url('./font/hvd_comic_serif_pro.woff2') format('woff2'),
+		 url('./font/hvd_comic_serif_pro.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'font_name';
+	src: url('./font/hvd_comic_serif_pro.woff2') format('woff2'),
+		 url('./font/hvd_comic_serif_pro.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}

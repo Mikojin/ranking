@@ -227,23 +227,41 @@ class LibTools {
 		if(!file_exists("./font/$file.woff2")) {
 			return;
 		}
-	?>
-	<style type="text/css">
-		@font-face {
-			font-family: '<?php echo $familly ?>';
-			src: url('./font/<?php echo $file ?>.woff2') format('woff2'),
-				 url('./font/<?php echo $file ?>.woff') format('woff');
-			font-weight: normal;
-			font-style: normal;
-		}
-	</style>
-	<?php 
+		$out = <<<EOT
+@font-face {
+	font-family: '$familly';
+	src: url('./font/$file.woff2') format('woff2'),
+		 url('./font/$file.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
 
+EOT;
+		return $out;
 	}
 
+	static function writeFile($fileName, $data) {
+		return file_put_contents($fileName, $data);
+	}
+	
 }
 
 
+/***********************************************************************
+ * Gestion de combobox
+ * id_elem : l'identifiant de l'element qui contiendra la valeur de la selection
+ * cssClass : la classe CSS appliqué sur la combobox
+ * arr : le tableau contenant les valeurs à afficher
+ * id_select : l'identifiant à selectionner dans la combobox
+ * libelleCallback : la callback appeler sur la valeur du tableau permettant 
+ * 		d'afficher le libellé.
+ *		type : 
+ * 			- callable : appele de libelleCallback(ligne)
+ * 			- si tableau : arr[ id => map] alors ligne[libelleCallback]
+ * 			- direct si le tableau est une map clé => libellé
+ * title : le texte affiché quand on survol la combobox
+ * onchange : le javascripts à appeler lorsqu'on change la valeur de la combobox
+ */ 
 class Combobox {
 	public $id_elem;
 	public $cssClass;

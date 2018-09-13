@@ -77,6 +77,16 @@ input[type="button"].delete {
 .buffer {
 }
 
+.font_rank {
+	text-align: center;
+	vertical-align: middle;	
+	font-weight: normal;
+	font-size: 40px;
+	color: rgb(255,255,150);
+	text-shadow: 4px 4px 3px black;
+	font-family:  font_rank, Arial, Helvetica, "Times New Roman";
+}
+
 /*********************************************************
  *  Header
  *********************************************************/
@@ -580,6 +590,73 @@ input[type="button"].deletePlayerRanking {
 	width:100px;
 }
 
+#selectPlayerList {
+	height : 300px;
+	width  : 300px;
+}
+
+/*********************************************************
+ *  Tournement
+ *********************************************************/
+#tournementList {
+	width:fit-content;
+	text-align:center;
+}
+#tournementList .divTable {
+	background-color:rgb(150,0,0);
+	padding:10px;
+	border-radius:8px;
+	margin:auto;
+	width:1000px;
+	width: -webkit-fill-available;
+}
+#tournementList .divTableCell {
+	padding:10px 5px;;
+}
+
+#tournementList .listHeader {
+	color: yellow;
+	font-size : 20px;
+	font-weight:bold;
+	padding: 5px;
+	text-shadow: 4px 4px 3px black;
+}
+
+#tournementList .rowValue {
+	font-weight : bold;
+	color:white;
+	font-size: 20px;
+	vertical-align:middle;
+	padding : 5px 10px;
+	text-shadow: 4px 4px 3px black;
+}
+
+#tournementList .rowValue.date {
+	vertical-align:middle;
+	font-weight : bold;
+	color:rgb(160,160,160);
+	font-size: 18px;
+	padding : 0px 10px;
+	text-shadow: 4px 4px 3px black;
+}
+
+#tournementList .rank {
+	vertical-align:middle;
+	font-weight: normal;
+	font-size: 35px;
+	color: rgb(255,255,150);
+	text-shadow: 4px 4px 3px black;
+}
+
+#tournementList .points {
+	text-align: center;
+	vertical-align: middle;
+	font-weight: normal;
+	font-size: 30px;
+	color: rgb(255,255,150);
+	text-shadow: 4px 4px 3px black;
+}
+
 /*********************************************************
  *  Scoring
  *********************************************************/
@@ -629,10 +706,10 @@ input[type="button"].deletePlayerRanking {
 	padding:10px 5px;;
 }
 
-#typeScoreList .scoringValue {
+#typeScoreList .rowValue {
 	font-weight : bold;
 	color:white;
-	
+	padding : 0px 10px;
 }
 
 #typeScoreList .divTableBody .divTableCell input {

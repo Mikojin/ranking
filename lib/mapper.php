@@ -30,10 +30,7 @@ function mapperPlayerWrapper($row) {
 	return $o;										
 }
 
-
-function mapperPlayer($row) {
-	$o = new Player();
-	
+function doMapperPlayer($o, $row) {
 	$o->id			= $row['id'];
 	$o->pseudo		= $row['pseudo'];
 	$o->nom			= $row['nom'];
@@ -41,6 +38,30 @@ function mapperPlayer($row) {
 	$o->email		= $row['mail'];
 	$o->telephone	= $row['telephone'];
 	$o->status		= $row['status'];
+	
+	return $o;
+}
+
+function mapperPlayer($row) {
+	$o = new Player();
+	
+	$o = doMapperPlayer($o, $row);
+	
+	return $o;
+}
+
+function mapperParticipant($row) {
+	$o = new Participant();
+	
+	$o = doMapperPlayer($o, $row);
+	
+	$o->id_player 		= $row['id_player'];
+	$o->id_tournement 	= $row['id_tournement'];
+	$o->ranking		 	= $row['ranking'];
+	$o->score			= 0;
+	if(isset($row['score'])) {
+		$o->score		= $row['score'];
+	}
 	
 	return $o;
 }
@@ -53,6 +74,20 @@ function mapperCharacter($row) {
 	$o->name		=$row['name'];
 	$o->css_class	=$row['css_class'];
 	$o->filename	=$row['filename'];
+	
+	return $o;
+}
+
+function mapperTournement($row) {
+	$o = new Tournement();
+	
+	$o->id				=$row['id'];
+	$o->id_game			=$row['id_game'];
+	$o->id_type_score	=$row['id_type_score'];
+	$o->group_name		=$row['group_name'];
+	$o->name			=$row['name'];
+	$o->date_start		=$row['date_start'];
+	$o->date_end 		=$row['date_end'];
 	
 	return $o;
 }

@@ -45,8 +45,12 @@ class MasterPage {
 			case 'playerList' :
 				$this->initPagePlayerList();
 				break;
-			// case 'tournement' :
-				// break;
+			case 'tournementList' :
+				$this->initPageTournementList();
+				break;
+			case 'tournement' :
+				$this->initPageTournement();
+				break;
 			case 'scoring' :
 				$this->initPageScoring();
 				break;
@@ -71,6 +75,19 @@ class MasterPage {
 		require_once "./panel/scoringPanel.php";
 		$scoringPanel = new ScoringPanel();
 		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $scoringPanel]);
+	}
+
+	public function initPageTournementList(){
+		require_once "./panel/tournementListPanel.php";
+		$panel = new TournementListPanel();
+		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $panel]);
+	}
+
+	public function initPageTournement(){
+		require_once "./panel/tournementPanel.php";
+		$idTournement = LibTools::get("idTournement");
+		$panel = new TournementPanel($idTournement);
+		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $panel]);
 	}
 
 	public function printPage() {

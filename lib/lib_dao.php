@@ -112,6 +112,7 @@ class AbstractDao {
 			}
 		}
 		$this->close($mysqli);
+		LibTools::setLog("fetch_array count = ".count($arr));
 		return $arr;
 	}
 
@@ -140,17 +141,11 @@ class AbstractDao {
 			}
 		} else {
 			while( $row = $result->fetch_assoc()){
-				/*
-				$data = array();
-				foreach($row as $k => $value) {
-					$data[$k] = $value;
-				}
-				*/
 				$arr[$row[$key]] = $row;
 			}
 		}
-		
 		$this->close($mysqli);
+		LibTools::setLog("fetch_map count = ".count($arr));
 		return $arr;
 	}
 
@@ -181,7 +176,7 @@ class AbstractDao {
 			$obj = $row;
 		}
 		$this->close($mysqli);
-		return $row;
+		return $obj;
 	}
 
 }

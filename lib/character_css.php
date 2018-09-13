@@ -14,26 +14,23 @@ class CharacterCSS {
 
 	static function writeCharacterClass($default_path, $classs, $filename) {
 		$cssLine = <<<EOS
-	.$classs {
-		background-image: url("$default_path/$filename");
-	}
+.$classs {
+	background-image: url("$default_path/$filename");
+}
 
 EOS;
-		echo $cssLine;
+		return $cssLine;
 	}
 
 	static function writeCharacterCSS($charPath, $charList) {
-		?>
-		<style type="text/css">
-		<?php
-			foreach ($charList as $id => $char) {
-				if($char['css_class'] && $char['filename']) {
-					CharacterCSS::writeCharacterClass($charPath, $char['css_class'], $char['filename']);
-				}
+		$out = '';
+		foreach ($charList as $id => $char) {
+			if($char['css_class'] && $char['filename']) {
+				$out .= CharacterCSS::writeCharacterClass($charPath, $char['css_class'], $char['filename']);
 			}
-		?>
-		</style>
-		<?php 
+		}
+		
+		return $out;
 	}
 
 }
