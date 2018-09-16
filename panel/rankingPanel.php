@@ -16,9 +16,9 @@ require_once "./panel/adminPanel.php";
  * callback d'affichage du libellé d'une saison
  */
 function libelleSeason($s) {
-	$name = str_pad($s->name, 20, '$');
+	$name = str_pad($s->name, 15, '$');
 	$name = str_replace('$', '&nbsp;', $name);
-	return "$name : ".$s->date_start." =&gt; ".$s->date_end;
+	return "&nbsp;$name : ".$s->date_start." =&gt; ".$s->date_end;
 }
 
 class RankingPanel extends ListPanel {
@@ -63,7 +63,9 @@ class RankingPanel extends ListPanel {
 		$g['charPath'] 		= $this->dao->paramDao->load("PATH","character");
 		$g['charList'] 		= $this->dao->characterDao->getList($id_game);
 		$g['fontList'] 		= $this->adminPanel->getListFont();
-		
+		$g['gameList']		= $this->dao->gameDao->getList();
+		$gameCode 			= $g['gameList'][$id_game]['code'];
+		$g['id_char_unknown'] = $this->dao->paramDao->load("CHAR_UNKNOWN", $gameCode);
 		$g = $this->initSeason($g);
 		// recupere la liste de classement des joueurs
 		//$g['rankingList'] 	= $this->dao->otherDao->getInfoRanking($id_game);
@@ -192,8 +194,12 @@ EOS;
 				$player->rank_classe="ranksame";
 			}
 			//$player->characterCSS = getClasseCharacter($g['id_game'], $player->character);	
-			$player->characterCSS = $g['charList'][$player->id_char]['css_class'];
-
+			$id_char = $g['id_char_unknown'];
+			if(isset($player->id_char)) {
+				$id_char = $player->id_char;
+			}
+			$player->characterCSS = $g['charList'][$id_char]['css_class'];
+			
 		}
 		$g['rankingList'] = $rankingList;
 		return $g;

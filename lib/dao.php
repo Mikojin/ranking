@@ -1015,10 +1015,10 @@ left outer join (
    on p.id 			= crs.id_player
  join game g
    on g.id 			= crs.id_game
- join player_game pg
+ left outer join player_game pg
    on pg.id_player	= crs.id_player
   and pg.id_game	= crs.id_game
- join `character` c
+ left outer join `character` c
    on c.id 			= pg.id_character
 where crs.id_game = $id_game
 order by crs.points desc, crs.current_rank asc

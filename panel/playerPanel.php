@@ -370,7 +370,7 @@ class PlayerPanel extends ListPanel {
 		?>
 			<input type="hidden" id="selectIdTournament" name="selectIdTournament" value=""/>
 			<input type="hidden" id="selectIdGame" name="selectIdGame" value=""/>
-			<div class="divTitle scoring"><div class="divTableCell">Player Information</div></div>		
+			<div class="divTitle scoring"><div class="divTableCell">Player Profile</div></div>		
 			<div id="tournamentList">
 		<?php
 			if(LibTools::isAdmin()) {

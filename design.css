@@ -424,6 +424,7 @@ input[type="button"].deletePlayerRanking {
 	text-shadow: 4px 4px 3px black;
 }
 .pseudoNom .pseudo {
+	white-space:nowrap;
 	text-align:left;
 	vertical-align:bottom;
 	height:40px;
@@ -433,6 +434,7 @@ input[type="button"].deletePlayerRanking {
 }
 
 .pseudoNom .nom {
+	white-space:nowrap;
 	text-align:left;
 	text-indent:10%;
 	vertical-align:top;
