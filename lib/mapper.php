@@ -19,6 +19,7 @@ function mapperPlayerWrapper($row) {
 	$o->nom 			= $row['nom'];
 	$o->prenom 			= $row['prenom'];
 	$o->points 			= $row['points'];
+	$o->previous_points = $row['previous_points'];
 	$o->new_points		= $row['new_points'];
 	$o->character 		= $row['character'];
 	$o->id_char 		= $row['id_char'];
@@ -56,7 +57,7 @@ function mapperParticipant($row) {
 	$o = doMapperPlayer($o, $row);
 	
 	$o->id_player 		= $row['id_player'];
-	$o->id_tournement 	= $row['id_tournement'];
+	$o->id_tournament 	= $row['id_tournament'];
 	$o->ranking		 	= $row['ranking'];
 	$o->score			= 0;
 	if(isset($row['score'])) {
@@ -78,8 +79,8 @@ function mapperCharacter($row) {
 	return $o;
 }
 
-function mapperTournement($row) {
-	$o = new Tournement();
+function mapperTournament($row) {
+	$o = new Tournament();
 	
 	$o->id				=$row['id'];
 	$o->id_game			=$row['id_game'];
@@ -100,6 +101,17 @@ function mapperScoring($row) {
 	$o->rank_top        =$row['rank_top'];
 	$o->rank_bottom     =$row['rank_bottom'];
 	$o->score           =$row['score'];
+
+	return $o;
+}
+
+function mapperSeason($row) {
+	$o = new Season();
+	
+	$o->id			=$row['id'];
+	$o->name   		=$row['name'];
+	$o->date_start	=$row['date_start'];
+	$o->date_end	=$row['date_end'];
 
 	return $o;
 }

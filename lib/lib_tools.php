@@ -141,6 +141,17 @@ class LibTools {
 	}
 
 	/***********************************************************************
+	 * renvoie le texte de log
+	 * */
+	static function mapToString($map) {
+		$msg = '';
+		foreach ($map as $key => $value) {
+			$msg .= $key.'='.$value.' ; ';
+		} 
+		return $msg;
+	}
+
+	/***********************************************************************
 	 * test si l'action du menu correspond à la valeur $value
 	 * */
 	static function isAction($value) {
@@ -244,6 +255,41 @@ EOT;
 		return file_put_contents($fileName, $data);
 	}
 	
+	
+			
+	/***********************************************************************
+	 * renvoie vers le profil du joueur
+	 * */
+	static function doEditPlayer() {
+		$id_player = $_POST['select_id_player'];
+		if(LibTools::isBlank($id_player)) {
+			LibTools::setLog("Edit player KO : id_player is blank");
+			return $g;
+		}
+		LibTools::setLog("Edit Player OK : id_player=$id_player");
+		LibTools::set("page", 'player');
+		LibTools::set("id_player", $id_player);
+		return $g;
+	}
+	
+	/***********************************************************************
+	 * Edit le Tournament selectionne
+	 * */
+	static function doEditTournament($g) {
+		$idTournament = $_POST['selectIdTournament'];
+		if(LibTools::isBlank($idTournament)) {
+			LibTools::setLog("Edit Tournament KO : idTournament is blank");
+			return $g;
+		}
+		LibTools::setLog("Edit Tournament OK : idTournament=$idTournament");
+		LibTools::set("page", 'tournament');
+		LibTools::set("idTournament", $idTournament);
+		//$r = $this->dao->tournamentDao->deleteTournament($idTournament);
+		return $g;
+	}
+	
+
+
 }
 
 

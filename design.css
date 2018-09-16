@@ -66,12 +66,17 @@ input[type="button"]{
 input[type="button"].delete {
 	text-align: center;
 	vertical-align: middle;
-	width:30px;
+	/* width:30px; */
 	font-weight: bold;
 	color:red;
 	padding:2px;
 	background-image:none;
 	background-color:#D0D0D0;
+}
+
+.divDelete {
+	vertical-align: middle;
+	width:50px;
 }
 
 .buffer {
@@ -114,6 +119,21 @@ Log
 	z-index:10;
 	background-color:rgba(255,255,255,0.6);
 }
+
+.divSeasonSelect {
+	text-align:center;
+}
+
+.season_select {
+	width:auto;
+	border-radius:20px;
+	padding:5px 5px;
+	font-weight:bold;
+	background-image: -webkit-linear-gradient(top, rgb(250,240,240), rgb(250,200,200));
+	background-image: linear-gradient(top, rgb(250,240,240), rgb(250,200,200));
+	font-family: Courier, monospace;
+}
+
 
 
 /*********************************************************
@@ -241,11 +261,10 @@ label {
 }
 
 .divAdminTab .row input {
-	padding-left:5px;
-	padding-right:5px;
+	padding:5px 1em;
 	margin-left:5px;
 	margin-right:5px;
-	width:175px;
+	/*width:175px;*/
 }
 
 .divAdminTab .row div {
@@ -253,16 +272,15 @@ label {
 	position:relative;
 	text-align : right;
 	vertical-align: middle;
-	padding: 0px 2px;
 }
 
 .divAdminTab .row div.head {
 	text-align : right;
 	vertical-align: middle;
-	width:100px;
+	/* width:100px; */
 }
 .divAdminTab .row div.head input {
-	width:40px;
+	/* width:40px; */
 }
 
 .buttonMenuAdmin {
@@ -425,9 +443,6 @@ input[type="button"].deletePlayerRanking {
 }
 
 .character {
-	width:350px;
-	position:relative;
-	left:0px;
 	height:65px;
 	background-repeat : no-repeat;
 	background-position :  right center;
@@ -444,11 +459,16 @@ input[type="button"].deletePlayerRanking {
 		rgba(0,0,0,1) 95%, 
 		rgba(0,0,0,0) 100%);
 }
+.ranking .character {
+	width:350px;
+	position:relative;
+	left:0px;
+}
 
-.selectPlayerChar {
+.ranking .selectPlayerChar {
 	position:absolute;
-	top:10px;
-	left:20px;
+	top:30%;
+	right:250px;
 	float:left;
 }
 
@@ -547,6 +567,11 @@ input[type="button"].deletePlayerRanking {
 	color: rgb(255,255,150);
 	font-family:  font_pseudo, Arial, Helvetica, "Times New Roman";
 }
+.pseudo {
+	font-size : 22px;
+	color: rgb(255,255,150);
+	font-family:  font_pseudo, Arial, Helvetica, "Times New Roman";
+}
 .playerList .divTableCell.email, .playerList .divTableCell.tel {
 	font-size : 14px;
 	color: rgb(200,200,200);
@@ -596,13 +621,13 @@ input[type="button"].deletePlayerRanking {
 }
 
 /*********************************************************
- *  Tournement
+ *  Tournament
  *********************************************************/
-#tournementList {
+#tournamentList {
 	width:fit-content;
 	text-align:center;
 }
-#tournementList .divTable {
+#tournamentList .divTable {
 	background-color:rgb(150,0,0);
 	padding:10px;
 	border-radius:8px;
@@ -610,11 +635,12 @@ input[type="button"].deletePlayerRanking {
 	width:1000px;
 	width: -webkit-fill-available;
 }
-#tournementList .divTableCell {
-	padding:10px 5px;;
+/*
+#tournamentList .divTableCell {
+	padding:5px 10px;
 }
-
-#tournementList .listHeader {
+*/
+#tournamentList .listHeader {
 	color: yellow;
 	font-size : 20px;
 	font-weight:bold;
@@ -622,7 +648,8 @@ input[type="button"].deletePlayerRanking {
 	text-shadow: 4px 4px 3px black;
 }
 
-#tournementList .rowValue {
+#tournamentList .rowValue {
+	white-space:nowrap;
 	font-weight : bold;
 	color:white;
 	font-size: 20px;
@@ -631,7 +658,7 @@ input[type="button"].deletePlayerRanking {
 	text-shadow: 4px 4px 3px black;
 }
 
-#tournementList .rowValue.date {
+#tournamentList .rowValue.date {
 	vertical-align:middle;
 	font-weight : bold;
 	color:rgb(160,160,160);
@@ -640,21 +667,71 @@ input[type="button"].deletePlayerRanking {
 	text-shadow: 4px 4px 3px black;
 }
 
-#tournementList .rank {
+#tournamentList .rank {
 	vertical-align:middle;
 	font-weight: normal;
 	font-size: 35px;
 	color: rgb(255,255,150);
 	text-shadow: 4px 4px 3px black;
+	white-space:nowrap;
 }
 
-#tournementList .points {
+#tournamentList .points {
 	text-align: center;
 	vertical-align: middle;
 	font-weight: normal;
 	font-size: 30px;
 	color: rgb(255,255,150);
 	text-shadow: 4px 4px 3px black;
+}
+
+#tournamentList .game {
+	width: 400px;
+	vertical-align:middle;
+	text-align : center;
+	font-weight: normal;
+	font-size: 35px;
+	padding: 0px 10px;
+	color: rgb(255,255,150);
+	text-shadow: 4px 4px 3px black;
+	white-space:nowrap;
+	font-family:  font_rank, Arial, Helvetica, "Times New Roman";
+
+}
+
+#tournamentList .characterCell {
+	position:relative;
+}
+
+#tournamentList .character {
+	margin:auto;
+}
+
+#tournamentList .selectPlayerChar {
+	position: absolute;
+	top:30%;
+	right:250px;
+	float:left;
+}
+
+.title .divTableCell {
+	text-align:left;
+	vertical-align:middle;
+	font-size: 25px;
+	color:white;
+	padding: 10px 20px;
+	font-weight:normal;
+	text-shadow: 4px 4px 3px black;
+	font-family:  font_name, Arial, Helvetica, "Times New Roman";
+}
+
+.title .divTableCell.pseudo {
+	color: rgb(255,255,150);
+}
+
+#selectGameList {
+	width:250px;
+	height: 100px;
 }
 
 /*********************************************************
@@ -692,10 +769,6 @@ input[type="button"].deletePlayerRanking {
 	border-radius:8px;
 }
 
-#divAdminScoring .row > div {
-	padding:0px 5px;
-}
-
 #typeScoreList .listHeader {
 	color: yellow;
 	font-size : 20px;
@@ -709,7 +782,7 @@ input[type="button"].deletePlayerRanking {
 #typeScoreList .rowValue {
 	font-weight : bold;
 	color:white;
-	padding : 0px 10px;
+	padding : 10px 10px;
 }
 
 #typeScoreList .divTableBody .divTableCell input {
@@ -736,6 +809,16 @@ div.masterDiv {
 		,rgba(80,20,20,0.0) 
 		,rgba(80,20,20,0.6) 12%
 		,rgba(80,20,20,0.6) 88%
+		,rgba(80,20,20,0.0) 
+		);
+}
+
+.characterRow:hover {
+	background-color: rgba(0,0,0,0);
+	background-image: -webkit-linear-gradient(top
+		,rgba(80,20,20,0.0) 
+		,rgba(80,20,20,0.9) 12%
+		,rgba(80,20,20,0.9) 88%
 		,rgba(80,20,20,0.0) 
 		);
 }

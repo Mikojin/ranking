@@ -45,11 +45,14 @@ class MasterPage {
 			case 'playerList' :
 				$this->initPagePlayerList();
 				break;
-			case 'tournementList' :
-				$this->initPageTournementList();
+			case 'player' :
+				$this->initPagePlayer();
 				break;
-			case 'tournement' :
-				$this->initPageTournement();
+			case 'tournamentList' :
+				$this->initPageTournamentList();
+				break;
+			case 'tournament' :
+				$this->initPageTournament();
 				break;
 			case 'scoring' :
 				$this->initPageScoring();
@@ -71,22 +74,29 @@ class MasterPage {
 		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $this->adminPanel, $playerListPanel]);
 	}
 	
+	public function initPagePlayer(){
+		require_once "./panel/playerPanel.php";
+		$id_player	= LibTools::get("id_player");
+		$panel 		= new PlayerPanel($id_player);
+		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $panel]);
+	}
+
 	public function initPageScoring(){
 		require_once "./panel/scoringPanel.php";
 		$scoringPanel = new ScoringPanel();
 		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $scoringPanel]);
 	}
 
-	public function initPageTournementList(){
-		require_once "./panel/tournementListPanel.php";
-		$panel = new TournementListPanel();
+	public function initPageTournamentList(){
+		require_once "./panel/tournamentListPanel.php";
+		$panel = new TournamentListPanel();
 		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $panel]);
 	}
 
-	public function initPageTournement(){
-		require_once "./panel/tournementPanel.php";
-		$idTournement = LibTools::get("idTournement");
-		$panel = new TournementPanel($idTournement);
+	public function initPageTournament(){
+		require_once "./panel/tournamentPanel.php";
+		$idTournament = LibTools::get("idTournament");
+		$panel = new TournamentPanel($idTournament);
 		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $panel]);
 	}
 

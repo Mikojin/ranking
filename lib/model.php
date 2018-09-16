@@ -23,6 +23,7 @@ class PlayerWrapper {
 	public $game;
 	public $id_game;
 	public $points;
+	public $previous_points;
 	public $new_points;
 	
 }
@@ -78,11 +79,11 @@ class Player {
 
 class Participant extends Player {
 	public $id_player;
-	public $id_tournement;
+	public $id_tournament;
 	public $ranking;
 }
 
-class Tournement {
+class Tournament {
 	public $id;
 	
 	public $id_game;
@@ -112,5 +113,12 @@ class Scoring {
 	}
 }
 
+class Season {
+	public $id;
+	public $name;
+	public $date_start;
+	public $date_end;
+	
+}
 
 ?>

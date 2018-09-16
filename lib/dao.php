@@ -36,6 +36,25 @@ class CharacterDao extends AbstractDao {
         Histo Ranking
  #######################################################################*/
 
+class GameDao extends AbstractDao {
+	/***********************************************************************
+	 * Renvoie la liste complete des joueurs
+	 * */
+	function getList() {		
+		$sql = "select g.* 
+		from `game` g
+		order by g.name ";
+		
+		$arr = $this->fetch_map($sql, 'id');
+		
+		return $arr;
+	}
+}
+
+/*######################################################################
+        Histo Ranking
+ #######################################################################*/
+
 class HistoRankingDao extends AbstractDao {
 
 	/***********************************************************************
@@ -87,6 +106,7 @@ class ParamDao extends AbstractDao {
 			 where p.group_name = '$group_name' 
 			   and p.variable   = '$variable'
 		";
+		LibTools::setLog("load Param : $group_name ; $variable");
 		$map = $this->fetch_one($sql);
 		return $map['value'];
 	}
@@ -118,12 +138,12 @@ class ParticipantDao extends AbstractDao {
 	/***********************************************************************
 	 * insert un nouveau participant
 	 */
-	function insert($id_tournement, $id_player, $ranking=0) {
+	function insert($id_tournament, $id_player, $ranking=0) {
 		
 		$sql = " insert into participant
-		(id_tournement, id_player, ranking)
+		(id_tournament, id_player, ranking)
 		values
-		($id_tournement, $id_player, $ranking)";
+		($id_tournament, $id_player, $ranking)";
 
 		$this->exec_query($sql, "Insert Participant OK : $id_player");
 	}
@@ -131,33 +151,33 @@ class ParticipantDao extends AbstractDao {
 	/***********************************************************************
 	 * sauvegarde le participant
 	 */
-	function save($id_tournement, $id_player, $ranking=0) {
+	function save($id_tournament, $id_player, $ranking=0) {
 		
 		$sql = " update participant
 		  set ranking       = $ranking
-		where id_tournement = $id_tournement
+		where id_tournament = $id_tournament
 		  and id_player     = $id_player";
 
-		$this->exec_query($sql, "Save Participant OK : $id_tournement, $id_player, $ranking");
+		$this->exec_query($sql, "Save Participant OK : $id_tournament, $id_player, $ranking");
 	}
 	
 	/***********************************************************************
 	 * renvoie la liste des participants pour ce tournoi
 	 */
-	function getList($id_tournement) {
+	function getList($id_tournament) {
 		$sql = "select pp.*, p.*, s.score
 			from participant pp
 			join player p
 			  on p.id = pp.id_player
-			join tournement t
-			  on t.id = pp.id_tournement
+			join tournament t
+			  on t.id = pp.id_tournament
 			join type_score ts
 			  on ts.id = t.id_type_score
 			left outer join scoring s
 			  on s.id_type_score = ts.id
 			 and pp.ranking >= s.rank_top
 			 and pp.ranking <= s.rank_bottom
-			where pp.id_tournement = $id_tournement
+			where pp.id_tournament = $id_tournament
 			order by pp.ranking, p.pseudo, p.prenom, p.nom  ";
 		
 		LibTools::setLog("Participant.getList");
@@ -168,12 +188,12 @@ class ParticipantDao extends AbstractDao {
 	/***********************************************************************
 	 * supprime un participant
 	 */
-	function deleteParticipant($id_tournement, $id_player) {
+	function deleteParticipant($id_tournament, $id_player) {
 		$sql = " delete from participant
-		where id_tournement = $id_tournement
+		where id_tournament = $id_tournament
 		  and id_player     = $id_player";
 
-		$this->exec_query($sql, "delete Participant OK : $id_tournement, $id_player");
+		$this->exec_query($sql, "delete Participant OK : $id_tournament, $id_player");
 	}
 }
 
@@ -293,6 +313,19 @@ class PlayerDao extends AbstractDao {
 	}
 	
 	/***********************************************************************
+	 * Renvoie le joueur donné
+	 * */
+	function get($id_player) {	
+		$sql = "select p.* 
+		from player p
+		where p.id = $id_player";
+
+		$player = $this->fetch_one($sql, 'mapperPlayer');
+		
+		return $player;
+	}
+	
+	/***********************************************************************
 	 * Renvoie la liste de tous les joueurs
 	 * */
 	function getListAll() {	
@@ -322,11 +355,11 @@ class PlayerDao extends AbstractDao {
 	/***********************************************************************
 	 * Renvoie la liste des joueurs disponible pour le tournois
 	 * */
-	function getListTournement($idTournement) {	
+	function getListTournament($idTournament) {	
 		$sql = "select p.* 
 		from player p
 		left outer join participant pp
-		  on pp.id_tournement = $idTournement
+		  on pp.id_tournament = $idTournament
 		 and pp.id_player = p.id
 		where p.status is null
 		and pp.id_player is null
@@ -335,6 +368,19 @@ class PlayerDao extends AbstractDao {
 		$playerList = $this->fetch_map($sql, 'id', 'mapperPlayer');
 		
 		return $playerList;
+	}
+	
+	/***********************************************************************
+	 * Renvoie la liste des résultats de tournois pour lequel le joueur a participé
+	 * */
+	function getParticipationList($id_player) {
+		$sql = "select ts.* 
+		from tournament_score ts
+		where ts.id_player = $id_player
+		order by ts.date_start desc ";
+
+		$participationList = $this->fetch_array($sql);
+		return $participationList;
 	}
 	
 	/***********************************************************************
@@ -360,6 +406,61 @@ class PlayerDao extends AbstractDao {
         Ranking
  #######################################################################*/
 
+class PlayerGameDao extends AbstractDao {
+	
+	/***********************************************************************
+	 * Renvoie la liste des joueurs ne se trouvant pas dans le ranking du jeu
+	 * */
+	function getList($id_player) {	
+		$sql = "select * 
+		from player_game pg
+		join game g
+		  on g.id = pg.id_game
+		where id_player = $id_player
+		order by g.name";
+
+		$gameList = $this->fetch_map($sql, 'id');
+		
+		return $gameList;
+	}
+	
+	function remove($id_player, $id_game) {
+		$sql = "delete from player_game
+		where id_player = $id_player
+		  and id_game 	= $id_game";
+
+		$out = $this->exec_query($sql, "delete player game OK : g=$id_game, p=$id_player");
+		return $out;
+	}
+	
+	function insert($id_player, $id_game, $id_char=null) {
+		$sql = " insert into player_game
+		(id_player, id_game, id_character)
+		values
+		($id_player, $id_game, $id_char)";
+		
+		$this->exec_query($sql, "Insert Player Game OK : $id_player, $id_game, $id_char");
+	}
+
+	/***********************************************************************
+	 * sauvegarde le personnage joué par le joueur
+	 */
+	function save($id_player, $id_game, $id_character) {
+		
+		$sql = " update player_game
+		  set id_character  = $id_character
+		where id_player     = $id_player
+		  and id_game       = $id_game";
+
+		$this->exec_query($sql, "Save Player Game OK : $id_player, $id_game, $id_character");
+	}
+
+}
+
+/*######################################################################
+        Ranking
+ #######################################################################*/
+
 class RankingDao extends AbstractDao {
 	 
 	/***********************************************************************
@@ -376,7 +477,7 @@ class RankingDao extends AbstractDao {
 	}
 
 	/***********************************************************************
-	 * insert un nouveau joueur dans le ranking
+	 * retire un nouveau joueur dans le ranking
 	 * */
 	function remove($id_game, $id_player) {		
 		$sql = "delete from ranking
@@ -547,25 +648,71 @@ class ScoringDao extends AbstractDao {
 }
 
 /*######################################################################
-        Tournement 
+        Season
  #######################################################################*/
 
-class TournementDao extends AbstractDao {
+class SeasonDao extends AbstractDao {
+	/***********************************************************************
+	 * insert un nouveau scoring
+	 */
+	function insert($name, $date_start, $date_end) {
+		
+		$sql = " insert into season
+		(`name`, date_start, date_end)
+		values
+		('$name', '$date_start', '$date_end')";
+		
+		$this->exec_query($sql, "Insert season OK : $name, $date_start, $date_end");
+	}
+
+	/***********************************************************************
+	 * Renvoie la liste complete des seasons
+	 * */
+	function getList() {
+		$sql = "select * 
+		from season 
+		order by date_end desc, date_start asc";
+		
+		$arr = $this->fetch_map($sql, 'id', 'mapperSeason');
+		
+		return $arr;
+	}
+
+	
+	/***********************************************************************
+	 * supprimer la liste de scoring pour le id type score donné
+	 */
+	function deleteSeason($id) {
+		if(LibTools::isBlank($id)) {
+			return false;
+		}
+		$sql = " delete from season
+		where id=$id";
+		
+		return $this->exec_query($sql, "Delete season OK : $id");
+	}
+}
+
+/*######################################################################
+        Tournament 
+ #######################################################################*/
+
+class TournamentDao extends AbstractDao {
 	
 	/***********************************************************************
 	 * insert un nouveau tournoi
 	 */
 	function insert($id_game, $group_name, $name, $id_type_score, $date_start, $date_end) {
 		if(LibTools::isBlank($group_name)) {
-			LibTools::setLog("insert Tournement : group name is empty !!");
+			LibTools::setLog("insert Tournament : group name is empty !!");
 			return $g;
 		}
 		if(LibTools::isBlank($name)) {
-			LibTools::setLog("insert Tournement : name is empty !!");
+			LibTools::setLog("insert Tournament : name is empty !!");
 			return $g;
 		}
 		if(LibTools::isBlank($id_type_score)) {
-			LibTools::setLog("insert Tournement : type score is empty !!");
+			LibTools::setLog("insert Tournament : type score is empty !!");
 			return $g;
 		}
 		$mysqli = $this->open();
@@ -579,13 +726,13 @@ class TournementDao extends AbstractDao {
 		$date_end 	= $mysqli->real_escape_string($date_end);
 		$this->close($mysqli);
 		
-		// LibTools::setLog("Insert tournement : id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
-		$sql = " insert into tournement
+		// LibTools::setLog("Insert tournament : id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
+		$sql = " insert into tournament
 		(id_game, group_name, `name`, id_type_score, date_start, date_end)
 		values
 		($id_game, '$group_name', '$name', $id_type_score, '$date_start', '$date_end')";
 
-		return $this->exec_query($sql, "Insert tournement OK : id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
+		return $this->exec_query($sql, "Insert tournament OK : id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
 	}
 	
 	/***********************************************************************
@@ -593,15 +740,15 @@ class TournementDao extends AbstractDao {
 	 */
 	function save($id, $id_game, $group_name, $name, $id_type_score, $date_start, $date_end) {
 		if(LibTools::isBlank($group_name)) {
-			LibTools::setLog("update Tournement : group name is empty !!");
+			LibTools::setLog("update Tournament : group name is empty !!");
 			return $g;
 		}
 		if(LibTools::isBlank($name)) {
-			LibTools::setLog("update Tournement : name is empty !!");
+			LibTools::setLog("update Tournament : name is empty !!");
 			return $g;
 		}
 		if(LibTools::isBlank($id_type_score)) {
-			LibTools::setLog("update Tournement : type score is empty !!");
+			LibTools::setLog("update Tournament : type score is empty !!");
 			return $g;
 		}
 		$mysqli = $this->open();
@@ -615,13 +762,13 @@ class TournementDao extends AbstractDao {
 		$date_end 	= $mysqli->real_escape_string($date_end);
 		$this->close($mysqli);
 		
-		// LibTools::setLog("update tournement : id=$id, id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
-		$sql = " update tournement
+		// LibTools::setLog("update tournament : id=$id, id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
+		$sql = " update tournament
 		set id_game=$id_game, group_name='$group_name', name='$name', id_type_score=$id_type_score, date_start='$date_start', date_end='$date_end'
 		where id=$id
 		";
 
-		return $this->exec_query($sql, "update tournement OK :  id=$id, id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
+		return $this->exec_query($sql, "update tournament OK :  id=$id, id_game=$id_game, group_name=$group_name, name=$name, id_type_score=$id_type_score, date_start=$date_start, date_end=$date_end");
 	}
 	
 	
@@ -630,12 +777,12 @@ class TournementDao extends AbstractDao {
 	 */
 	function getList($id_game) {
 		$sql = "select *
-		from tournement 
+		from tournament 
 		where id_game = $id_game
-		order by date_start";
+		order by date_start desc";
 		
-		LibTools::setLog("Tournement.getList");
-		$arr = $this->fetch_map($sql, 'id', "mapperTournement");
+		LibTools::setLog("Tournament.getList");
+		$arr = $this->fetch_map($sql, 'id', "mapperTournament");
 		return $arr;
 	}
 	
@@ -644,22 +791,22 @@ class TournementDao extends AbstractDao {
 	 */
 	function get($id) {
 		$sql = "select *
-		from tournement 
+		from tournament 
 		where id = $id";
 		
-		$tournement = $this->fetch_one($sql, "mapperTournement");
+		$tournament = $this->fetch_one($sql, "mapperTournament");
 		
-		return $tournement;
+		return $tournament;
 	}
 	
 	/***********************************************************************
-	 * supprime le tournement pour l'ID donné
+	 * supprime le tournament pour l'ID donné
 	 */
-	function deleteTournement($id) {
-		$sql = " delete from tournement
+	function deleteTournament($id) {
+		$sql = " delete from tournament
 		where id=$id";
 		
-		return $this->exec_query($sql, "Delete tournement OK : $id");
+		return $this->exec_query($sql, "Delete tournament OK : $id");
 	}
 
 }
@@ -705,7 +852,7 @@ class TypeScoreDao extends AbstractDao {
 		from `type_score` ts
 		order by ts.type_name ";
 		
-		LibTools::setLog("Tournement.getList");
+		LibTools::setLog("Tournament.getList");
 		$arr = $this->fetch_map($sql, 'id');		
 		return $arr;
 	}
@@ -781,6 +928,107 @@ class OtherDao extends AbstractDao {
 		return $rankingList;
 	}
 
+		
+	/***********************************************************************
+	 *  Renvoie les informations de classement des joueurs
+	 * */
+	function getInfoRankingFull($id_game, $date_min, $date_max) {
+		$mysqli = $this->open();
+		$sql="set @current_rank:=0";
+		$result = $mysqli->query($sql);
+		$out = $this->check($result, $mysqli, "ini @variable OK");
+		$sql="set @previous_rank:=0";
+		$result = $mysqli->query($sql);
+		$out = $this->check($result, $mysqli, "ini @variable OK");
+		$sql="set @current_rank_display:=0";
+		$result = $mysqli->query($sql);
+		$out = $this->check($result, $mysqli, "ini @variable OK");
+		$sql="set @previous_rank_display:=0";
+		$result = $mysqli->query($sql);
+		$out = $this->check($result, $mysqli, "ini @variable OK");
+		$sql="set @current_points:=0";
+		$result = $mysqli->query($sql);
+		$out = $this->check($result, $mysqli, "ini @variable OK");
+		$sql="set @previous_points:=0";
+		$result = $mysqli->query($sql);
+		$out = $this->check($result, $mysqli, "ini @variable OK");
+
+		
+		$sql = "
+select p.id, p.pseudo, p.nom, p.prenom,  
+	crs.id_game, g.name as game,
+	pg.id_character as id_char, c.name as `character`,
+	crs.points, 0 as new_points, prs.previous_points, 
+	crs.current_rank, prs.previous_rank
+from (
+	select (@current_rank:=@current_rank + 1) as current_rank_true, 
+			if(@current_points = c2.points, 
+				@current_rank_display:=@current_rank_display,
+				@current_rank_display:=@current_rank) as current_rank,
+			(@current_points := c2.points) as current_points,
+			c2.id_game, c2.id_player, 
+			c2.points
+	from (
+		select c.id_game, c.id_player, 
+			sum(c.score) as points
+		from (
+			select ts.id_game, ts.id_player, ts.score
+			 from tournament_score ts
+			where ts.date_start >= '$date_min'
+			  and ts.date_start <= '$date_max'
+		) c
+		where c.id_game = $id_game
+		group by c.id_game, c.id_player 
+		order by sum(c.score) desc
+	) c2
+) crs
+left outer join (
+	select (@previous_rank:=@previous_rank + 1) as previous_rank_true, 
+			if(@previous_points = pr2.previous_points, 
+				@previous_rank_display:=@previous_rank_display,
+				@previous_rank_display:=@previous_rank) as previous_rank,
+			(@previous_points := pr2.previous_points) as previous_points2,
+			pr2.id_game, pr2.id_player, 
+			pr2.previous_points
+	from (
+		select  pr.id_game, pr.id_player, sum(pr.score) as previous_points
+		from (
+			select ts.id_game, ts.id_player, ts.score
+			from tournament_score ts
+			where ts.date_start < (
+			select 
+				max(tt.date_start) last_date
+			 from tournament tt
+			where tt.date_start >= '$date_min'
+			  and tt.date_start <= '$date_max'
+			  and tt.id_game = ts.id_game
+			)
+		) pr
+		where pr.id_game = $id_game
+		group by pr.id_game, pr.id_player 
+		order by sum(pr.score) desc
+	) pr2
+) prs
+   on prs.id_game 	= crs.id_game
+  and prs.id_player = crs.id_player
+ join player p
+   on p.id 			= crs.id_player
+ join game g
+   on g.id 			= crs.id_game
+ join player_game pg
+   on pg.id_player	= crs.id_player
+  and pg.id_game	= crs.id_game
+ join `character` c
+   on c.id 			= pg.id_character
+where crs.id_game = $id_game
+order by crs.points desc, crs.current_rank asc
+		 ";
+		// LibTools::setLog($sql);
+		$rankingList = $this->fetch_array($sql, "mapperPlayerWrapper",$mysqli);
+		$this->close($mysqli);
+		return $rankingList;
+	}
+
 	/***********************************************************************
 	 * Met à jour le rank et le previous rank à partir du classement 
 	 * */
@@ -811,27 +1059,33 @@ class OtherDao extends AbstractDao {
 
 class Dao {
 	public $characterDao;
+	public $gameDao;
 	public $histoRankingDao;
 	public $paramDao;
 	public $participantDao;
 	public $playerDao;
+	public $playerGameDao;
 	public $rankingDao;	
 	public $scoringDao;
+	public $seasonDao;
 	public $typeScoreDao;
-	public $tournementDao;
+	public $tournamentDao;
 	public $userDao;
 	public $otherDao;	
 	
 	function __construct() {
 		$this->characterDao 		= new CharacterDao();
+		$this->gameDao 				= new GameDao();
 		$this->histoRankingDao		= new HistoRankingDao();
 		$this->paramDao				= new ParamDao();
 		$this->participantDao		= new ParticipantDao();
 		$this->playerDao 			= new PlayerDao();
+		$this->playerGameDao 		= new PlayerGameDao();
 		$this->rankingDao			= new RankingDao();
 		$this->scoringDao			= new ScoringDao();
+		$this->seasonDao			= new SeasonDao();
 		$this->typeScoreDao			= new TypeScoreDao();
-		$this->tournementDao		= new TournementDao();
+		$this->tournamentDao		= new TournamentDao();
 		$this->userDao				= new UserDao();
 		
 		$this->otherDao				= new OtherDao();

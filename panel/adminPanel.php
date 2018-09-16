@@ -94,13 +94,19 @@ class AdminPanel implements IPanel {
 				return true;
 			case 'save' : 
 				$g = $this->updateCSSFile($g);
-				$this->dao->rankingDao->saveNewPoint($id_game, $_POST["player"]);
+				//$this->dao->rankingDao->saveNewPoint($id_game, $_POST["player"]);
 				return true;
 			case 'updateScore' :
 				$this->dao->rankingDao->updateScore($id_game, $_POST["player"]);
 				return true;
 			case 'updateRank' :
 				$this->dao->otherDao->updateRank($id_game);
+				return true;
+			case 'addSeason' :
+				$this->doAddSeason();
+				return true;
+			case 'deleteSeason' :
+				$this->doDeleteSeason();
 				return true;
 			case 'addPlayer' :
 				$this->doAddPlayerRanking($id_game);
@@ -180,7 +186,6 @@ class AdminPanel implements IPanel {
 	 * ajoute un nouveau joueur dans la base player
 	 * */
 	function doAddNewPlayer() {
-		$test = trim($_POST['plantage']);
 		$pseudo = $_POST['new_player_pseudo'];
 		$prenom = $_POST['new_player_prenom'];
 		$nom = $_POST['new_player_nom'];
@@ -190,6 +195,35 @@ class AdminPanel implements IPanel {
 		$this->dao->playerDao->insert($pseudo, $prenom, $nom, $mail, $tel);
 	}
 
+	/***********************************************************************
+	 * ajoute un nouveau joueur dans la base player
+	 * */
+	function doAddSeason() {
+		$season_name 		= $_POST['new_season_name'];
+		$season_date_start	= $_POST['new_season_date_start'];
+		$season_date_end	= $_POST['new_season_date_end'];
+		
+		$this->dao->seasonDao->insert($season_name, $season_date_start, $season_date_end);
+	}
+
+	/***********************************************************************
+	 * Supprime la saison selectionné
+	 * */
+	function doDeleteSeason() {
+		$idSeason = '';
+		if(isset($_POST['idSeason'])) {
+			$idSeason = $_POST['idSeason'];
+		}
+		if(LibTools::isBlank($idSeason)) {
+			return;
+		}
+		LibTools::setLog("delete id Season = $idSeason");
+		$this->dao->seasonDao->deleteSeason($idSeason);
+	}
+	
+	/***********************************************************************
+	 * Print the admin JS
+	 * */
 	function printAdminJS() {
 		?>
 		<script>
@@ -220,7 +254,7 @@ class AdminPanel implements IPanel {
 	/***********************************************************************
 	 * affiche le block d'administration
 	 * */
-	function printAdminBar($g) {
+	function printAdminBar_OLD($g) {
 		if(LibTools::isAdmin()) {
 	?>
 		<div class="divAdminMenu divAdminTab">
@@ -256,6 +290,42 @@ class AdminPanel implements IPanel {
 		$this->printFontSelector($g);
 		$this->printInsertPlayerRanking($g);
 		$this->printInsertNewPlayer($g);
+	?>	
+			</div>
+		</div>
+		<div class="spaceRow">&nbsp;</div>
+	<?php
+		}	
+	}
+
+	/***********************************************************************
+	 * affiche le block d'administration
+	 * */
+	function printAdminBar($g) {
+		if(LibTools::isAdmin()) {
+	?>
+		<div class="divAdminMenu divAdminTab">
+			<div class="row">
+				<div class="head">
+					<input type="button" value="+" 
+						title="open the full admin menu"
+						onsubmit="return false;" onclick="toggleDisplay('divAdminMenu');"/>
+				</div>
+				<div>
+					<input class="buttonMenuAdmin" 
+						title="save modifications"
+						type="button" value="Save" onclick="setAction('save');"/>
+				</div>
+				<div>
+					<input class="buttonMenuAdmin" 
+						title="refresh the page"
+						type="button" value="Refresh" onclick="setAction('refresh');"/>
+				</div>
+			</div>
+			<div id="divAdminMenu" class="divAdminTab hiddenDiv">
+	<?php
+		$this->printFontSelector($g);
+		$this->printSeasonAdmin($g);
 	?>	
 			</div>
 		</div>
@@ -311,6 +381,46 @@ class AdminPanel implements IPanel {
 	?>
 			</div>
 		</div>
+		</div>
+	<?php
+		}
+	}
+
+	/***********************************************************************
+	 * Affiche le block permettant de choisir la font des colonnes
+	 * */
+	function printSeasonAdmin($g) {
+		if(LibTools::isAdmin()) {
+	?>
+		<div class="group">
+		<div class="row">
+			<div class="head" title="Add a new season">
+				<label><b>Season :</b></label> 
+			</div>
+			<div>
+				<input type="text" name="new_season_name"	placeholder="name"/>
+			</div>
+			<div>
+				<input type="text" name="new_season_date_start"	placeholder="date start"/>
+			</div>
+			<div>
+				<input type="text" name="new_season_date_end"	placeholder="date end"/>
+			</div>
+			<div>
+				<input type="button" 
+					title="insert the new season"
+					value="Add Season" onclick="setActionTest('addSeason')">
+			</div>
+			<div >
+				<input class="delete" type="button" 
+					title="Delete the currently selected season"
+					value="X" 
+					onclick="setActionTest('deleteSeason');"
+					/>
+			</div>
+
+		</div>
+
 		</div>
 	<?php
 		}
@@ -477,6 +587,8 @@ class AdminPanel implements IPanel {
 	}
 
 
+
+	
 }
 
 ?>

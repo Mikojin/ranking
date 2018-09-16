@@ -89,8 +89,14 @@ class AbstractDao {
 	 * $sql la requete à executer
 	 * return array(map[column])
 	 * */
-	function fetch_array($sql, callable $mapper=null) {	
-		$mysqli = $this->open();
+	function fetch_array($sql, callable $mapper=null, $mysqli=null) {	
+		$create = false;
+		if(!isset($mysqli)) {
+			$mysqli = $this->open();
+			$create = true;
+		} else {
+			LibTools::setLog("mysqli already created");
+		}
 
 		$mysqli->real_query($sql);
 		$result = $mysqli->use_result();
@@ -103,6 +109,7 @@ class AbstractDao {
 		$arr = array();
 		if($mapper) {
 			while( $row = $result->fetch_assoc()){
+				// LibTools::setLog(LibTools::mapToString($row));
 				$obj = $mapper($row);
 				$arr[] = $obj;
 			}
@@ -111,7 +118,9 @@ class AbstractDao {
 				$arr[] = $row;
 			}
 		}
-		$this->close($mysqli);
+		if($create) {
+			$this->close($mysqli);
+		}
 		LibTools::setLog("fetch_array count = ".count($arr));
 		return $arr;
 	}

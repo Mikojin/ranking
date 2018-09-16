@@ -44,6 +44,10 @@ class PlayerListPanel extends ListPanel {
 			case "savePlayer" :
 				$this->doSavePlayer();
 				break;
+			case "editPlayer" :
+				// $g = $this->doEditPlayer($g);
+				$g = LibTools::doEditPlayer($g);
+				break;
 			case "toggleStatusPlayer" :
 				$this->doToggleStatusPlayer();
 				break;
@@ -141,6 +145,21 @@ class PlayerListPanel extends ListPanel {
 	}
 	
 	/***********************************************************************
+	 * édite les informations du joueur
+	 * */
+	// function doEditPlayer() {
+		// $id_player = $_POST['select_id_player'];
+		// if(LibTools::isBlank($id_player)) {
+			// LibTools::setLog("Edit player KO : id_player is blank");
+			// return $g;
+		// }
+		// LibTools::setLog("Edit Player OK : id_player=$id_player");
+		// LibTools::set("page", 'player');
+		// LibTools::set("id_player", $id_player);
+		// return $g;
+	// }
+		
+	/***********************************************************************
 	 * masque le joueur
 	 * */
 	function doToggleStatusPlayer() {
@@ -190,8 +209,13 @@ class PlayerListPanel extends ListPanel {
 	 * affiche le block d'un joueur PUBLIC
 	 * */
 	function printElementPublic($g, $player) {
+		$id = $player->id;
 	?>	
 			<div class="divTableRow characterRow" >
+				<div class="divTableCell edit" 		title="Go to Player page"	>
+					<input type="button" 
+						onclick="setVar('select_id_player', <?php echo $id; ?>);setAction('editPlayer')" 
+						value="See" /></div>
 				<div class="divTableCell pseudo" 	title="Pseudo"	><?php echo $player->pseudo;?></div>
 				<div class="divTableCell prenom" 	title="Prenom"	><?php echo $player->prenom; ?></div>
 				<div class="divTableCell nom" 		title="Nom"		><?php echo $player->nom; ?></div>
@@ -208,8 +232,16 @@ class PlayerListPanel extends ListPanel {
 		$id = $player->id;
 	?>	
 			<div id="<?php echo "div_player_$id";?>" class="divTableRow characterRow" >
-				<div class="divTableCell edit" 		title="Edit"	><input type="button" value="<?php echo $id;?>" onclick="displayPlayerEdit(<?php echo $id;?>)"></div>
-				<div class="divTableCell <?php echo $player->status == 'H'?'pseudo hidden':'pseudo';?>" 	title="Pseudo"	id="<?php echo "player_pseudo_$id";?>"	><?php echo $player->pseudo;?></div>
+				<div class="divTableCell edit" 		title="Go to Player page"	>
+					<input type="button" 
+						onclick="setVar('select_id_player', <?php echo $id; ?>);setAction('editPlayer')" 
+						value="Edit" /></div>
+				<div class="divTableCell edit" 		title="Modify this player"	>
+					<input type="button" 
+						onclick="displayPlayerEdit(<?php echo $id;?>)"
+						value="<?php echo $id;?>" /></div>
+				<div class="divTableCell <?php echo $player->status == 'H'?'pseudo hidden':'pseudo';?>" 	
+					title="Pseudo"	id="<?php echo "player_pseudo_$id";?>"	><?php echo $player->pseudo;?></div>
 				<div class="divTableCell prenom" 	title="Prenom"	id="<?php echo "player_prenom_$id";?>"	><?php echo $player->prenom; ?></div>
 				<div class="divTableCell nom" 		title="Nom"		id="<?php echo "player_nom_$id";?>"		><?php echo $player->nom; ?></div>
 				<div class="divTableCell email"		title="E-mail"	id="<?php echo "player_mail_$id";?>"	><?php echo $player->email;?></div>
@@ -260,6 +292,7 @@ class PlayerListPanel extends ListPanel {
 	function printPageHeader($g) {
 		$g = parent::printPageHeader($g);
 		?>
+			<input type="hidden" id="select_id_player" name="select_id_player" value=""/>
 			<div class="divTitle playerListTitle">&nbsp;</div>		
 			<div class="playerList ">
 		<?php

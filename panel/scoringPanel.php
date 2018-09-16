@@ -310,7 +310,6 @@ class ScoringPanel extends ListPanel {
 	function printTypeScoreAdmin($g) {
 	?>	
 		<div id="divAdminScoring" class="divAdminMenu divAdminTab">
-
 		<div class="group">
 		<div class="row">
 			<div>

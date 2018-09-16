@@ -2,7 +2,7 @@
 ?>
 <?php 
 /*****************************************************************************
- * tournementListPanel.php
+ * tournamentListPanel.php
  * Page de gestion de la liste des tournois
  *****************************************************************************/
 
@@ -11,7 +11,7 @@ require_once "./lib/lib_tools.php";
 require_once "./panel/listPanel.php";
 
 
-class TournementListPanel extends ListPanel {
+class TournamentListPanel extends ListPanel {
 	public $g;
 	function __construct() {
 		parent::__construct();
@@ -33,14 +33,14 @@ class TournementListPanel extends ListPanel {
 		$action = $_POST['action'];
 		if(isset($action)) {
 			switch($action) {
-				case "addTournement" :
-					$g = $this->doAddTournement($g);
+				case "addTournament" :
+					$g = $this->doAddTournament($g);
 					break;
-				case "editTournement" :
-					$g = $this->doEditTournement($g);
+				case "editTournament" :
+					$g = LibTools::doEditTournament($g);
 					break;
-				case "deleteTournement" :
-					$g = $this->doDeleteTournement($g);
+				case "deleteTournament" :
+					$g = $this->doDeleteTournament($g);
 					break;
 			}
 		}
@@ -63,59 +63,59 @@ class TournementListPanel extends ListPanel {
 	function doInit($g) {
 		$id_game = $g['id_game'];
 		$g['typeScoreList'] 	= $this->dao->typeScoreDao->getList();
-		$g['tournementList'] 	= $this->dao->tournementDao->getList($id_game);
-		// $out = json_encode($g['tournementList']);
-		// LibTools::setLog("Tournement List : $out");
+		$g['tournamentList'] 	= $this->dao->tournamentDao->getList($id_game);
+		// $out = json_encode($g['tournamentList']);
+		// LibTools::setLog("Tournament List : $out");
 		return $g;
 	}
 	
 	/***********************************************************************
-	 * Ajoute un Tournement à la liste
+	 * Ajoute un Tournament à la liste
 	 * */
-	function doAddTournement($g) {
+	function doAddTournament($g) {
 		if(!LibTools::isAdmin()) {
 			return;
 		}
 		$id_game = $g['id_game'];
-		$group_name 	= $_POST['tournement_group_name'];
-		$name 			= $_POST['tournement_name'];
-		$id_type_score	= $_POST['tournement_id_type_score'];
-		$date_start 	= $_POST['tournement_date_start'];
-		$date_end 		= $_POST['tournement_date_end'];
+		$group_name 	= $_POST['tournament_group_name'];
+		$name 			= $_POST['tournament_name'];
+		$id_type_score	= $_POST['tournament_id_type_score'];
+		$date_start 	= $_POST['tournament_date_start'];
+		$date_end 		= $_POST['tournament_date_end'];
 
-		$this->dao->tournementDao->insert($id_game, $group_name, $name, $id_type_score, $date_start, $date_end);
+		$this->dao->tournamentDao->insert($id_game, $group_name, $name, $id_type_score, $date_start, $date_end);
 		return $g;
 	}
 
 	/***********************************************************************
-	 * Edit le Tournement selectionne
+	 * Edit le Tournament selectionne
 	 * */
-	function doEditTournement($g) {
-		$idTournement = $_POST['selectIdTournement'];
-		if(LibTools::isBlank($idTournement)) {
-			LibTools::setLog("Edit Tournement KO : idTournement is blank");
-			return $g;
-		}
-		LibTools::setLog("Edit Tournement OK : idTournement=$idTournement");
-		LibTools::set("page", 'tournement');
-		LibTools::set("idTournement", $idTournement);
-		//$r = $this->dao->tournementDao->deleteTournement($idTournement);
-		return $g;
-	}
+	// function doEditTournament($g) {
+		// $idTournament = $_POST['selectIdTournament'];
+		// if(LibTools::isBlank($idTournament)) {
+			// LibTools::setLog("Edit Tournament KO : idTournament is blank");
+			// return $g;
+		// }
+		// LibTools::setLog("Edit Tournament OK : idTournament=$idTournament");
+		// LibTools::set("page", 'tournament');
+		// LibTools::set("idTournament", $idTournament);
+		// //$r = $this->dao->tournamentDao->deleteTournament($idTournament);
+		// return $g;
+	// }
 	
 	/***********************************************************************
-	 * supprime un Tournement à la liste
+	 * supprime un Tournament à la liste
 	 * */
-	function doDeleteTournement($g) {
+	function doDeleteTournament($g) {
 		if(!LibTools::isAdmin()) {
 			return;
 		}
-		$idTournement = $_POST['selectIdTournement'];
-		if(LibTools::isBlank($idTournement)) {
-			LibTools::setLog("Delete Tournement KO : idTournement is blank");
+		$idTournament = $_POST['selectIdTournament'];
+		if(LibTools::isBlank($idTournament)) {
+			LibTools::setLog("Delete Tournament KO : idTournament is blank");
 			return $g;
 		}
-		$r = $this->dao->tournementDao->deleteTournement($idTournement);
+		$r = $this->dao->tournamentDao->deleteTournament($idTournament);
 		return $g;
 	}
 	
@@ -124,7 +124,7 @@ class TournementListPanel extends ListPanel {
 	 * */
 	function getDisplayedList($g) {
 		// recupere la liste de classement des joueurs
-		return $g['tournementList'];
+		return $g['tournamentList'];
 	}
 
 	function printListHeader($g) {
@@ -149,33 +149,33 @@ class TournementListPanel extends ListPanel {
 	/***********************************************************************
 	 * affiche le block d'un joueur
 	 * */
-	function printElement($g, $tournement, $i) {
+	function printElement($g, $tournament, $i) {
 		if(LibTools::isAdmin()) {
-			$this->printElementAdmin($g, $tournement, $i);
+			$this->printElementAdmin($g, $tournament, $i);
 		} else {
-			$this->printElementPublic($g, $tournement);
+			$this->printElementPublic($g, $tournament);
 		}
 	}
 
 	/***********************************************************************
 	 * affiche le block d'un scoring PUBLIC
 	 * */
-	function printElementPublic($g, $tournement) {
+	function printElementPublic($g, $tournament) {
 		$typeScoreList = $g['typeScoreList'];
-		$id = $tournement->id;
+		$id = $tournament->id;
 	?>	
 			<div class="divTableRow characterRow" >
 				<div class="divTableCell rowValue" >
 					<input type="button" 
-						title="Open this tournement"
-						value="Open" onclick="setVar('selectIdTournement', <?php echo $id; ?>);setAction('editTournement')">
+						title="Open this tournament"
+						value="Open" onclick="setVar('selectIdTournament', <?php echo $id; ?>);setAction('editTournament')">
 				</div>
-				<input type="hidden" name="tournement_id_<?php echo $id; ?>" />
-				<div class="divTableCell rowValue" 	title="Group"		><?php echo $tournement->group_name;?></div>
-				<div class="divTableCell rowValue" 	title="Name"		><?php echo $tournement->name; ?></div>
-				<div class="divTableCell rowValue" 	title="Type Score"	><?php echo $typeScoreList[$tournement->id_type_score]['type_name']; ?></div>
-				<div class="divTableCell rowValue date" 	title="Date Start"	><?php echo $tournement->date_start; ?></div>
-				<div class="divTableCell rowValue date" 	title="Date End"	><?php echo $tournement->date_end; ?></div>
+				<input type="hidden" name="tournament_id_<?php echo $id; ?>" />
+				<div class="divTableCell rowValue" 	title="Group"		><?php echo $tournament->group_name;?></div>
+				<div class="divTableCell rowValue" 	title="Name"		><?php echo $tournament->name; ?></div>
+				<div class="divTableCell rowValue" 	title="Type Score"	><?php echo $typeScoreList[$tournament->id_type_score]['type_name']; ?></div>
+				<div class="divTableCell rowValue date" 	title="Date Start"	><?php echo $tournament->date_start; ?></div>
+				<div class="divTableCell rowValue date" 	title="Date End"	><?php echo $tournament->date_end; ?></div>
 			</div>
 	<?php
 	}
@@ -184,26 +184,26 @@ class TournementListPanel extends ListPanel {
 	/***********************************************************************
 	 * affiche le block d'un scoring ADMIN
 	 * */
-	function printElementAdmin($g, $tournement, $i) {
+	function printElementAdmin($g, $tournament, $i) {
 		$typeScoreList = $g['typeScoreList'];
-		$id = $tournement->id;
+		$id = $tournament->id;
 	?>	
 			<div class="divTableRow characterRow" >
 				<div class="divTableCell rowValue" >
 					<input type="button" 
-						title="Edit this tournement"
-						value="Edit" onclick="setVar('selectIdTournement', <?php echo $id; ?>);setAction('editTournement')">
+						title="Edit this tournament"
+						value="Edit" onclick="setVar('selectIdTournament', <?php echo $id; ?>);setAction('editTournament')">
 				</div>
-				<input type="hidden" name="tournement_id_<?php echo $id; ?>" />
-				<div class="divTableCell rowValue" 	title="Group"		><?php echo $tournement->group_name;?></div>
-				<div class="divTableCell rowValue" 	title="Name"		><?php echo $tournement->name; ?></div>
-				<div class="divTableCell rowValue" 	title="Type Score"	><?php echo $typeScoreList[$tournement->id_type_score]['type_name']; ?></div>
-				<div class="divTableCell rowValue date" 	title="Date Start"	><?php echo $tournement->date_start; ?></div>
-				<div class="divTableCell rowValue date" 	title="Date End"	><?php echo $tournement->date_end; ?></div>
+				<input type="hidden" name="tournament_id_<?php echo $id; ?>" />
+				<div class="divTableCell rowValue" 	title="Group"		><?php echo $tournament->group_name;?></div>
+				<div class="divTableCell rowValue" 	title="Name"		><?php echo $tournament->name; ?></div>
+				<div class="divTableCell rowValue" 	title="Type Score"	><?php echo $typeScoreList[$tournament->id_type_score]['type_name']; ?></div>
+				<div class="divTableCell rowValue date" 	title="Date Start"	><?php echo $tournament->date_start; ?></div>
+				<div class="divTableCell rowValue date" 	title="Date End"	><?php echo $tournament->date_end; ?></div>
 				<div class="divTableCell rowValue" >
 					<input type="button" class="delete"
-						title="Delete this tournement (cannot be undone !!)"
-						value="X" onclick="setVar('selectIdTournement', <?php echo $id; ?>);setActionTest('deleteTournement')">
+						title="Delete this tournament (cannot be undone !!)"
+						value="X" onclick="setVar('selectIdTournament', <?php echo $id; ?>);setActionTest('deleteTournament')">
 				</div>
 			</div>
 	<?php
@@ -213,7 +213,7 @@ class TournementListPanel extends ListPanel {
 	/***********************************************************************
 	 * affiche le menu de type score ADMIN
 	 * */
-	function printAdminTournement($g) {
+	function printAdminTournament($g) {
 	?>	
 		<div id="divAdminScoring" class="divAdminMenu divAdminTab">
 
@@ -221,37 +221,37 @@ class TournementListPanel extends ListPanel {
 		<div class="row">
 			<div>
 				<input type="text" placeholder="Group name"
-					title="Group for the tournement"
-					id="tournement_group_name" name="tournement_group_name" value="" />
+					title="Group for the tournament"
+					id="tournament_group_name" name="tournament_group_name" value="" />
 			</div>
 			<div>
 				<input type="text" placeholder="Name"
-					title="Name for the new tournement"
-					id="tournement_name" name="tournement_name" value="" />
+					title="Name for the new tournament"
+					id="tournament_name" name="tournament_name" value="" />
 			</div>
 			<div>
 				<?php 
-				$this->combobox->id_elem 			= "tournement_id_type_score";
+				$this->combobox->id_elem 			= "tournament_id_type_score";
 				$this->combobox->arr 				= $g['typeScoreList'];
 				$this->combobox->libelleCallback	= 'type_name';
-				$this->combobox->title				= 'Select the Type of the scoring for the new tournement';
+				$this->combobox->title				= 'Select the Type of the scoring for the new tournament';
 				$this->combobox->doPrint();
 				?>
 			</div>
 			<div>
 				<input type="text" placeholder="date start AAAA-MM-DD"
-					title="Starting date for the new tournement (AAAA-MM-DD)"
-					id="tournement_date_start" name="tournement_date_start" value="" />
+					title="Starting date for the new tournament (AAAA-MM-DD)"
+					id="tournament_date_start" name="tournament_date_start" value="" />
 			</div>
 			<div>
 				<input type="text" placeholder="date end AAAA-MM-DD"
-					title="Ending date for the new tournement (AAAA-MM-DD)"
-					id="tournement_date_end" name="tournement_date_end" value="" />
+					title="Ending date for the new tournament (AAAA-MM-DD)"
+					id="tournament_date_end" name="tournament_date_end" value="" />
 			</div>
 			<div>
 				<input type="button" 
-					title="insert a new tournement"
-					value="Add" onclick="setActionTest('addTournement')">
+					title="insert a new tournament"
+					value="Add" onclick="setActionTest('addTournament')">
 			</div>
 		</div> 
 		</div> 
@@ -265,13 +265,13 @@ class TournementListPanel extends ListPanel {
 	function printPageHeader($g) {
 		$g = parent::printPageHeader($g);
 		?>
-			<input type="hidden" id="selectIdTournement" name="selectIdTournement" value=""/>
-			<div class="divTitle scoring"><div class="divTableCell">Tournement Management</div></div>		
-			<div id="tournementList">
+			<input type="hidden" id="selectIdTournament" name="selectIdTournament" value=""/>
+			<div class="divTitle scoring"><div class="divTableCell">Tournament Management</div></div>		
+			<div id="tournamentList">
 			<div class="spaceRow">&nbsp;</div>
 		<?php
 			if(LibTools::isAdmin()) {
-				$this->printAdminTournement($g);
+				$this->printAdminTournament($g);
 			}
 		?>
 		<?php
@@ -284,7 +284,7 @@ class TournementListPanel extends ListPanel {
 	function printPageFooter($g) {
 		//$this->printEditPlayer($g);
 		?>	
-			</div><!-- tournementList -->
+			</div><!-- tournamentList -->
 		<?php
 		$g = parent::printPageFooter($g);
 		return $g;
