@@ -331,7 +331,7 @@ EOS;
 				<div class="character <?php echo $player->characterCSS; ?> divTableCell" title="<?php echo $player->character; ?>">&nbsp;</div>
 				<div class="points divTableCell "
 					title="Points - previous : <?php echo $player->previous_points; ?>"
-					><?php echo $player->points ?></div>
+					><?php echo $player->points?$player->points:0; ?></div>
 			</div>
 			<div class="divTableRow spaceRow"><div class="divTableCell">&nbsp;</div></div>
 	<?php
