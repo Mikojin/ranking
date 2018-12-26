@@ -1013,6 +1013,7 @@ left outer join (
   and prs.id_player = crs.id_player
  join player p
    on p.id 			= crs.id_player
+  and p.status is null
  join game g
    on g.id 			= crs.id_game
  left outer join player_game pg
