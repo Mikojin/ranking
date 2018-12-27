@@ -446,6 +446,7 @@ input[type="button"].deletePlayerRanking {
 
 .character {
 	height:65px;
+	width:300px;
 	background-repeat : no-repeat;
 	background-position :  right center;
 	background-attachment : scroll;
@@ -630,7 +631,7 @@ input[type="button"].deletePlayerRanking {
 	text-align:center;
 }
 #tournamentList .divTable {
-	background-color:rgb(150,0,0);
+	
 	padding:10px;
 	border-radius:8px;
 	margin:auto;
@@ -638,6 +639,8 @@ input[type="button"].deletePlayerRanking {
 	width: -webkit-fill-available;
 }
 /*
+background-color:rgb(150,0,0);
+
 #tournamentList .divTableCell {
 	padding:5px 10px;
 }
@@ -688,7 +691,6 @@ input[type="button"].deletePlayerRanking {
 }
 
 #tournamentList .game {
-	width: 400px;
 	vertical-align:middle;
 	text-align : center;
 	font-weight: normal;
@@ -703,6 +705,7 @@ input[type="button"].deletePlayerRanking {
 
 #tournamentList .characterCell {
 	position:relative;
+	width:300px;
 }
 
 #tournamentList .character {

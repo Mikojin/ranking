@@ -266,8 +266,8 @@ class TournamentListPanel extends ListPanel {
 		$g = parent::printPageHeader($g);
 		?>
 			<input type="hidden" id="selectIdTournament" name="selectIdTournament" value=""/>
-			<div class="divTitle scoring"><div class="divTableCell">Tournament Management</div></div>		
-			<div id="tournamentList">
+			<div class="divTitle scoring"><div class="divTableCell">Tournament History</div></div>		
+			<div id="tournamentList" class="ranking">
 			<div class="spaceRow">&nbsp;</div>
 		<?php
 			if(LibTools::isAdmin()) {

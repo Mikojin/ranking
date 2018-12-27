@@ -81,6 +81,12 @@ class Participant extends Player {
 	public $id_player;
 	public $id_tournament;
 	public $ranking;
+
+	// character info 
+	public $id_game;
+	
+	public $name;
+	public $css_class;
 }
 
 class Tournament {

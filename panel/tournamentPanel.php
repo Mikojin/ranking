@@ -73,13 +73,21 @@ class TournamentPanel extends ListPanel {
 	 * */
 	function doInit($g) {
 		$id_game 				= $g['id_game'];
+		
+		$g['gameList']			= $this->dao->gameDao->getList();
+		$gameCode 				= $g['gameList'][$id_game]['code'];
+		$id_char_unknown	= $this->dao->paramDao->load("CHAR_UNKNOWN", $gameCode);
+		$g['char_unknown'] 		= $this->dao->characterDao->getList($id_game)[$id_char_unknown];
 		$g['typeScoreList'] 	= $this->dao->typeScoreDao->getList();
 		$this->tournament 		= $this->dao->tournamentDao->get($this->id);
 		$g['tournament'] 		= $this->tournament;
 		
 		$g['participantList'] 	= $this->dao->participantDao->getList($this->id);
+		$g['playerCharList']	= $this->dao->participantDao->getPlayerCharacterList($this->id);
 		$g['maxRank'] 			= count($g['participantList']);
 		$g['playerList'] 		= $this->dao->playerDao->getListTournament($this->id);
+
+
 		// $out = json_encode($g['tournamentList']);
 		// LibTools::setLog("Tournament List : $out");
 		return $g;
@@ -188,13 +196,19 @@ class TournamentPanel extends ListPanel {
 	 * imprime le header de la liste
 	 * */
 	function printListHeader($g) {
-		$g = parent::printListHeader($g)
+		$g = parent::printListHeader($g);
+		//$g = $this->printTabHeader($g);
+		return $g;
+	}
+
+	function printTabHeader($g) {
 		?>
 			<div class="divTableRow characterRow listHeader" >
 				<div class="divTableCell scoringHeader"	title="Rank"		>Rank</div>
 				<div class="divTableCell scoringHeader" title="Pseudo"		>Pseudo</div>
 				<div class="divTableCell scoringHeader"	title="Name"		>Name</div>
 				<div class="divTableCell scoringHeader"	title="Surname"		>Surname</div>
+				<div class="divTableCell scoringHeader"	title="Surname"		>Main Character</div>
 				<div class="divTableCell scoringHeader"	title="Points"		>Points</div>
 			<?php if(LibTools::isAdmin()) {
 					echo '<div class="divTableCell scoringHeader"	title=""	>&nbsp;</div>';
@@ -221,16 +235,36 @@ class TournamentPanel extends ListPanel {
 	 * affiche le block d'un scoring PUBLIC
 	 * */
 	function printElementPublic($g, $participant) {
+		// on récupere le personnage joué
+		$playerCharlist = $g['playerCharList'];
+		$id_player = $participant->id_player;
+		$mainchar = $g['char_unknown'];
+		if(array_key_exists($id_player, $playerCharlist)) {
+			$mainchar = $playerCharlist[$id_player];
+		} 
+
 	?>	
 			<div class="divTableRow characterRow" >
 				<div class="divTableCell rowValue rank" 	title="Ranking"	><?php echo $participant->ranking;	?></div>
-				<div class="divTableCell rowValue" 	title="Pseudo - Go to this player profile"	
-					onclick="setVar('select_id_player', <?php echo $participant->id; ?>);setAction('editPlayer')" ><?php echo $participant->pseudo;	?></div>
-				<div class="divTableCell rowValue" 	title="Name"	><?php echo $participant->prenom; 	?></div>
-				<div class="divTableCell rowValue" 	title="Surname"	><?php echo $participant->nom; 		?></div>
+				<div class="divTableCell pseudoNom" title="Go to this player profile"
+					onclick="setVar('select_id_player', <?php echo $participant->id; ?>);setAction('editPlayer')" >
+					<div class="pseudo"><?php echo $participant->pseudo;	?></div>
+					<div class="nom"><?php echo "$participant->prenom $participant->nom"; ?></div>
+				</div>
+				<div class="divTableCell rowValue characterCell" title="MainChar">
+					<div class="character <?php echo $mainchar['css_class']; ?>" 
+						title="<?php echo $mainchar['name']; ?>">&nbsp;</div></div>
 				<div class="divTableCell rowValue points" 	title="Points"	><?php echo $participant->score; 		?></div>
 			</div>
 	<?php
+	/*
+					<div class="divTableCell rowValue" 	title="Pseudo - Go to this player profile"	
+					onclick="setVar('select_id_player', <?php echo $participant->id; ?>);setAction('editPlayer')" ><?php echo $participant->pseudo;	?></div>
+				<div class="divTableCell rowValue" 	title="Name"	><?php echo $participant->prenom; 	?></div>
+				<div class="divTableCell rowValue" 	title="Surname"	><?php echo $participant->nom; 		?></div>
+
+	*/
+	
 	}
 	
 	
@@ -240,6 +274,13 @@ class TournamentPanel extends ListPanel {
 	function printElementAdmin($g, $participant, $i) {
 		$maxRank 		= $g['maxRank'];
 		$id 			= $participant->id;
+		// on récupere le personnage joué
+		$playerCharlist = $g['playerCharList'];
+		$id_player = $participant->id_player;
+		$mainchar = $g['char_unknown'];
+		if(array_key_exists($id_player, $playerCharlist)) {
+			$mainchar = $playerCharlist[$id_player];
+		} 
 	?>	
 			<div class="divTableRow characterRow" >
 				<input type="hidden" name="participant[<?php echo $id; ?>][id_player]" value="<?php echo $participant->id_player;?>" />
@@ -252,6 +293,9 @@ class TournamentPanel extends ListPanel {
 					onclick="setVar('select_id_player', <?php echo $participant->id; ?>);setAction('editPlayer')" ><?php echo $participant->pseudo;	?></div>
 				<div class="divTableCell rowValue" 	title="Name"	><?php echo $participant->prenom; ?></div>
 				<div class="divTableCell rowValue" 	title="Surname"	><?php echo $participant->nom; ?></div>
+				<div class="divTableCell rowValue characterCell" title="MainChar">
+					<div class="character <?php echo $mainchar['css_class']; ?>" 
+						title="<?php echo $mainchar['name']; ?>">&nbsp;</div></div>
 				<div class="divTableCell rowValue points" 	title="Points"	><?php echo $participant->score; 		?></div>
 				<div class="divTableCell rowValue" >
 					<input type="button" class="delete"
@@ -373,7 +417,7 @@ class TournamentPanel extends ListPanel {
 		?>
 			<input type="hidden" id="select_id_player" name="select_id_player" value=""/>
 			<div class="divTitle scoring"><div class="divTableCell">Tournament</div></div>		
-			<div id="tournamentList">
+			<div id="tournamentList" class="ranking">
 			<div class="spaceRow">&nbsp;</div>
 		<?php
 			if(LibTools::isAdmin()) {

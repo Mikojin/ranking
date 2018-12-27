@@ -26,6 +26,7 @@ class CharacterDao extends AbstractDao {
 		where c.id_game = $id_game
 		order by c.name ";
 		
+		LibTools::setLog("CharacterDao.getList");
 		$arr = $this->fetch_map($sql, 'id');
 		
 		return $arr;
@@ -162,27 +163,51 @@ class ParticipantDao extends AbstractDao {
 	}
 	
 	/***********************************************************************
-	 * renvoie la liste des participants pour ce tournoi
+	 * renvoie la liste des participants pour ce tournoi 
 	 */
 	function getList($id_tournament) {
 		$sql = "select pp.*, p.*, s.score
-			from participant pp
-			join player p
-			  on p.id = pp.id_player
-			join tournament t
-			  on t.id = pp.id_tournament
-			join type_score ts
-			  on ts.id = t.id_type_score
-			left outer join scoring s
-			  on s.id_type_score = ts.id
-			 and pp.ranking >= s.rank_top
-			 and pp.ranking <= s.rank_bottom
-			where pp.id_tournament = $id_tournament
+			 from participant pp
+			 join tournament t
+			   on t.id = pp.id_tournament
+			 join player p
+			   on p.id = pp.id_player
+			 join type_score ts
+			   on ts.id = t.id_type_score
+			 left outer join scoring s
+			   on s.id_type_score = ts.id
+			  and s.rank_top 	<= pp.ranking
+			  and s.rank_bottom >= pp.ranking
+			where t.id 		 	= $id_tournament
 			order by pp.ranking, p.pseudo, p.prenom, p.nom  ";
 		
 		LibTools::setLog("Participant.getList");
 		$participantList = $this->fetch_map($sql, 'id', 'mapperParticipant');
 		return $participantList;
+	}
+	
+	/***********************************************************************
+	 * renvoie la liste personnage joué par les joueur du tournoi
+	 */
+	function getPlayerCharacterList($id_tournament) {
+		$sql = "select pp.id_player, t.id_game, c.name, c.css_class
+			 from participant pp
+			 join tournament t
+			   on t.id = pp.id_tournament
+			 join player p
+			   on p.id = pp.id_player
+			 join player_game pg
+			   on pg.id_player		= pp.id_player
+			  and pg.id_game		= t.id_game
+			 join `character` c
+			   on c.id 			= pg.id_character
+			  and c.id_game		= pg.id_game 
+			where t.id 		 	= $id_tournament
+			";
+		
+		LibTools::setLog("Participant.getPlayerCharacterList");
+		$playerCharList = $this->fetch_map($sql, 'id_player');
+		return $playerCharList;
 	}
 	
 	/***********************************************************************

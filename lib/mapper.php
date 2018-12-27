@@ -59,6 +59,12 @@ function mapperParticipant($row) {
 	$o->id_player 		= $row['id_player'];
 	$o->id_tournament 	= $row['id_tournament'];
 	$o->ranking		 	= $row['ranking'];
+
+	if(isset($row['css_class'])) {
+		$o->id_game			= $row['id_game'];
+		$o->name			= $row['name'];
+		$o->css_class		= $row['css_class'];
+	}
 	$o->score			= 0;
 	if(isset($row['score'])) {
 		$o->score		= $row['score'];
