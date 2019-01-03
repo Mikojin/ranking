@@ -41,7 +41,7 @@ class Page implements IPanel {
 			exit();
 		}
 		?>
-		<html ng-app="ranking" ng-cloak>
+		<html>
 		<head>
 			<title>Ranking</title>
 			<link rel="stylesheet" type="text/css" href="design.css">
