@@ -138,7 +138,8 @@ class Page implements IPanel {
 	 * Imprime le panel de log (si admin uniquement)
 	 * */
 	function printLoggerPanel() {
-		if(LibTools::isAdmin() || true) {		
+//		if(LibTools::isAdmin() || true) {		
+		if(LibTools::isAdmin() ) {		
 			?>
 			<div class="msg" onclick="toggleDisplay('spanMsg', 'hiddenDivBloc');">display log<br>
 			<span id="spanMsg" class="hiddenDivBloc"><?php echo LibTools::getLog(); LibTools::initLog(); ?></span></div>
