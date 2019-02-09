@@ -132,17 +132,14 @@ class AdminPanel implements IPanel {
 		$this->saveParamIfChange('font_pseudo');
 		$this->saveParamIfChange('font_name');
 		
-		$out = LibTools::printFontCss('font_rank' 		);
-		$out .= LibTools::printFontCss('font_score' 	);
-		$out .= LibTools::printFontCss('font_pseudo' 	);
-		$out .= LibTools::printFontCss('font_name' 		);
-		LibTools::writeFile("./font.css", $out);
+		$out  = LibCSS::printFontCss('font_rank' 		);
+		$out .= LibCSS::printFontCss('font_score' 	);
+		$out .= LibCSS::printFontCss('font_pseudo' 	);
+		$out .= LibCSS::printFontCss('font_name' 		);
+		LibTools::writeFile("./css/font.css", $out);
 		
-		$g['charPath'] 		= $s->dao->paramDao->load("PATH","character");
-		//$g['charList'] 		= $s->dao->characterDao->getList($s->game->id);
-
-		$out = CharacterCSS::writeCharacterCSS($g['charPath']."/".$s->game->code, $s->characterMap);
-		LibTools::writeFile("./character.css", $out);
+		$out = LibCSS::writeCharacterCSS($s->characterPath, $s->characterMap);
+		LibTools::writeFile($s->cssFile, $out);
 		return $g;
 	}
 
@@ -162,7 +159,7 @@ class AdminPanel implements IPanel {
 	 * construction de la liste des font
 	 * */
 	function getListFont() {
-		$fontDir = glob('./font/*.woff2');
+		$fontDir = glob('./css/font/*.woff2');
 		$fontList = array();
 		foreach ($fontDir as $filename) {
 			$name = basename($filename, '.woff2');

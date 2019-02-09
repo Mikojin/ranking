@@ -7,7 +7,7 @@
  *****************************************************************************/
 
 require_once "./lib/lib_tools.php";
-require_once "./lib/character_css.php";
+require_once "./lib/lib_css.php";
 
 require_once "./panel/listPanel.php";
 require_once "./panel/adminPanel.php";

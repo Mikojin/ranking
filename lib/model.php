@@ -19,6 +19,10 @@ class Session {
 	public $characterMap;
 	public $char_unknown;
 	
+	public $characterPath;
+	public $cssFile;
+
+	
 	function __construct() {
 		$init = false;
 	}

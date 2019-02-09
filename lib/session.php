@@ -51,8 +51,20 @@ class Ss {
 		
 		$sess->characterMap 	= $sess->dao->characterDao->getList($id_game);
 
-		$id_char_unknown		= $sess->dao->paramDao->load("CHAR_UNKNOWN", $sess->game->code);
+		$gameCode 				= $sess->game->code;
+		LibTools::setLog("gameCode = $gameCode");
+		
+		$id_char_unknown		= $sess->dao->paramDao->load("CHAR_UNKNOWN", $gameCode);
 		$sess->char_unknown		= $sess->characterMap[$id_char_unknown];
+
+
+		$charPath				= $sess->dao->paramDao->load("PATH","character");
+		$sess->characterPath 	= $charPath."/".$gameCode;
+		LibTools::setLog("characterPath = ".$sess->characterPath);
+		
+		$sess->cssFile 			= "./css/".$gameCode."/character.css";
+		LibTools::setLog("cssFile = ".$sess->cssFile);
+		
 	}
 	
 	/***********************************************************************

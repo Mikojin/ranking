@@ -252,36 +252,11 @@ class LibTools {
 		}
 	}
 
-	/***********************************************************************
-	 * Déclare le css pour la font donnée
-	 */ 
-	static function printFontCss($familly) {
-		$file = LibTools::get($familly);
-		
-		if(!file_exists("./font/$file.woff2")) {
-			return;
-		}
-		$out = <<<EOT
-@font-face {
-	font-family: '$familly';
-	src: url('./font/$file.woff2') format('woff2'),
-		 url('./font/$file.woff') format('woff');
-	font-weight: normal;
-	font-style: normal;
-}
-
-EOT;
-		return $out;
-	}
 
 	static function writeFile($fileName, $data) {
 		return file_put_contents($fileName, $data);
 	}
 	
-	
-
-	
-
 
 }
 

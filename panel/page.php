@@ -6,6 +6,7 @@
  * Contient les fonction lié à la gestion du ranking
  *****************************************************************************/
 
+require_once "./lib/session.php";
 require_once "./lib/lib_tools.php";
 require_once "./panel/iPanel.php";
 
@@ -30,6 +31,8 @@ class Page implements IPanel {
 	function printPage() {
 		$this->g = $this->init($this->g);
 		
+		LibTools::setLog("printPage : cssFile = ".Ss::get()->cssFile);
+
 		
 		if ($_POST) {
 			// Execute code (such as database updates) here.
@@ -44,9 +47,9 @@ class Page implements IPanel {
 		<html>
 		<head>
 			<title>Ranking</title>
-			<link rel="stylesheet" type="text/css" href="design.css">
-			<link rel="stylesheet" type="text/css" href="font.css">
-			<link rel="stylesheet" type="text/css" href="character.css">
+			<link rel="stylesheet" type="text/css" href="./css/design.css">
+			<link rel="stylesheet" type="text/css" href="./css/font.css">
+			<link rel="stylesheet" type="text/css" href="<?php echo Ss::get()->cssFile; ?>">
 		<?php
 		
 			$this->g = $this->printHeader($this->g);

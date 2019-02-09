@@ -379,7 +379,7 @@ input[type="button"].deletePlayerRanking {
  *  Div Ranking
  *********************************************************/
 .divTitle.rankingTitle {
-	background-image: url("./Images/Background/SFVR.png");
+	background-image: url("../Images/Background/SFVR.png");
 }
 
 .rankingAdmin {
@@ -395,7 +395,7 @@ input[type="button"].deletePlayerRanking {
 	border: 0px solid #1C6EA4;
 	text-align: left;
 	border-collapse: collapse;
-	background-image: url("./Images/Background/Block2.png");
+	background-image: url("../Images/Background/Block2.png");
 	-webkit-mask-image: -webkit-linear-gradient(bottom, 
 		rgba(0,0,0,0) 0%, 
 		rgba(0,0,0,1) 20px, 
@@ -531,17 +531,17 @@ input[type="button"].deletePlayerRanking {
  *********************************************************/
 
 .ranksame {
-	background-image: url("./Images/Ranks/rank.png");
+	background-image: url("../Images/Ranks/rank.png");
 	background-size: 50px;
 }
 
 .rankup {
-	background-image: url("./Images/Ranks/rank_up.png");
+	background-image: url("../Images/Ranks/rank_up.png");
 	background-size: 50px;
 }
 
 .rankdown {
-	background-image: url("./Images/Ranks/rank_down.png");
+	background-image: url("../Images/Ranks/rank_down.png");
 	background-size: 50px;
 }
 
@@ -550,7 +550,7 @@ input[type="button"].deletePlayerRanking {
  *********************************************************/
 
 .divTitle.playerListTitle {
-	background-image: url("./Images/Background/SFVR.png");
+	background-image: url("../Images/Background/SFVR.png");
 }
 
 .playerList {
@@ -559,7 +559,7 @@ input[type="button"].deletePlayerRanking {
 	border: 0px solid #1C6EA4;
 	text-align: left;
 	border-collapse: collapse;
-	background-image: url("./Images/Background/Block2.png");
+	background-image: url("../Images/Background/Block2.png");
 	-webkit-mask-image: -webkit-linear-gradient(bottom, 
 		rgba(0,0,0,0) 0%, 
 		rgba(0,0,0,1) 20px, 
