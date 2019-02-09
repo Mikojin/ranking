@@ -141,7 +141,7 @@ class AdminPanel implements IPanel {
 		$g['charPath'] 		= $s->dao->paramDao->load("PATH","character");
 		//$g['charList'] 		= $s->dao->characterDao->getList($s->game->id);
 
-		$out = CharacterCSS::writeCharacterCSS($g['charPath'], $s->characterMap);
+		$out = CharacterCSS::writeCharacterCSS($g['charPath']."/".$s->game->code, $s->characterMap);
 		LibTools::writeFile("./character.css", $out);
 		return $g;
 	}
