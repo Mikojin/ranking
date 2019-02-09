@@ -11,6 +11,14 @@ require_once "./lib/lib_tools.php";
 require_once "./panel/listPanel.php";
 
 
+/**
+ * callback d'affichage du libellé d'une saison
+ */
+function libelleCharacter($s) {
+	return "&nbsp;$s->name&nbsp;";
+}
+
+
 class PlayerPanel extends ListPanel {
 	public $g;
 	public $id;
@@ -49,13 +57,13 @@ class PlayerPanel extends ListPanel {
 				break;
 			case "deletePlayer" :
 				$this->doDeletePlayer();
-				LibTools::set("page", 'playerList');
+				Ss::setPage('playerList');
 				break;
 			case "deleteGamePlayed" :
 				$this->doDeleteGamePlayed();
 				break;
 			case "editTournament" :
-				$g = LibTools::doEditTournament($g);
+				$g = MenuPanel::doEditTournament($g);
 				break;
 		}
 		return $g;
@@ -74,11 +82,11 @@ class PlayerPanel extends ListPanel {
 	 * Initialisation du panel PlayerList
 	 * */
 	function doInit($g) {
-		$this->player 				= $this->dao->playerDao->get($this->id);
+		$sess 						= Ss::get();
+		$this->player 				= $sess->dao->playerDao->get($this->id);
 		$g['player'] 				= $this->player;
-		$g['gamePlayed']			= $this->dao->playerGameDao->getList($this->id);
-		$g['participationList']		= $this->dao->playerDao->getParticipationList($this->id);
-		$g['gameList']			 	= $this->dao->gameDao->getList();
+		$g['gamePlayed']			= $sess->dao->playerGameDao->getList($this->id);
+		$g['participationList']		= $sess->dao->playerDao->getParticipationList($this->id);
 		return $g;
 	}
 	
@@ -111,7 +119,7 @@ class PlayerPanel extends ListPanel {
 		$mail	= $savePlayer["mail"];
 		$tel	= $savePlayer["tel"];
 		
-		$this->dao->playerDao->save($this->id, $pseudo, $prenom, $nom, $mail, $tel);
+		Ss::get()->dao->playerDao->save($this->id, $pseudo, $prenom, $nom, $mail, $tel);
 	}
 	
 	/***********************************************************************
@@ -126,7 +134,7 @@ class PlayerPanel extends ListPanel {
 			return;
 		}
 		foreach($gamePlayed as $id_game => $id_char) {
-			$this->dao->playerGameDao->save($this->id, $id_game, $id_char);
+			Ss::get()->dao->playerGameDao->save($this->id, $id_game, $id_char);
 		}
 		
 	}	
@@ -138,7 +146,7 @@ class PlayerPanel extends ListPanel {
 		if(!LibTools::isAdmin()) {
 			return;
 		}
-		$this->dao->playerDao->toggleStatus($this->id);
+		Ss::get()->dao->playerDao->toggleStatus($this->id);
 	}
 	
 	/***********************************************************************
@@ -148,7 +156,7 @@ class PlayerPanel extends ListPanel {
 		if(!LibTools::isAdmin()) {
 			return;
 		}
-		$this->dao->playerDao->deletePlayer($this->id);
+		Ss::get()->dao->playerDao->deletePlayer($this->id);
 	}
 	
 	/***********************************************************************
@@ -159,7 +167,7 @@ class PlayerPanel extends ListPanel {
 			return;
 		}
 		$id_game = $_POST['selectIdGame'];
-		$this->dao->playerGameDao->remove($this->id, $id_game);
+		Ss::get()->dao->playerGameDao->remove($this->id, $id_game);
 	}
 	
 	/***********************************************************************
@@ -177,16 +185,14 @@ class PlayerPanel extends ListPanel {
 		$gameList 	= $g['gameList'];
 		
 		foreach( $gameList as $id_game => $game) {
-			foreach( $game as $key => $value) {
-				LibTools::setLog("game $id_game : key=$id_game ; value=$value ");
-			}
+			LibTools::setLog("game $game->name : id=$game->id ; code=$game->code ");
 		}
 		
 		foreach( $new_game as $id_game) {
-			$gameCode 	= $gameList[$id_game]['code'];
-			$id_char	= $this->dao->paramDao->load("CHAR_UNKNOWN", $gameCode);
+			$gameCode 	= $gameList[$id_game]->code;
+			$id_char	= Ss::get()->char_unknown->id;
 			LibTools::setLog("insert game : id_game=$id_game ; game_code=$gameCode ; id_char=$id_char");
-			$this->dao->playerGameDao->insert($this->id, $id_game, $id_char);
+			Ss::get()->dao->playerGameDao->insert($this->id, $id_game, $id_char);
 		}
 		
 	}
@@ -209,7 +215,7 @@ class PlayerPanel extends ListPanel {
 	?>	
 			<div class="divTableRow characterRow" >
 				<div class="divTableCell rowValue" 			title="Tournament Group"><?php echo $e['tournament_group_name'];?></div>
-				<div class="divTableCell rowValue" 			title="Tournament Name - Go to this tournament"	
+				<div class="divTableCell rowValue clickable" 			title="Tournament Name - Go to this tournament"	
 					onclick="setVar('selectIdTournament', <?php echo $e['id_tournament']; ?>);setAction('editTournament')"><?php echo $e['tournament_name']; ?></div>
 				<div class="divTableCell rowValue date"		title="Starting Date"	><?php echo $e['date_start']; ?></div>
 				<div class="divTableCell rowValue rank" 	title="Ranking"			><?php echo $e['ranking']; ?></div>
@@ -276,14 +282,14 @@ class PlayerPanel extends ListPanel {
 	 * affiche la liste des jeux
 	 * */
 	function printGameList($g) {
-		$gameList = $g['gameList'];
+		$gameList = Ss::get()->gameMap;
 		$gamePlayed = $g['gamePlayed'];
 		echo '<div id="divGameList" class="hiddenDiv">';
 		echo '<select id="selectGameList" multiple="multiple" name="new_game[]">';
 		foreach($gameList as $game) {
-			if(!isset($gamePlayed[$game['id']])) {
+			if(!isset($gamePlayed[$game->id])) {
 				// on ajoute le jeu dans la liste uniquement si on y joue pas déjà
-				echo '<option value="'.$game['id'].'">'.$game['name'].'</option>';
+				echo '<option value="'.$game->id.'">'.$game->name.'</option>';
 			}
 		}
 		echo '</select>';
@@ -295,20 +301,22 @@ class PlayerPanel extends ListPanel {
 	 * affiche la liste des jeux joués par le joueur
 	 * */
 	function printGamePlayer($g) {
-		$gameList = $g['gamePlayed'];
+		$gamePlayedList = $g['gamePlayed'];
 		?>
 		<div class="spaceRow">&nbsp;</div>
 		<div class="divTable">
 			<div class="divTableBody">
 
 		<?php
-		foreach($gameList as $id_game => $game) {
-			$charList = $this->dao->characterDao->getList($id_game);
+		$sess = Ss::get();
+		$charDao = $sess->dao->characterDao;
+		foreach($gamePlayedList as $id_game => $gamePlayed) {
+			$charList = $charDao->getList($id_game);
 		?>
 			<div class="divTableRow characterRow" >
-				<div class="divTableCell game" > <?php echo $game['name']; ?></div>
+				<div class="divTableCell game" > <?php echo $gamePlayed['name']; ?></div>
 				<?php
-				$this->printPlayerCharacter($g, $game, $charList);
+				$this->printPlayerCharacter($g, $gamePlayed, $charList);
 				if(LibTools::isAdmin()) {
 					?>
 				<div class="divTableCell divDelete" >
@@ -331,24 +339,24 @@ class PlayerPanel extends ListPanel {
 	/***********************************************************************
 	 * affiche la cellule character
 	 * */
-	function printPlayerCharacter($g, $game, $charList) {
+	function printPlayerCharacter($g, $gamePlayed, $charList) {
 		$player 	= $this->player;
-		$id_game	= $game['id'];
-		$char 		= $charList[$game['id_character']];
-		$id_char 	= $char['id'];
+		$id_game	= $gamePlayed['id'];
+		$char 		= $charList[$gamePlayed['id_character']];
+		$id_char 	= $char->id;
 		if(LibTools::isAdmin()) {
 	?>	
-			<div class="divTableCell rowValue characterCell">
-				<div class="character <?php echo $char['css_class']; ?>" 
-					title="<?php echo $char['name']; ?> : click to edit"
+			<div class="divTableCell rowValue characterCell noselect" >
+				<div class="character <?php echo $char->css_class; ?> clickable"
+					title="<?php echo $char->name; ?> : click to edit"
 					onclick="toggleDisplay('<?php echo "gamePlayed[$id_game]";?>');">&nbsp;</div>
 	<?php	
 			$this->combobox->id_elem 			= "gamePlayed[$id_game]";
 			$this->combobox->cssClass 			= 'selectPlayerChar hiddenDiv';
 			$this->combobox->arr 				= $charList;
 			$this->combobox->id_select			= $id_char;
-			$this->combobox->libelleCallback	= 'name';
-			$this->combobox->title				= 'Select the character used for '.$game['name'];
+			$this->combobox->libelleCallback	= 'libelleCharacter';
+			$this->combobox->title				= 'Select the character used for '.$gamePlayed['name'];
 			$this->combobox->doPrint();
 			
 	?>
@@ -356,7 +364,7 @@ class PlayerPanel extends ListPanel {
 	<?php	
 		} else {
 	?>	
-			<div class="character <?php echo $char['css_class']; ?> divTableCell" title="<?php echo $char['name']; ?>">&nbsp;</div>
+			<div class="character <?php echo $char->css_class; ?> divTableCell noselect" title="<?php echo $char->name; ?>">&nbsp;</div>
 	<?php
 		}
 	}

@@ -21,13 +21,13 @@ class CharacterDao extends AbstractDao {
 	 * Renvoie la liste complete des joueurs
 	 * */
 	function getList($id_game) {		
-		$sql = "select c.* 
+		$sql = "select * 
 		from `character` c
 		where c.id_game = $id_game
 		order by c.name ";
 		
 		LibTools::setLog("CharacterDao.getList");
-		$arr = $this->fetch_map($sql, 'id');
+		$arr = $this->fetch_map($sql, 'id', 'mapperCharacter');
 		
 		return $arr;
 	}
@@ -39,14 +39,14 @@ class CharacterDao extends AbstractDao {
 
 class GameDao extends AbstractDao {
 	/***********************************************************************
-	 * Renvoie la liste complete des joueurs
+	 * Renvoie la liste complete des jeux
 	 * */
 	function getList() {		
 		$sql = "select g.* 
 		from `game` g
 		order by g.name ";
 		
-		$arr = $this->fetch_map($sql, 'id');
+		$arr = $this->fetch_map($sql, 'id', 'mapperGame');
 		
 		return $arr;
 	}
@@ -190,7 +190,7 @@ class ParticipantDao extends AbstractDao {
 	 * renvoie la liste personnage joué par les joueur du tournoi
 	 */
 	function getPlayerCharacterList($id_tournament) {
-		$sql = "select pp.id_player, t.id_game, c.name, c.css_class
+		$sql = "select pp.id_player, t.id_game, c.id as id_char, c.name, c.css_class
 			 from participant pp
 			 join tournament t
 			   on t.id = pp.id_tournament

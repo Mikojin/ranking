@@ -46,7 +46,7 @@ class PlayerListPanel extends ListPanel {
 				break;
 			case "editPlayer" :
 				// $g = $this->doEditPlayer($g);
-				$g = LibTools::doEditPlayer($g);
+				$g = MenuPanel::doEditPlayer($g);
 				break;
 			case "toggleStatusPlayer" :
 				$this->doToggleStatusPlayer();
@@ -72,9 +72,9 @@ class PlayerListPanel extends ListPanel {
 	 * */
 	function initPanelPlayerList($g) {
 		if(LibTools::isAdmin()) {
-			$g['playerList'] = $this->dao->playerDao->getListAll();
+			$g['playerList'] = Ss::get()->dao->playerDao->getListAll();
 		} else {
-			$g['playerList'] = $this->dao->playerDao->getList();
+			$g['playerList'] = Ss::get()->dao->playerDao->getList();
 		}
 		return $g;
 	}
@@ -141,23 +141,8 @@ class PlayerListPanel extends ListPanel {
 		$mail	= $savePlayer["mail"];
 		$tel	= $savePlayer["tel"];
 		
-		$this->dao->playerDao->save($id, $pseudo, $prenom, $nom, $mail, $tel);
+		Ss::get()->dao->playerDao->save($id, $pseudo, $prenom, $nom, $mail, $tel);
 	}
-	
-	/***********************************************************************
-	 * édite les informations du joueur
-	 * */
-	// function doEditPlayer() {
-		// $id_player = $_POST['select_id_player'];
-		// if(LibTools::isBlank($id_player)) {
-			// LibTools::setLog("Edit player KO : id_player is blank");
-			// return $g;
-		// }
-		// LibTools::setLog("Edit Player OK : id_player=$id_player");
-		// LibTools::set("page", 'player');
-		// LibTools::set("id_player", $id_player);
-		// return $g;
-	// }
 		
 	/***********************************************************************
 	 * masque le joueur
@@ -169,7 +154,7 @@ class PlayerListPanel extends ListPanel {
 		$savePlayer = $_POST['savePlayer'];
 		$id 	= $savePlayer["id"];
 		
-		$this->dao->playerDao->toggleStatus($id);
+		Ss::get()->dao->playerDao->toggleStatus($id);
 	}
 	
 	/***********************************************************************
@@ -182,7 +167,7 @@ class PlayerListPanel extends ListPanel {
 		$savePlayer = $_POST['savePlayer'];
 		$id 	= $savePlayer["id"];
 		
-		$this->dao->playerDao->deletePlayer($id);
+		Ss::get()->dao->playerDao->deletePlayer($id);
 	}
 	
 	/***********************************************************************
@@ -232,16 +217,13 @@ class PlayerListPanel extends ListPanel {
 		$id = $player->id;
 	?>	
 			<div id="<?php echo "div_player_$id";?>" class="divTableRow characterRow" >
-				<div class="divTableCell edit" 		title="Go to Player page"	>
-					<input type="button" 
-						onclick="setVar('select_id_player', <?php echo $id; ?>);setAction('editPlayer')" 
-						value="Edit" /></div>
 				<div class="divTableCell edit" 		title="Modify this player"	>
 					<input type="button" 
 						onclick="displayPlayerEdit(<?php echo $id;?>)"
 						value="<?php echo $id;?>" /></div>
-				<div class="divTableCell <?php echo $player->status == 'H'?'pseudo hidden':'pseudo';?>" 	
-					title="Pseudo"	id="<?php echo "player_pseudo_$id";?>"	><?php echo $player->pseudo;?></div>
+				<div class="divTableCell clickable <?php echo $player->status == 'H'?'pseudo hidden':'pseudo';?>"
+					onclick="setVar('select_id_player', <?php echo $id; ?>);setAction('editPlayer')" 	
+					title="Pseudo - Go to Player profile"	id="<?php echo "player_pseudo_$id";?>"	><?php echo $player->pseudo;?></div>
 				<div class="divTableCell prenom" 	title="Prenom"	id="<?php echo "player_prenom_$id";?>"	><?php echo $player->prenom; ?></div>
 				<div class="divTableCell nom" 		title="Nom"		id="<?php echo "player_nom_$id";?>"		><?php echo $player->nom; ?></div>
 				<div class="divTableCell email"		title="E-mail"	id="<?php echo "player_mail_$id";?>"	><?php echo $player->email;?></div>

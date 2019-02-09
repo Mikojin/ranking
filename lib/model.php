@@ -5,7 +5,42 @@
  * model.php
  * Contient les classes représentant le model métier de l'application
  *****************************************************************************/
+class Session {
+	public $init;
+	public $user;	// User
+	public $dao;	// catalogue Dao
 
+	public $game;	// Game
+	public $page;	// current page name
+	public $id_player;
+	public $id_tournament;
+
+	public $gameMap;
+	public $characterMap;
+	public $char_unknown;
+	
+	function __construct() {
+		$init = false;
+	}
+}
+
+class User {
+	public $login;
+	public $right;
+	
+	function __construct($right='') {
+		$this->right 	= $right;
+	}
+}
+
+class Game {
+	public $id;
+	public $code;
+	public $name;
+	function __construct($id=null) {
+		$this->id 	= $id;
+	}
+}
  
 class PlayerWrapper {
 	public $id;
@@ -26,6 +61,9 @@ class PlayerWrapper {
 	public $previous_points;
 	public $new_points;
 	
+	function __construct($id=null) {
+		$this->id 	= $id;
+	}
 }
  
 
@@ -52,6 +90,9 @@ class Ranking {
 	public $rank;
 	public $rank_display;
 
+	function __construct($id_game=null) {
+		$this->id_game 	= $id_game;
+	}
 }
  
 class Character {
@@ -64,6 +105,13 @@ class Character {
 	public $css_class;
 	public $filename;
 	
+	function __construct($id=null) {
+		$this->id 	= $id;
+	}
+	
+	function __toString() {
+		return "id=$this->id ; id_game=$this->id_game ; name=$this->name ; css=$this->css_class ; file=$this->filename";
+	}
 }
 
 class Player {
@@ -75,6 +123,9 @@ class Player {
 	public $telephone;
 	public $status;
 	
+	function __construct($id=null) {
+		$this->id 	= $id;
+	}
 }
 
 class Participant extends Player {
@@ -87,6 +138,10 @@ class Participant extends Player {
 	
 	public $name;
 	public $css_class;
+
+	function __construct($id_player=null) {
+		$this->id_player 	= $id_player;
+	}
 }
 
 class Tournament {
@@ -102,6 +157,10 @@ class Tournament {
 	public $name;
 	public $date_start;
 	public $date_end;
+
+	function __construct($id=null) {
+		$this->id 	= $id;
+	}
 }
 
 class Scoring {
@@ -125,6 +184,10 @@ class Season {
 	public $date_start;
 	public $date_end;
 	
+
+	function __construct($id=null) {
+		$this->id 	= $id;
+	}
 }
 
 ?>

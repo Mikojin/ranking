@@ -7,6 +7,8 @@
  *****************************************************************************/
 
 require_once "./lib/lib_tools.php";
+require_once "./lib/session.php";
+
 
 /*****************************************************************************
  * Toutes les méthodes prennent et doivent renvoyer $g : variable globale

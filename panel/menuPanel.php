@@ -13,10 +13,8 @@ require_once "./panel/iPanel.php";
 
 class MenuPanel implements IPanel {
 		
-	public $dao;
 	
 	function __construct() {
-		$this->dao = new Dao();
 	}
 	
 	//#########################################################################
@@ -46,6 +44,42 @@ class MenuPanel implements IPanel {
 	}
 	
 	//#########################################################################
+	// Static
+	//#########################################################################
+
+				
+	/***********************************************************************
+	 * renvoie vers le profil du joueur
+	 * */
+	static function doEditPlayer() {
+		$id_player = $_POST['select_id_player'];
+		if(LibTools::isBlank($id_player)) {
+			LibTools::setLog("Edit player KO : id_player is blank");
+			return $g;
+		}
+		LibTools::setLog("Edit Player OK : id_player=$id_player");
+		Ss::setPage('player');
+		LibTools::set("id_player", $id_player);
+		return $g;
+	}
+	
+	/***********************************************************************
+	 * Edit le Tournament selectionne
+	 * */
+	static function doEditTournament($g) {
+		$idTournament = $_POST['selectIdTournament'];
+		if(LibTools::isBlank($idTournament)) {
+			LibTools::setLog("Edit Tournament KO : idTournament is blank");
+			return $g;
+		}
+		LibTools::setLog("Edit Tournament OK : idTournament=$idTournament");
+		Ss::setPage('tournament');
+		LibTools::set("idTournament", $idTournament);
+		//$r = $this->dao->tournamentDao->deleteTournament($idTournament);
+		return $g;
+	}
+	
+	//#########################################################################
 	//#########################################################################
 
 	/***********************************************************************
@@ -55,38 +89,20 @@ class MenuPanel implements IPanel {
 		$action = $_POST['action'];
 		switch($action) {
 			case 'pageRanking' :
-				LibTools::set('page', 'ranking');
+				Ss::setPage('ranking');
 				return true;
 			case 'pagePlayerList' :
-				LibTools::set('page', 'playerList');
+				Ss::setPage('playerList');
 				return true;
 			case 'pageTournamentList' :
-				LibTools::set('page', 'tournamentList');
+				Ss::setPage('tournamentList');
 				return true;
 			case 'pageScoring' :
-				LibTools::set('page', 'scoring');
+				Ss::setPage('scoring');
 				return true;
 		}
 		return false;
 	}
-	
-	/***********************************************************************
-	 * vérifie la validite du login/password et met à jour les droits de l'utilisateur 
-	 * */
-	function checkLogin($username, $password) {
-		
-		$arr = $this->dao->userDao->get($username, $password);
-		
-		$nbRows = count($arr);
-		if($nbRows==1) {
-			$row = $arr[0];
-			LibTools::set('user_right', $row['right']);
-		} else {
-			LibTools::set('user_right', '');
-			LibTools::setLog('user error');
-		}
-	}
-
 	
 	/***********************************************************************
 	 * si admin, imprime le panel menu, sinon de login.
@@ -94,7 +110,7 @@ class MenuPanel implements IPanel {
 	function printPanel() {
 		?>
 	<div class="menuPanel mainMenuPanel" id="menuPanel" >
-		<div class="buttonMenuLogin noselect" onclick="javascript:toggleDisplay('menu');">&gt;</div>
+		<div class="buttonMenuLogin noselect clickable" onclick="javascript:toggleDisplay('menu');">&gt;</div>
 		<?php
 			$this->printMenuForm();
 		?>

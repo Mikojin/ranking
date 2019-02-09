@@ -38,11 +38,9 @@ function libelleFont($value) {
  * Classe regroupant les fonctions d'administration
  **/
 class AdminPanel implements IPanel {
-	public $dao;
 	public $combobox;
 	
 	function __construct() {
-		$this->dao = new Dao();
 		$this->combobox = new Combobox();
 	}
 
@@ -52,8 +50,9 @@ class AdminPanel implements IPanel {
 	//#########################################################################
 	
 	public function init($g) {
-		$id_game = $g['id_game'];
-		$g['playerList'] 	= $this->dao->playerDao->getListNotRanked($id_game);
+		// $s = Ss::get();
+		// $id_game = $s->game->id;
+		// $g['playerList'] 	= ->dao->playerDao->getListNotRanked($id_game);
 		return $g;
 	}
 	
@@ -82,7 +81,8 @@ class AdminPanel implements IPanel {
 	 * gestion des actions de ranking
 	 * */
 	function treatAdminAction($g) {
-		$id_game = $g['id_game'];
+		$s = Ss::get();
+		$id_game = $s->game->id;
 		$action = $_POST['action'];
 		LibTools::setLog("Admin Action : ".$action);
 		if(!isset($action)) {
@@ -97,10 +97,10 @@ class AdminPanel implements IPanel {
 				//$this->dao->rankingDao->saveNewPoint($id_game, $_POST["player"]);
 				return true;
 			case 'updateScore' :
-				$this->dao->rankingDao->updateScore($id_game, $_POST["player"]);
+				$s->dao->rankingDao->updateScore($id_game, $_POST["player"]);
 				return true;
 			case 'updateRank' :
-				$this->dao->otherDao->updateRank($id_game);
+				$s->dao->otherDao->updateRank($id_game);
 				return true;
 			case 'addSeason' :
 				$this->doAddSeason();
@@ -115,7 +115,7 @@ class AdminPanel implements IPanel {
 				$this->doAddNewPlayer();
 				return true;
 			case 'deletePlayerRanking' :
-				$this->dao->rankingDao->remove($_POST['id_game'], $_POST['deletePlayerRanking']);
+				$s->dao->rankingDao->remove($_POST['id_game'], $_POST['deletePlayerRanking']);
 				return true;
 		}
 		return false;
@@ -126,6 +126,7 @@ class AdminPanel implements IPanel {
 	 * update de la font
 	 * */
 	function updateCSSFile($g) {
+		$s = Ss::get();
 		$this->saveParamIfChange('font_rank');
 		$this->saveParamIfChange('font_score');
 		$this->saveParamIfChange('font_pseudo');
@@ -137,10 +138,10 @@ class AdminPanel implements IPanel {
 		$out .= LibTools::printFontCss('font_name' 		);
 		LibTools::writeFile("./font.css", $out);
 		
-		$g['charPath'] 		= $this->dao->paramDao->load("PATH","character");
-		$g['charList'] 		= $this->dao->characterDao->getList($g['id_game']);
+		$g['charPath'] 		= $s->dao->paramDao->load("PATH","character");
+		//$g['charList'] 		= $s->dao->characterDao->getList($s->game->id);
 
-		$out = CharacterCSS::writeCharacterCSS($g['charPath'], $g['charList']);
+		$out = CharacterCSS::writeCharacterCSS($g['charPath'], $s->characterMap);
 		LibTools::writeFile("./character.css", $out);
 		return $g;
 	}
@@ -153,7 +154,7 @@ class AdminPanel implements IPanel {
 			return;
 		}
 		LibTools::set($param, $_POST[$param]);
-		$this->dao->paramDao->save('FONT', $param, $_POST[$param]);
+		Ss::get()->dao->paramDao->save('FONT', $param, $_POST[$param]);
 
 	}
 
@@ -179,7 +180,7 @@ class AdminPanel implements IPanel {
 		$id_char = $_POST['insert_id_character'];
 		$points = $_POST['insert_points'];
 		
-		$this->dao->rankingDao->insert($id_game, $id_player, $id_char, $points);
+		Ss::get()->dao->rankingDao->insert($id_game, $id_player, $id_char, $points);
 	}
 
 	/***********************************************************************
@@ -192,7 +193,7 @@ class AdminPanel implements IPanel {
 		$mail = $_POST['new_player_mail'];
 		$tel = $_POST['new_player_tel'];
 		
-		$this->dao->playerDao->insert($pseudo, $prenom, $nom, $mail, $tel);
+		Ss::get()->dao->playerDao->insert($pseudo, $prenom, $nom, $mail, $tel);
 	}
 
 	/***********************************************************************
@@ -203,7 +204,7 @@ class AdminPanel implements IPanel {
 		$season_date_start	= $_POST['new_season_date_start'];
 		$season_date_end	= $_POST['new_season_date_end'];
 		
-		$this->dao->seasonDao->insert($season_name, $season_date_start, $season_date_end);
+		Ss::get()->dao->seasonDao->insert($season_name, $season_date_start, $season_date_end);
 	}
 
 	/***********************************************************************
@@ -218,7 +219,7 @@ class AdminPanel implements IPanel {
 			return;
 		}
 		LibTools::setLog("delete id Season = $idSeason");
-		$this->dao->seasonDao->deleteSeason($idSeason);
+		Ss::get()->dao->seasonDao->deleteSeason($idSeason);
 	}
 	
 	/***********************************************************************
@@ -245,57 +246,10 @@ class AdminPanel implements IPanel {
 	function printAdminVar($g) {
 		if(LibTools::isAdmin()) {
 	?>
-		<input type="hidden" name="id_game" value="<?php echo $g['id_game']; ?>"/>
+		<input type="hidden" name="id_game" value="<?php echo Ss::get()->game->id; ?>"/>
 		<input type="hidden" id="deletePlayerRanking" name="deletePlayerRanking" value=""/>
 	<?php
 		}
-	}
-
-	/***********************************************************************
-	 * affiche le block d'administration
-	 * */
-	function printAdminBar_OLD($g) {
-		if(LibTools::isAdmin()) {
-	?>
-		<div class="divAdminMenu divAdminTab">
-			<div class="row">
-				<div class="head">
-					<input type="button" value="+" 
-						title="open the full admin menu"
-						onsubmit="return false;" onclick="toggleDisplay('divAdminMenu');"/>
-				</div>
-				<div>
-					<input class="buttonMenuAdmin" type="button" 
-						title="update the previous rank to the current rank (reset the progress)"
-						value="Update Rank" onclick="return setActionTest('updateRank');"/>
-				</div>
-				<div>
-					<input class="buttonMenuAdmin" 
-						title="apply the temporary score to the current score and update the main character"
-						type="button" value="Update Points" onclick="setAction('updateScore');"/>
-				</div>
-				<div>
-					<input class="buttonMenuAdmin" 
-						title="save the temporary score and update the main character"
-						type="button" value="Save" onclick="setAction('save');"/>
-				</div>
-				<div>
-					<input class="buttonMenuAdmin" 
-						title="refresh the page"
-						type="button" value="Refresh" onclick="setAction('refresh');"/>
-				</div>
-			</div>
-			<div id="divAdminMenu" class="divAdminTab hiddenDiv">
-	<?php
-		$this->printFontSelector($g);
-		$this->printInsertPlayerRanking($g);
-		$this->printInsertNewPlayer($g);
-	?>	
-			</div>
-		</div>
-		<div class="spaceRow">&nbsp;</div>
-	<?php
-		}	
 	}
 
 	/***********************************************************************

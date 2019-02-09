@@ -25,8 +25,8 @@ EOS;
 	static function writeCharacterCSS($charPath, $charList) {
 		$out = '';
 		foreach ($charList as $id => $char) {
-			if($char['css_class'] && $char['filename']) {
-				$out .= CharacterCSS::writeCharacterClass($charPath, $char['css_class'], $char['filename']);
+			if($char->css_class && $char->filename) {
+				$out .= CharacterCSS::writeCharacterClass($charPath, $char->css_class, $char->filename);
 			}
 		}
 		

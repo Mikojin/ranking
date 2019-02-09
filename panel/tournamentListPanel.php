@@ -37,7 +37,7 @@ class TournamentListPanel extends ListPanel {
 					$g = $this->doAddTournament($g);
 					break;
 				case "editTournament" :
-					$g = LibTools::doEditTournament($g);
+					$g = MenuPanel::doEditTournament($g);
 					break;
 				case "deleteTournament" :
 					$g = $this->doDeleteTournament($g);
@@ -61,9 +61,9 @@ class TournamentListPanel extends ListPanel {
 	 * Initialisation du panel
 	 * */
 	function doInit($g) {
-		$id_game = $g['id_game'];
-		$g['typeScoreList'] 	= $this->dao->typeScoreDao->getList();
-		$g['tournamentList'] 	= $this->dao->tournamentDao->getList($id_game);
+		$id_game = Ss::get()->game->id;
+		$g['typeScoreList'] 	= Ss::get()->dao->typeScoreDao->getList();
+		$g['tournamentList'] 	= Ss::get()->dao->tournamentDao->getList($id_game);
 		// $out = json_encode($g['tournamentList']);
 		// LibTools::setLog("Tournament List : $out");
 		return $g;
@@ -76,32 +76,19 @@ class TournamentListPanel extends ListPanel {
 		if(!LibTools::isAdmin()) {
 			return;
 		}
-		$id_game = $g['id_game'];
+		$id_game = Ss::get()->game->id;
 		$group_name 	= $_POST['tournament_group_name'];
 		$name 			= $_POST['tournament_name'];
 		$id_type_score	= $_POST['tournament_id_type_score'];
 		$date_start 	= $_POST['tournament_date_start'];
 		$date_end 		= $_POST['tournament_date_end'];
+		if(!isset($date_end) || $date_end == '') {
+			$date_end = $date_start;
+		}
 
-		$this->dao->tournamentDao->insert($id_game, $group_name, $name, $id_type_score, $date_start, $date_end);
+		Ss::get()->dao->tournamentDao->insert($id_game, $group_name, $name, $id_type_score, $date_start, $date_end);
 		return $g;
 	}
-
-	/***********************************************************************
-	 * Edit le Tournament selectionne
-	 * */
-	// function doEditTournament($g) {
-		// $idTournament = $_POST['selectIdTournament'];
-		// if(LibTools::isBlank($idTournament)) {
-			// LibTools::setLog("Edit Tournament KO : idTournament is blank");
-			// return $g;
-		// }
-		// LibTools::setLog("Edit Tournament OK : idTournament=$idTournament");
-		// LibTools::set("page", 'tournament');
-		// LibTools::set("idTournament", $idTournament);
-		// //$r = $this->dao->tournamentDao->deleteTournament($idTournament);
-		// return $g;
-	// }
 	
 	/***********************************************************************
 	 * supprime un Tournament à la liste
@@ -115,7 +102,7 @@ class TournamentListPanel extends ListPanel {
 			LibTools::setLog("Delete Tournament KO : idTournament is blank");
 			return $g;
 		}
-		$r = $this->dao->tournamentDao->deleteTournament($idTournament);
+		$r = Ss::get()->dao->tournamentDao->deleteTournament($idTournament);
 		return $g;
 	}
 	
@@ -172,7 +159,9 @@ class TournamentListPanel extends ListPanel {
 				</div>
 				<input type="hidden" name="tournament_id_<?php echo $id; ?>" />
 				<div class="divTableCell rowValue" 	title="Group"		><?php echo $tournament->group_name;?></div>
-				<div class="divTableCell rowValue" 	title="Name"		><?php echo $tournament->name; ?></div>
+				<div class="divTableCell rowValue clickable" 	title="Name"		
+					title="Open this tournament"
+					onclick="setVar('selectIdTournament', <?php echo $id; ?>);setAction('editTournament')"><?php echo $tournament->name; ?></div>
 				<div class="divTableCell rowValue" 	title="Type Score"	><?php echo $typeScoreList[$tournament->id_type_score]['type_name']; ?></div>
 				<div class="divTableCell rowValue date" 	title="Date Start"	><?php echo $tournament->date_start; ?></div>
 				<div class="divTableCell rowValue date" 	title="Date End"	><?php echo $tournament->date_end; ?></div>
@@ -196,7 +185,9 @@ class TournamentListPanel extends ListPanel {
 				</div>
 				<input type="hidden" name="tournament_id_<?php echo $id; ?>" />
 				<div class="divTableCell rowValue" 	title="Group"		><?php echo $tournament->group_name;?></div>
-				<div class="divTableCell rowValue" 	title="Name"		><?php echo $tournament->name; ?></div>
+				<div class="divTableCell rowValue clickable" 	title="Name"		
+					title="Open this tournament"
+					onclick="setVar('selectIdTournament', <?php echo $id; ?>);setAction('editTournament')"><?php echo $tournament->name; ?></div>
 				<div class="divTableCell rowValue" 	title="Type Score"	><?php echo $typeScoreList[$tournament->id_type_score]['type_name']; ?></div>
 				<div class="divTableCell rowValue date" 	title="Date Start"	><?php echo $tournament->date_start; ?></div>
 				<div class="divTableCell rowValue date" 	title="Date End"	><?php echo $tournament->date_end; ?></div>

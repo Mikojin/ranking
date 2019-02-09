@@ -73,6 +73,15 @@ function mapperParticipant($row) {
 	return $o;
 }
 
+function mapperGame($row) {
+	$o = new Game();
+	$o->id		= $row['id'];
+	$o->code	= $row['code'];
+	$o->name 	= $row['name'];
+	
+	return $o;
+}
+
 function mapperCharacter($row) {
 	$o = new Character();
 	

@@ -20,24 +20,22 @@ class MasterPage {
 	public $menuPanel;
 	public $adminPanel;
 
-	function __construct($id_game) {
+	function __construct() {
 		$this->g = array();
-		$this->g['id_game'] = $id_game;
 		$this->loginPanel 	= new LoginPanel();
 		$this->menuPanel 	= new MenuPanel();
 		$this->adminPanel 	= new AdminPanel();
 	}
 	
 	public function init() {
-		LibTools::init();
-		if(!LibTools::issession('page')) {
-			LibTools::set('page', 'ranking');
-		}
 		$this->initPage();
 	}
 
 	public function initPage() {
-		$pageName = LibTools::get('page');
+		// $pageName = LibTools::get('page');
+		$sess = LibTools::getSession();
+		$pageName = $sess->page;
+		LibTools::setLog("MasterPage.initPage = $pageName");
 		switch ($pageName) {
 			case 'ranking' :
 				$this->initPageRanking();
@@ -76,7 +74,7 @@ class MasterPage {
 	
 	public function initPagePlayer(){
 		require_once "./panel/playerPanel.php";
-		$id_player	= LibTools::get("id_player");
+		$id_player	= LibTools::get('id_player');
 		$panel 		= new PlayerPanel($id_player);
 		$this->page = new Page($this->g, [$this->loginPanel, $this->menuPanel, $panel]);
 	}

@@ -13,10 +13,9 @@ require_once "./panel/iPanel.php";
 
 class LoginPanel implements IPanel {
 		
-	public $dao;
+	// public $dao;
 	
 	function __construct() {
-		$this->dao = new Dao();
 	}
 	
 	//#########################################################################
@@ -60,8 +59,10 @@ class LoginPanel implements IPanel {
 				$this->checkLogin($username, $password);
 				return true;
 			case 'logout' :
-				LibTools::set('user_right', '');
 				LibTools::closeSession();
+				return true;
+			case 'destroy' :
+				session_destroy();
 				return true;
 		}
 		return false;
@@ -71,17 +72,21 @@ class LoginPanel implements IPanel {
 	 * vérifie la validite du login/password et met à jour les droits de l'utilisateur 
 	 * */
 	function checkLogin($username, $password) {
-		
-		$arr = $this->dao->userDao->get($username, $password);
+		$sess = Ss::get();
+		$arr = $sess->dao->userDao->get($username, $password);
 		
 		$nbRows = count($arr);
 		if($nbRows==1) {
-			$row = $arr[0];
-			LibTools::set('user_right', $row['right']);
+			$row 	= $arr[0];
+			$sess->user->right 	= $row['right'];
+			$sess->user->login	= $row['login'];
+			LibTools::setLog("user = ".$sess->user->login);
 		} else {
-			LibTools::set('user_right', '');
+			$sess->user->right = '';
+			$sess->user->login = '';
 			LibTools::setLog('user error');
 		}
+		//Ss::set($sess);
 	}
 
 	
@@ -91,7 +96,7 @@ class LoginPanel implements IPanel {
 	function printPanel() {
 		?>
 	<div class="menuPanel loginPanel" id="loginPanel" >
-		<div class="buttonMenuLogin noselect" onclick="javascript:toggleDisplay('login');">&gt;</div>
+		<div class="buttonMenuLogin noselect clickable" onclick="javascript:toggleDisplay('login');">&gt;</div>
 		<?php
 		if(LibTools::isAdmin()) {
 			$this->printMenuForm();
@@ -119,6 +124,7 @@ class LoginPanel implements IPanel {
 			</div>
 			<div class="divCellLogin buttonMenu">
 				<input name="login" id="login" type="button" value="Login" onclick="setAction('login');"/>
+				<input name="destroy" id="destroy" type="button" value="Clear Cache" onclick="setAction('destroy');"/>
 			</div>
 		</div>
 	<?php 
@@ -134,6 +140,7 @@ class LoginPanel implements IPanel {
 			<div class="divTableRow">
 			<div class="divTableCell divCellMenu ">
 				<input name="logout" id="logout" type="button" value="Logout" onclick="setAction('logout');"/>
+				<input name="destroy" id="destroy" type="button" value="Clear Cache" onclick="setAction('destroy');"/>
 			</div>
 			</div>
 			</div>

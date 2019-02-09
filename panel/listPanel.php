@@ -16,10 +16,8 @@ require_once "./panel/iPanel.php";
 
 class ListPanel implements IPanel {
 	public $combobox;
-	public $dao;
 		
 	function __construct() {
-		$this->dao = new Dao();
 		$this->combobox = new Combobox();
 	}
 
@@ -57,7 +55,7 @@ class ListPanel implements IPanel {
 	 * Initialise les fonts de la page
 	 * */ 
 	function initFont() {
-		$mapFont = $this->dao->paramDao->loadGroup('FONT');
+		$mapFont = Ss::get()->dao->paramDao->loadGroup('FONT');
 		foreach ($mapFont as $var => $param) {
 			if(!LibTools::issession($var)) {
 				LibTools::set($var, $param['value']);	

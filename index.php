@@ -7,11 +7,13 @@
  *****************************************************************************/
 try {
 
+require_once "./lib/session.php";
 require_once "./panel/masterPage.php";
 
 $id_game = 1;
 
-$page = new MasterPage($id_game);
+Ss::init($id_game);
+$page = new MasterPage();
 
 $page->printPage();
 

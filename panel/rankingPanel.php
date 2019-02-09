@@ -59,13 +59,13 @@ class RankingPanel extends ListPanel {
 	 * */
 	function initRanking($g) {
 		LibTools::setLog("initRanking IN");
-		$id_game = $g['id_game'];
-		$g['charPath'] 		= $this->dao->paramDao->load("PATH","character");
-		$g['charList'] 		= $this->dao->characterDao->getList($id_game);
+		$sess = Ss::get();
+		$id_game = $sess->game->id;
+		// $g['charPath'] 		= $sess->dao->paramDao->load("PATH","character");
+		// $g['charList'] 		= $sess->dao->characterDao->getList($id_game);
 		$g['fontList'] 		= $this->adminPanel->getListFont();
-		$g['gameList']		= $this->dao->gameDao->getList();
-		$gameCode 			= $g['gameList'][$id_game]['code'];
-		$g['id_char_unknown'] = $this->dao->paramDao->load("CHAR_UNKNOWN", $gameCode);
+		$gameCode 			= $sess->game->code;
+		// $g['id_char_unknown'] = $this->dao->paramDao->load("CHAR_UNKNOWN", $gameCode);
 		$g = $this->initSeason($g);
 		// recupere la liste de classement des joueurs
 		//$g['rankingList'] 	= $this->dao->otherDao->getInfoRanking($id_game);
@@ -79,7 +79,7 @@ class RankingPanel extends ListPanel {
 	 * Initialisation de la season
 	 * */
 	function initSeason($g) {
-		$seasonList			= $this->dao->seasonDao->getList();
+		$seasonList			= Ss::get()->dao->seasonDao->getList();
 		$g['seasonList'] 	= $seasonList;
 		$idSeason 				= LibTools::get('idSeason');
 		if(isset($idSeason)) {
@@ -108,7 +108,6 @@ class RankingPanel extends ListPanel {
 	 * gestion des actions de ranking
 	 * */
 	function doTreatAction($g) {
-		$id_game = $g['id_game'];
 		$action = $_POST['action'];
 		if(!isset($action)) {
 			return false;
@@ -120,7 +119,7 @@ class RankingPanel extends ListPanel {
 				$g = $this->doSelectSeason($g);
 				return true;
 			case "editPlayer" :
-				$g = LibTools::doEditPlayer($g);
+				$g = MenuPanel::doEditPlayer($g);
 				break;
 		}
 		return false;
@@ -146,6 +145,8 @@ EOS;
 	 * prepare la liste de Player pour l'affichage
 	 * */
 	function prepareRankingList($g) {
+		$sess	= Ss::get();
+		$id_game = $sess->game->id;
 		$season = $g['season'];
 		if(!isset($season)) {
 			LibTools::setLog("Init Default Season");
@@ -155,7 +156,7 @@ EOS;
 			$season->date_end 	= "2100-12-31";
 		}
 		LibTools::setLog("Season id=".$season->id." - name=".$season->name);
-		$rankingList = $this->dao->otherDao->getInfoRankingFull($g['id_game'], $season->date_start, $season->date_end);
+		$rankingList = $sess->dao->otherDao->getInfoRankingFull($id_game, $season->date_start, $season->date_end);
 		// $simpleList = array();
 		// $rankingList = $g['rankingList'];
 			
@@ -193,71 +194,13 @@ EOS;
 			} else {
 				$player->rank_classe="ranksame";
 			}
-			//$player->characterCSS = getClasseCharacter($g['id_game'], $player->character);	
-			$id_char = $g['id_char_unknown'];
+			$char = $sess->char_unknown;
 			if(isset($player->id_char)) {
 				$id_char = $player->id_char;
+				$char = $sess->characterMap[$id_char];
 			}
-			$player->characterCSS = $g['charList'][$id_char]['css_class'];
+			$player->characterCSS = $char->css_class;
 			
-		}
-		$g['rankingList'] = $rankingList;
-		return $g;
-	}
-
-
-	/***********************************************************************
-	 * prepare la liste de Player pour l'affichage
-	 * */
-	function prepareRankingList_OLD($g) {
-		// recupere la liste de classement des joueurs
-		//$rankingList = $this->dao->otherDao->getInfoRanking($g['id_game']);
-		$season = $g['season'];
-		if(!isset($season)) {
-			LibTools::setLog("Init Default Season");
-			$season = new Season();
-			$season->name = "ALL TIME";
-			$season->date_start = "2000-01-01";
-			$season->date_end 	= "2100-12-31";
-		}
-		LibTools::setLog("Season id=".$season->id." - name=".$season->name);
-		$rankingList = $this->dao->otherDao->getInfoRankingFull($g['id_game'], $season->date_start, $season->date_end);
-		// $simpleList = array();
-		// $rankingList = $g['rankingList'];
-			
-		$length = count($rankingList);
-		$last_score = -1;
-		$score = 0;
-		$current_rank = 0;	
-		for($i = 0; $i < $length; $i++) {
-			$player = $rankingList[$i];
-			$score = $player->points;
-			
-			// si le score est identique au precedent score
-			if( $last_score == $score ){
-				// alors on affiche un "-"
-				//   et on garde le même rank que le précédent 
-				$player->rank_display = '-';
-				$player->rank = $current_rank;
-			} else {
-				// sinon on update tout avec la ligne en cours
-				$r = $i+1;
-				$player->rank_display = $r;
-				$player->rank = $r;
-				$current_rank = $r;
-				$last_score = $score;
-			}
-			// affichage de l'icone de progression
-			if($player->rank > $player->previous_rank) {
-				$player->rank_classe="rankdown";
-			} elseif($player->rank < $player->previous_rank) {
-				$player->rank_classe="rankup";
-			} else {
-				$player->rank_classe="ranksame";
-			}
-			//$player->characterCSS = getClasseCharacter($g['id_game'], $player->character);	
-			$player->characterCSS = $g['charList'][$player->id_char]['css_class'];
-
 		}
 		$g['rankingList'] = $rankingList;
 		return $g;
@@ -291,44 +234,19 @@ EOS;
 	/***********************************************************************
 	 * affiche le block d'un joueur
 	 * */
-	function printElement_OLD($g, $player, $i) {
-	?>	
-			<div class="divTableRow characterRow" >
-				<div class="divTableCell progress <?php echo $player->rank_classe;?>">&nbsp;</div>
-				<div class="divTableCell rank" > <?php echo $player->rank_display; ?></div>
-				<div class="divTableCell pseudoNom">
-					<div class="pseudo"><?php echo $player->pseudo;?></div>
-					<div class="nom"><?php echo "$player->prenom $player->nom"; ?></div>
-				</div>
-
-	<?php
-		$this->adminPanel->printPlayerCharacter($g, $player);
-	?>	
-				<div class="points divTableCell "><?php echo $player->points ?></div>
-	<?php
-		$this->adminPanel->printPlayerScoreUpdater($player);
-	?>	
-			</div>
-			<div class="divTableRow spaceRow"><div class="divTableCell">&nbsp;</div></div>
-	<?php
-	}
-
-	/***********************************************************************
-	 * affiche le block d'un joueur
-	 * */
 	function printElement($g, $player, $i) {
 	?>	
 			<div class="divTableRow characterRow" >
-				<div class="divTableCell progress <?php echo $player->rank_classe;?>">&nbsp;</div>
+				<div class="divTableCell progress noselect <?php echo $player->rank_classe;?>">&nbsp;</div>
 				<div class="divTableCell rank" 
 					title="Rank - previous : <?php echo $player->previous_rank; ?>"
 					><?php echo $player->rank_display; ?></div>
-				<div class="divTableCell pseudoNom" title="Go to this player profile"
+				<div class="divTableCell pseudoNom clickable" title="Go to this player profile"
 					onclick="setVar('select_id_player', <?php echo $player->id; ?>);setAction('editPlayer')" >
 					<div class="pseudo"><?php echo $player->pseudo;?></div>
 					<div class="nom"><?php echo "$player->prenom $player->nom"; ?></div>
 				</div>
-				<div class="character <?php echo $player->characterCSS; ?> divTableCell" title="<?php echo $player->character; ?>">&nbsp;</div>
+				<div class="character <?php echo $player->characterCSS; ?> divTableCell noselect" title="<?php echo $player->character; ?>">&nbsp;</div>
 				<div class="points divTableCell "
 					title="Points - previous : <?php echo $player->previous_points; ?>"
 					><?php echo $player->points?$player->points:0; ?></div>
@@ -354,7 +272,7 @@ EOS;
 				$this->combobox->arr 				= $g['seasonList'];
 				$this->combobox->libelleCallback	= 'libelleSeason';
 				$this->combobox->title				= 'Select the season for this ranking';
-				$this->combobox->cssClass 			= 'season_select';
+				$this->combobox->cssClass 			= 'season_select clickable';
 				$this->combobox->onchange			= "setAction('selectSeason');";
 				$this->combobox->doPrint();
 				?>

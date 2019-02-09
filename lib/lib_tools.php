@@ -5,6 +5,7 @@
  * lib_tools.php
  * Contient divers classes et fonctions utilitaires.
  *****************************************************************************/
+require_once "./lib/model.php";
 
 class LibTools {
  
@@ -64,11 +65,11 @@ class LibTools {
 	static function init() {
 		if(!isset($_SESSION)) {
 			session_start();
-			LibTools::setLog('');
+			$sess = LibTools::getSession();
+			LibTools::setSession($sess);
+			return true;
 		}
-		if(!LibTools::issession('user_right')) {
-			LibTools::set('user_right', '');	
-		}
+		return false;
 	}
 
 	/***********************************************************************
@@ -76,7 +77,9 @@ class LibTools {
 	 * */
 	static function closeSession() {
 		if(isset($_SESSION)) {
-			session_destroy();
+			$sess = LibTools::getSession();
+			$sess->user->right = '';
+			// session_destroy();
 		}
 	}
 
@@ -105,6 +108,26 @@ class LibTools {
 		return isset($_SESSION) && isset($_SESSION[$var]);
 	}
 
+	/***********************************************************************
+	 * recupere l'objet session
+	 * */
+	static function getSession() {
+		$sess = LibTools::get('session');
+		if( !isset($sess)) {
+			$sess = new Session();
+			LibTools::setSession($sess);
+			LibTools::setLog('initSession');
+		}
+		return $sess;
+	}
+	
+	/***********************************************************************
+	 * sauvegarde l'objet Session Utilisateur (dans la session)
+	 * */
+	static function setSession($session) {
+		LibTools::set('session', $session);
+	}
+	
 	/***********************************************************************
 	 * ecrit un message dans le log
 	 * */
@@ -171,7 +194,7 @@ class LibTools {
 	 * Test si l'utilisateur connecté est admin
 	 */
 	static function isAdmin() {
-		if('admin' == LibTools::get('user_right')) {
+		if('admin' == LibTools::getSession()->user->right) {
 			return true;
 		}
 		return false;
@@ -256,37 +279,7 @@ EOT;
 	}
 	
 	
-			
-	/***********************************************************************
-	 * renvoie vers le profil du joueur
-	 * */
-	static function doEditPlayer() {
-		$id_player = $_POST['select_id_player'];
-		if(LibTools::isBlank($id_player)) {
-			LibTools::setLog("Edit player KO : id_player is blank");
-			return $g;
-		}
-		LibTools::setLog("Edit Player OK : id_player=$id_player");
-		LibTools::set("page", 'player');
-		LibTools::set("id_player", $id_player);
-		return $g;
-	}
-	
-	/***********************************************************************
-	 * Edit le Tournament selectionne
-	 * */
-	static function doEditTournament($g) {
-		$idTournament = $_POST['selectIdTournament'];
-		if(LibTools::isBlank($idTournament)) {
-			LibTools::setLog("Edit Tournament KO : idTournament is blank");
-			return $g;
-		}
-		LibTools::setLog("Edit Tournament OK : idTournament=$idTournament");
-		LibTools::set("page", 'tournament');
-		LibTools::set("idTournament", $idTournament);
-		//$r = $this->dao->tournamentDao->deleteTournament($idTournament);
-		return $g;
-	}
+
 	
 
 

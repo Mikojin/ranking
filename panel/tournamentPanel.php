@@ -45,7 +45,7 @@ class TournamentPanel extends ListPanel {
 					$g = $this->doDeleteParticipant($g);
 					break;
 				case "editPlayer" :
-					$g = LibTools::doEditPlayer($g);
+					$g = MenuPanel::doEditPlayer($g);
 					break;
 			}
 		}
@@ -72,20 +72,19 @@ class TournamentPanel extends ListPanel {
 	 * Initialisation du panel
 	 * */
 	function doInit($g) {
-		$id_game 				= $g['id_game'];
+		$sess 					= Ss::get();
+		$id_game 				= $sess->game->id;
 		
-		$g['gameList']			= $this->dao->gameDao->getList();
-		$gameCode 				= $g['gameList'][$id_game]['code'];
-		$id_char_unknown	= $this->dao->paramDao->load("CHAR_UNKNOWN", $gameCode);
-		$g['char_unknown'] 		= $this->dao->characterDao->getList($id_game)[$id_char_unknown];
-		$g['typeScoreList'] 	= $this->dao->typeScoreDao->getList();
-		$this->tournament 		= $this->dao->tournamentDao->get($this->id);
+		$gameCode 				= $sess->gameMap[$id_game]->code;
+		//$g['char_unknown'] 		= $sess->characterMap[$id_char_unknown];
+		$g['typeScoreList'] 	= $sess->dao->typeScoreDao->getList();
+		$this->tournament 		= $sess->dao->tournamentDao->get($this->id);
 		$g['tournament'] 		= $this->tournament;
 		
-		$g['participantList'] 	= $this->dao->participantDao->getList($this->id);
-		$g['playerCharList']	= $this->dao->participantDao->getPlayerCharacterList($this->id);
+		$g['participantList'] 	= $sess->dao->participantDao->getList($this->id);
+		$g['playerCharList']	= $sess->dao->participantDao->getPlayerCharacterList($this->id);
 		$g['maxRank'] 			= count($g['participantList']);
-		$g['playerList'] 		= $this->dao->playerDao->getListTournament($this->id);
+		$g['playerList'] 		= $sess->dao->playerDao->getListTournament($this->id);
 
 
 		// $out = json_encode($g['tournamentList']);
@@ -101,14 +100,14 @@ class TournamentPanel extends ListPanel {
 			return;
 		}
 		$id 			= $this->id;
-		$id_game		= $g['id_game'];
+		$id_game		= Ss::get()->game->id;
 		$group_name 	= $_POST['tournament_group_name'];
 		$name 			= $_POST['tournament_name'];
 		$id_type_score	= $_POST['tournament_id_type_score'];
 		$date_start 	= $_POST['tournament_date_start'];
 		$date_end 		= $_POST['tournament_date_end'];
 
-		$this->dao->tournamentDao->save($id, $id_game, $group_name, $name, $id_type_score, $date_start, $date_end);
+		Ss::get()->dao->tournamentDao->save($id, $id_game, $group_name, $name, $id_type_score, $date_start, $date_end);
 		return $g;
 	}
 
@@ -124,8 +123,9 @@ class TournamentPanel extends ListPanel {
 		if(!isset($participantList)) {
 			return $g;
 		}
+		$participantDao = Ss::get()->dao->participantDao;
 		foreach ($participantList as $id => $participant) {
-			$this->dao->participantDao->save($idTournament, $participant['id_player'], $participant['ranking']);
+			$participantDao->save($idTournament, $participant['id_player'], $participant['ranking']);
 		}
 
 		return $g;
@@ -145,8 +145,9 @@ class TournamentPanel extends ListPanel {
 			return $g;
 		}
 		
+		$participantDao = Ss::get()->dao->participantDao;
 		foreach ($participantList as $id_player) {
-			$this->dao->participantDao->insert($idTournament, $id_player);
+			$participantDao->insert($idTournament, $id_player);
 		}
 
 		return $g;
@@ -165,7 +166,7 @@ class TournamentPanel extends ListPanel {
 			LibTools::setLog("Delete Tournament KO : idParticipant is blank");
 			return $g;
 		}
-		$r = $this->dao->participantDao->deleteParticipant($idTournament, $idParticipant);
+		$r = Ss::get()->dao->participantDao->deleteParticipant($idTournament, $idParticipant);
 		return $g;
 	}
 	
@@ -235,25 +236,28 @@ class TournamentPanel extends ListPanel {
 	 * affiche le block d'un scoring PUBLIC
 	 * */
 	function printElementPublic($g, $participant) {
+		$sess = Ss::get();
 		// on récupere le personnage joué
 		$playerCharlist = $g['playerCharList'];
 		$id_player = $participant->id_player;
-		$mainchar = $g['char_unknown'];
+		$mainchar = $sess->char_unknown;
+		
 		if(array_key_exists($id_player, $playerCharlist)) {
-			$mainchar = $playerCharlist[$id_player];
+			$id_main_char = $playerCharlist[$id_player]['id_char'];
+			$mainchar = $sess->characterMap[$id_main_char];
 		} 
 
 	?>	
 			<div class="divTableRow characterRow" >
 				<div class="divTableCell rowValue rank" 	title="Ranking"	><?php echo $participant->ranking;	?></div>
-				<div class="divTableCell pseudoNom" title="Go to this player profile"
+				<div class="divTableCell pseudoNom clickable" title="Go to this player profile"
 					onclick="setVar('select_id_player', <?php echo $participant->id; ?>);setAction('editPlayer')" >
 					<div class="pseudo"><?php echo $participant->pseudo;	?></div>
 					<div class="nom"><?php echo "$participant->prenom $participant->nom"; ?></div>
 				</div>
-				<div class="divTableCell rowValue characterCell" title="MainChar">
-					<div class="character <?php echo $mainchar['css_class']; ?>" 
-						title="<?php echo $mainchar['name']; ?>">&nbsp;</div></div>
+				<div class="divTableCell rowValue characterCell noselect" title="MainChar">
+					<div class="character <?php echo $mainchar->css_class; ?>" 
+						title="<?php echo $mainchar->name; ?>">&nbsp;</div></div>
 				<div class="divTableCell rowValue points" 	title="Points"	><?php echo $participant->score; 		?></div>
 			</div>
 	<?php
@@ -272,14 +276,17 @@ class TournamentPanel extends ListPanel {
 	 * affiche le block d'un scoring ADMIN
 	 * */
 	function printElementAdmin($g, $participant, $i) {
+		$sess = Ss::get();
+
 		$maxRank 		= $g['maxRank'];
 		$id 			= $participant->id;
 		// on récupere le personnage joué
 		$playerCharlist = $g['playerCharList'];
 		$id_player = $participant->id_player;
-		$mainchar = $g['char_unknown'];
+		$mainchar = $sess->char_unknown;
 		if(array_key_exists($id_player, $playerCharlist)) {
-			$mainchar = $playerCharlist[$id_player];
+			$id_main_char = $playerCharlist[$id_player]['id_char'];
+			$mainchar = $sess->characterMap[$id_main_char];
 		} 
 	?>	
 			<div class="divTableRow characterRow" >
@@ -289,13 +296,14 @@ class TournamentPanel extends ListPanel {
 					min="0" max="<?php echo $maxRank; ?>"
 					name="participant[<?php echo $id; ?>][ranking]" 
 					value="<?php echo $participant->ranking;?>" /></div>
-				<div class="divTableCell rowValue" 	title="Pseudo - Go to this player profile"	
-					onclick="setVar('select_id_player', <?php echo $participant->id; ?>);setAction('editPlayer')" ><?php echo $participant->pseudo;	?></div>
-				<div class="divTableCell rowValue" 	title="Name"	><?php echo $participant->prenom; ?></div>
-				<div class="divTableCell rowValue" 	title="Surname"	><?php echo $participant->nom; ?></div>
-				<div class="divTableCell rowValue characterCell" title="MainChar">
-					<div class="character <?php echo $mainchar['css_class']; ?>" 
-						title="<?php echo $mainchar['name']; ?>">&nbsp;</div></div>
+				<div class="divTableCell pseudoNom clickable" title="Go to this player profile"
+					onclick="setVar('select_id_player', <?php echo $participant->id; ?>);setAction('editPlayer')" >
+					<div class="pseudo"><?php echo $participant->pseudo;	?></div>
+					<div class="nom"><?php echo "$participant->prenom $participant->nom"; ?></div>
+				</div>
+				<div class="divTableCell rowValue characterCell noselect" title="MainChar">
+					<div class="character <?php echo $mainchar->css_class; ?>" 
+						title="<?php echo $mainchar->name; ?>">&nbsp;</div></div>
 				<div class="divTableCell rowValue points" 	title="Points"	><?php echo $participant->score; 		?></div>
 				<div class="divTableCell rowValue" >
 					<input type="button" class="delete"
@@ -380,7 +388,7 @@ class TournamentPanel extends ListPanel {
 		<div class="row">
 			<div>
 				<input type="button" 
-					title="insert a new tournament"
+					title="save modification of this tournament"
 					value="Save" onclick="setActionTest('saveTournament')">
 			</div>
 			<div>

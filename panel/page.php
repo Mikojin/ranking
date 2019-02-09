@@ -120,19 +120,25 @@ class Page implements IPanel {
 		foreach ($this->panels as $panel) {
 			$g = $panel->printFooter($g);
 		}
+		$this->printCredit();
 		$this->printLoggerPanel();
 		return $g;
 	}
 	
+	function printCredit() {
+			?>
+				<div class="credit" onclick="window.open('https://twitter.com/MikomiToyunda');">Powered by Mikomi</div>
+			<?php
+	}
+
 	/***********************************************************************
 	 * Imprime le panel de log (si admin uniquement)
 	 * */
 	function printLoggerPanel() {
-		if(LibTools::isAdmin()) {		
+		if(LibTools::isAdmin() || true) {		
 			?>
 			<div class="msg" onclick="toggleDisplay('spanMsg', 'hiddenDivBloc');">display log<br>
 			<span id="spanMsg" class="hiddenDivBloc"><?php echo LibTools::getLog(); LibTools::initLog(); ?></span></div>
-
 			<?php 
 			// <script src="/libs/angular-1.7.4.min.js"></script>
 		}

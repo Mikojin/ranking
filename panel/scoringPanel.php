@@ -76,7 +76,7 @@ class ScoringPanel extends ListPanel {
 	 * */
 	function initScoringList($g) {
 		// LibTools::setLog('initScoringList IN');
-		$g['typeScoreList'] 	= $this->dao->typeScoreDao->getList();
+		$g['typeScoreList'] 	= Ss::get()->dao->typeScoreDao->getList();
 		$idTypeScore			= LibTools::get('idTypeScore');
 		// LibTools::setLog("LibTools::get idTypeScore => $idTypeScore");
 		$g = $this->setIdTypeScore($g, $idTypeScore);
@@ -102,7 +102,7 @@ class ScoringPanel extends ListPanel {
 		$g = $this->setIdTypeScore($g, $idTypeScore);
 		// LibTools::set('idTypeScore', $idTypeScore);
 		
-		$scoringList = $this->dao->scoringDao->getList($idTypeScore);
+		$scoringList = Ss::get()->dao->scoringDao->getList($idTypeScore);
 		if(count($scoringList) == 0 && LibTools::isAdmin()) {
 			// on initialise une liste de scoring par défaut pour les admin
 			$scoringList = $this->getNewScoringList($idTypeScore);
@@ -139,7 +139,7 @@ class ScoringPanel extends ListPanel {
 			LibTools::setLog("Add Type Score : Type Score name empty !!");
 			return $g;
 		}
-		$idTypeScore = $this->dao->typeScoreDao->insert($typeScoreName);
+		$idTypeScore = Ss::get()->dao->typeScoreDao->insert($typeScoreName);
 		if($idTypeScore) {
 			$g = $this->setIdTypeScore($g, $idTypeScore);
 			// on initialise directement une liste de scoring
@@ -165,7 +165,7 @@ class ScoringPanel extends ListPanel {
 		//LibTools::setLog("encode : $out");
 
 		// on purge la liste existante (plus simple que de mettre à jour)
-		$r = $this->dao->scoringDao->deleteScoringList($idTypeScore);
+		$r = Ss::get()->dao->scoringDao->deleteScoringList($idTypeScore);
 		// puis on sauvegarde la nouvelle liste
 		$this->doSaveScoringList($idTypeScore, $scoringList);
 		
@@ -188,7 +188,7 @@ class ScoringPanel extends ListPanel {
 				continue;
 			}
 			// LibTools::setLog(" - Add scoring : idTypeScore=$idTypeScore ; top=$top ; bottom=$bottom ; score=$score ");
-			$this->dao->scoringDao->insert($idTypeScore, $top, $bottom, $score);
+			Ss::get()->dao->scoringDao->insert($idTypeScore, $top, $bottom, $score);
 		}
 	}
 	
@@ -202,14 +202,14 @@ class ScoringPanel extends ListPanel {
 		$idTypeScore = $_POST['idTypeScore'];
 		LibTools::setLog("Add Scoring Line : $idTypeScore");
 		
-		$lastRank = $this->dao->scoringDao->getLastRank($idTypeScore);
+		$lastRank = Ss::get()->dao->scoringDao->getLastRank($idTypeScore);
 		if(LibTools::isBlank($lastRank)) {
 			$lastRank = 1;
 			LibTools::setLog("Add Scoring Line : Last Rank Not found use = $lastRank");
 		}
 		LibTools::setLog("Add Scoring Line : Last Rank = $lastRank");
 		
-		$this->dao->scoringDao->insert($idTypeScore, $lastRank+1, $lastRank+1, 0);
+		Ss::get()->dao->scoringDao->insert($idTypeScore, $lastRank+1, $lastRank+1, 0);
 		
 		return $g;
 	}
@@ -223,9 +223,9 @@ class ScoringPanel extends ListPanel {
 		}
 		$idTypeScore = $_POST['idTypeScore'];
 		// on purge d'abord la liste de scoring 
-		$r = $this->dao->scoringDao->deleteScoringList($idTypeScore);
+		$r = Ss::get()->dao->scoringDao->deleteScoringList($idTypeScore);
 		if($r) {
-			$r = $this->dao->typeScoreDao->deleteTypeScore($idTypeScore);
+			$r = Ss::get()->dao->typeScoreDao->deleteTypeScore($idTypeScore);
 		}		
 		if($r) {
 			$g = $this->setIdTypeScore($g, null);
