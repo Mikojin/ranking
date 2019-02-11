@@ -284,6 +284,7 @@ class Combobox {
 	public $libelleCallback;
 	public $title;
 	public $onchange;
+	public $emptyLine = true;
 	
 	function doPrint() {
 		?>
@@ -292,8 +293,12 @@ class Combobox {
 			id="<?php echo $this->id_elem; ?>"  name="<?php echo $this->id_elem;?>"
 			<?php echo (isset($this->title)? 'title="'.$this->title.'"':''); ?>
 			<?php echo (isset($this->onchange)? 'onchange="'.$this->onchange.'"':''); ?>
-			><option value=""></option>
+			>
+			
 		<?php 
+		if($this->emptyLine) {
+			echo '<option value=""></option>';
+		}
 		$libelleCallback = $this->libelleCallback;
 		if(isset($libelleCallback)) {
 			if(is_callable($libelleCallback)) {

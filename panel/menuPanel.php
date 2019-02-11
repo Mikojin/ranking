@@ -11,10 +11,22 @@ require_once "./lib/dao.php";
 
 require_once "./panel/iPanel.php";
 
+
+
+/**
+ * callback d'affichage du libellé d'un jeu
+ */
+function labelGame($s) {
+	return "&nbsp;$s->name&nbsp;";
+}
+
+
 class MenuPanel implements IPanel {
 		
-	
+	public $combobox;
+
 	function __construct() {
+		$this->combobox = new Combobox();
 	}
 	
 	//#########################################################################
@@ -87,6 +99,7 @@ class MenuPanel implements IPanel {
 	 * */
 	function treatMenuAction() {
 		$action = $_POST['action'];
+		LibTools::setLog("Menu Action : $action");
 		switch($action) {
 			case 'pageRanking' :
 				Ss::setPage('ranking');
@@ -99,6 +112,9 @@ class MenuPanel implements IPanel {
 				return true;
 			case 'pageScoring' :
 				Ss::setPage('scoring');
+				return true;
+			case 'changeGame' : 
+				Ss::loadGameData($_POST['idGame']);
 				return true;
 		}
 		return false;
@@ -122,10 +138,12 @@ class MenuPanel implements IPanel {
 	 * imprime le panel du menu
 	 * */
 	function printMenuForm() {
+		$gameList = Ss::get()->gameMap;
 	?>
 		<div id="menu" class="divTable divTabMenu hiddenDiv">
 			<div class="divTableBody">
 			<div class="divTableRow">
+			
 			<div class="divTableCell divCellMenu ">
 				<input name="ranking" 		id="ranking" 	type="button" value="Ranking" 
 					onclick="setAction('pageRanking');"/>
@@ -142,6 +160,21 @@ class MenuPanel implements IPanel {
 				<input name="scoring" 	id="scoring" type="button" value="Scoring" 
 					onclick="setAction('pageScoring');"/>
 			</div>
+			
+			<div class="divTableCell divCellMenu ">
+			<?php	
+				$this->combobox->emptyLine		 	= false;
+				$this->combobox->id_select			= Ss::get()->game->id;
+				$this->combobox->id_elem 			= "idGame";
+				$this->combobox->arr 				= $gameList;
+				$this->combobox->libelleCallback	= 'labelGame';
+				$this->combobox->title				= 'Select the game';
+				$this->combobox->cssClass 			= 'game_select';
+				$this->combobox->onchange			= "setAction('changeGame');";
+				$this->combobox->doPrint();
+			?>
+			</div>
+			
 			</div>
 			</div>
 		</div>

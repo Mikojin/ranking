@@ -61,11 +61,10 @@ class RankingPanel extends ListPanel {
 		LibTools::setLog("initRanking IN");
 		$sess = Ss::get();
 		$id_game = $sess->game->id;
-		// $g['charPath'] 		= $sess->dao->paramDao->load("PATH","character");
-		// $g['charList'] 		= $sess->dao->characterDao->getList($id_game);
+
 		$g['fontList'] 		= $this->adminPanel->getListFont();
 		$gameCode 			= $sess->game->code;
-		// $g['id_char_unknown'] = $this->dao->paramDao->load("CHAR_UNKNOWN", $gameCode);
+
 		$g = $this->initSeason($g);
 		// recupere la liste de classement des joueurs
 		//$g['rankingList'] 	= $this->dao->otherDao->getInfoRanking($id_game);
@@ -194,7 +193,7 @@ EOS;
 			} else {
 				$player->rank_classe="ranksame";
 			}
-			$char = $sess->char_unknown;
+			$char = $sess->game->char_unknown;
 			if(isset($player->id_char)) {
 				$id_char = $player->id_char;
 				$char = $sess->characterMap[$id_char];

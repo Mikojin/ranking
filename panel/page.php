@@ -31,26 +31,34 @@ class Page implements IPanel {
 	function printPage() {
 		$this->g = $this->init($this->g);
 		
-		LibTools::setLog("printPage : cssFile = ".Ss::get()->cssFile);
-
+		//LibTools::setLog("printPage : game cssFile = ".Ss::get()->cssFile);
 		
 		if ($_POST) {
+			LibTools::setLog("++++ Do First POST ");
+
 			// Execute code (such as database updates) here.
 			$this->g = $this->treatAction($this->g);
 			LibTools::clearAction();
-
+			
+			
 			// Redirect to this page. pour netoyer les donnees en post
 			header("Location: " . $_SERVER['REQUEST_URI']);
+			LibTools::setLog("---- Clear First POST ");
 			exit();
+			
 		}
+		LibTools::setLog("==== No POST ");
 		?>
 		<html>
 		<head>
 			<title>Ranking</title>
 			<link rel="stylesheet" type="text/css" href="./css/design.css">
 			<link rel="stylesheet" type="text/css" href="./css/font.css">
-			<link rel="stylesheet" type="text/css" href="<?php echo Ss::get()->cssFile; ?>">
 		<?php
+			foreach( Ss::get()->gameMap as $game) {
+				echo '<link rel="stylesheet" type="text/css" href="'.($game->cssFile).'">';
+			}
+
 		
 			$this->g = $this->printHeader($this->g);
 		?>

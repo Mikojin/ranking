@@ -14,7 +14,13 @@ class Ss {
 		LibTools::init();
 		$sess = Ss::get();
 		if($sess->init) {
-			// il ne faut initialiser qu'une fois par session
+			// si deja init, on ne fait rien
+			/*
+			if($sess->game->id != $id_game) {
+				// changement de jeu, on recharge
+				Ss::loadGameData($id_game);
+			}
+			*/
 			return;
 		}
 		
@@ -26,6 +32,10 @@ class Ss {
 		$sess->page = $page;
 
 		$sess->gameMap 			= $sess->dao->gameDao->getList();
+		foreach( $sess->gameMap as $game) {
+			$game->cssFile 			= "./css/".($game->code)."/character.css";
+			LibTools::setLog("game code=$game->code ; cssFile = ".$game->cssFile);
+		}
 
 		Ss::loadGameData($id_game);
 		
@@ -45,6 +55,7 @@ class Ss {
 	 * charge les données relative à un jeu
 	 * */
 	static function loadGameData($id_game) {
+		LibTools::setLog("Load game = $id_game");
 		$sess 					= Ss::get();
 		
 		$sess->game 			= $sess->gameMap[$id_game];
@@ -54,16 +65,14 @@ class Ss {
 		$gameCode 				= $sess->game->code;
 		LibTools::setLog("gameCode = $gameCode");
 		
-		$id_char_unknown		= $sess->dao->paramDao->load("CHAR_UNKNOWN", $gameCode);
-		$sess->char_unknown		= $sess->characterMap[$id_char_unknown];
+		$id_char_unknown 		= $sess->game->id_char_unknown;
+		LibTools::setLog("id_char_unknown = $id_char_unknown");
+		$sess->game->char_unknown = $sess->characterMap[$id_char_unknown];
 
 
 		$charPath				= $sess->dao->paramDao->load("PATH","character");
 		$sess->characterPath 	= $charPath."/".$gameCode;
 		LibTools::setLog("characterPath = ".$sess->characterPath);
-		
-		$sess->cssFile 			= "./css/".$gameCode."/character.css";
-		LibTools::setLog("cssFile = ".$sess->cssFile);
 		
 	}
 	

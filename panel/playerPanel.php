@@ -181,16 +181,17 @@ class PlayerPanel extends ListPanel {
 		if(!isset($new_game) || count($new_game)==0) {
 			return;
 		}
-		
-		$gameList 	= $g['gameList'];
+		$s = Ss::get();
+		$gameList 	= $s->gameMap;
 		
 		foreach( $gameList as $id_game => $game) {
 			LibTools::setLog("game $game->name : id=$game->id ; code=$game->code ");
 		}
 		
 		foreach( $new_game as $id_game) {
-			$gameCode 	= $gameList[$id_game]->code;
-			$id_char	= Ss::get()->char_unknown->id;
+			$game 		= $gameList[$id_game];
+			$gameCode 	= $game->code;
+			$id_char	= $game->id_char_unknown;
 			LibTools::setLog("insert game : id_game=$id_game ; game_code=$gameCode ; id_char=$id_char");
 			Ss::get()->dao->playerGameDao->insert($this->id, $id_game, $id_char);
 		}

@@ -197,6 +197,16 @@ Log
 	border-radius:8px;
 }
 
+.game_select {
+	width:auto;
+	border-radius:20px;
+	padding:5px 5px;
+	font-weight:bold;
+	background-image: -webkit-linear-gradient(top, rgb(250,240,240), rgb(250,200,200));
+	background-image: linear-gradient(top, rgb(250,240,240), rgb(250,200,200));
+}
+
+
 .loginPanel {
 	top: 30px;
 	left:0px;

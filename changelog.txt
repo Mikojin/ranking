@@ -1,0 +1,42 @@
+================================================================================
+Legende :
++ evo fonctionnelle
+= evo technique
+* correction de bug
+
+================================================================================
+TODO
+ = Mettre en GET certaine partie des données afin de naviguer directement sur certaine page
+ + Permettre de regler le background et le titre en fonction du jeu
+ 
+DONE
+ + Mettre en place une page de sélection du jeu
+ 
+================================================================================
+2019-02-11
+ * Gestion de plusieurs CSS de personnage afin d'afficher correctement le main 
+	character dans l'ecran PlayerPanel
+ + Mettre en place une page de sélection du jeu => combobox dans le menu
+ = suppression des param "unknown" pour mettre directement le character 
+	unknown par défaut dans la table game.
+ * correction de l'ajout d'un "main character" pour un jeu dans l'ecran PlayerPanel
+
+ 
+REQ :
+INSERT INTO `param` (`group_name`, `variable`, `value`, `tstp_create`, `tstp_update`) 
+			VALUES ('CHAR_UNKNOWN', 'T7', '36', CURRENT_TIME(), CURRENT_TIME());
+INSERT INTO `character` (`id_game`, `name`, `css_class`, `filename`, `tstp_create`, `tstp_update`) 
+			VALUES (2, '0Unknown', 'unknown', 'Unknown.png', CURRENT_TIME(), CURRENT_TIME()); 
+
+INSERT INTO `character` (`id`, `id_game`, `name`, `css_class`, `filename`, `tstp_create`, `tstp_update`) 
+			VALUES 	(NULL, '2', 'Alisa', 'alisa', 'Alisa.png', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
+					(NULL, '2', 'Devil Jin', 'deviljin', 'DevilJin.png', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+ALTER TABLE `game` ADD `id_char_unknown` INT NULL DEFAULT NULL AFTER `name`;
+ALTER TABLE `game` ADD CONSTRAINT `GAME_CHAR_UNKNOWN` FOREIGN KEY (`id_char_unknown`) REFERENCES `character`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+UPDATE `game` SET `id_char_unknown` = '36' WHERE `game`.`id` = 2;
+UPDATE `game` SET `id_char_unknown` = '32' WHERE `game`.`id` = 1;
+================================================================================
+2019-02-10
+Initialisation du change log

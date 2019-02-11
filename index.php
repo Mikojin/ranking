@@ -10,9 +10,20 @@ try {
 require_once "./lib/session.php";
 require_once "./panel/masterPage.php";
 
-$id_game = 1;
 
-Ss::init($id_game);
+//$id_game = 1;
+/*
+if($_GET) {
+	if(isset($_GET['g'])) {
+		$id_game = $_GET['g'];
+		LibTools::setLog("get idgame = $id_game");
+	} else {
+		LibTools::setLog("def idgame = $id_game");
+	}
+}
+*/
+
+Ss::init();
 $page = new MasterPage();
 
 $page->printPage();

@@ -76,7 +76,6 @@ class TournamentPanel extends ListPanel {
 		$id_game 				= $sess->game->id;
 		
 		$gameCode 				= $sess->gameMap[$id_game]->code;
-		//$g['char_unknown'] 		= $sess->characterMap[$id_char_unknown];
 		$g['typeScoreList'] 	= $sess->dao->typeScoreDao->getList();
 		$this->tournament 		= $sess->dao->tournamentDao->get($this->id);
 		$g['tournament'] 		= $this->tournament;
@@ -240,7 +239,7 @@ class TournamentPanel extends ListPanel {
 		// on récupere le personnage joué
 		$playerCharlist = $g['playerCharList'];
 		$id_player = $participant->id_player;
-		$mainchar = $sess->char_unknown;
+		$mainchar = $sess->game->char_unknown;
 		
 		if(array_key_exists($id_player, $playerCharlist)) {
 			$id_main_char = $playerCharlist[$id_player]['id_char'];
@@ -283,7 +282,7 @@ class TournamentPanel extends ListPanel {
 		// on récupere le personnage joué
 		$playerCharlist = $g['playerCharList'];
 		$id_player = $participant->id_player;
-		$mainchar = $sess->char_unknown;
+		$mainchar = $sess->game->char_unknown;
 		if(array_key_exists($id_player, $playerCharlist)) {
 			$id_main_char = $playerCharlist[$id_player]['id_char'];
 			$mainchar = $sess->characterMap[$id_main_char];
