@@ -118,7 +118,6 @@ class TournamentListPanel extends ListPanel {
 		$g = parent::printListHeader($g)
 		?>
 			<div class="divTableRow characterRow listHeader" >
-				<div class="divTableCell scoringHeader"	title=""	>&nbsp;</div>
 				<div class="divTableCell scoringHeader"	title="Group"		>Group</div>
 				<div class="divTableCell scoringHeader" title="Name"		>Name</div>
 				<div class="divTableCell scoringHeader"	title="Type Score"	>Type Score</div>
@@ -152,14 +151,9 @@ class TournamentListPanel extends ListPanel {
 		$id = $tournament->id;
 	?>	
 			<div class="divTableRow characterRow" >
-				<div class="divTableCell rowValue" >
-					<input type="button" 
-						title="Open this tournament"
-						value="Open" onclick="setVar('selectIdTournament', <?php echo $id; ?>);setAction('editTournament')">
-				</div>
 				<input type="hidden" name="tournament_id_<?php echo $id; ?>" />
 				<div class="divTableCell rowValue" 	title="Group"		><?php echo $tournament->group_name;?></div>
-				<div class="divTableCell rowValue clickable" 	title="Name"		
+				<div class="divTableCell rowValue clickable" 	
 					title="Open this tournament"
 					onclick="setVar('selectIdTournament', <?php echo $id; ?>);setAction('editTournament')"><?php echo $tournament->name; ?></div>
 				<div class="divTableCell rowValue" 	title="Type Score"	><?php echo $typeScoreList[$tournament->id_type_score]['type_name']; ?></div>
@@ -178,14 +172,9 @@ class TournamentListPanel extends ListPanel {
 		$id = $tournament->id;
 	?>	
 			<div class="divTableRow characterRow" >
-				<div class="divTableCell rowValue" >
-					<input type="button" 
-						title="Edit this tournament"
-						value="Edit" onclick="setVar('selectIdTournament', <?php echo $id; ?>);setAction('editTournament')">
-				</div>
 				<input type="hidden" name="tournament_id_<?php echo $id; ?>" />
 				<div class="divTableCell rowValue" 	title="Group"		><?php echo $tournament->group_name;?></div>
-				<div class="divTableCell rowValue clickable" 	title="Name"		
+				<div class="divTableCell rowValue clickable" 	
 					title="Open this tournament"
 					onclick="setVar('selectIdTournament', <?php echo $id; ?>);setAction('editTournament')"><?php echo $tournament->name; ?></div>
 				<div class="divTableCell rowValue" 	title="Type Score"	><?php echo $typeScoreList[$tournament->id_type_score]['type_name']; ?></div>

@@ -241,7 +241,6 @@ class TournamentPanel extends ListPanel {
 		$id_player = $participant->id_player;
 		$game = $sess->gameMap[$participant->id_game];
 		$mainchar = $game->char_unknown;
-		
 		if(array_key_exists($id_player, $playerCharlist)) {
 			$id_main_char = $playerCharlist[$id_player]['id_char'];
 			$mainchar = $game->characterMap[$id_main_char];
@@ -283,10 +282,11 @@ class TournamentPanel extends ListPanel {
 		// on récupere le personnage joué
 		$playerCharlist = $g['playerCharList'];
 		$id_player = $participant->id_player;
-		$mainchar = $sess->game->char_unknown;
+		$game = $sess->gameMap[$participant->id_game];
+		$mainchar = $game->char_unknown;
 		if(array_key_exists($id_player, $playerCharlist)) {
 			$id_main_char = $playerCharlist[$id_player]['id_char'];
-			$mainchar = $sess->game->characterMap[$id_main_char];
+			$mainchar = $game->characterMap[$id_main_char];
 		} 
 	?>	
 			<div class="divTableRow characterRow" >

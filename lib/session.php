@@ -55,8 +55,14 @@ class Ss {
 		
 		foreach( $sess->gameMap as $id_game => $game) {
 			$game->cssFile 			= "./css/".($game->code)."/character.css";
-			LibTools::setLog("game code=$game->code ; cssFile = ".$game->cssFile);
 			$game->characterMap 	= $sess->dao->characterDao->getList($id_game);
+			
+			$id_char_unknown 		= $game->id_char_unknown;
+			if(isset($id_char_unknown) && array_key_exists($id_char_unknown, $game->characterMap)) {
+				$game->char_unknown = $game->characterMap[$id_char_unknown];
+			}
+			LibTools::setLog("game code=$game->code ; cssFile = ".$game->cssFile." ; id_char_unknown = $id_char_unknown");
+
 		}
 
 	}
@@ -72,12 +78,6 @@ class Ss {
 		
 		$gameCode 				= $sess->game->code;
 		LibTools::setLog("gameCode = $gameCode");
-		
-		$id_char_unknown 		= $sess->game->id_char_unknown;
-		LibTools::setLog("id_char_unknown = $id_char_unknown");
-		if(isset($id_char_unknown)) {
-			$sess->game->char_unknown = $sess->game->characterMap[$id_char_unknown];
-		}
 
 		$charPath				= $sess->dao->paramDao->load("PATH","character");
 		$sess->characterPath 	= $charPath."/".$gameCode;
