@@ -16,7 +16,6 @@ class Session {
 	public $id_tournament;
 
 	public $gameMap;
-	public $characterMap;
 	
 	public $characterPath;
 
@@ -41,8 +40,9 @@ class Game {
 	public $name;
 	public $id_char_unknown;
 	public $char_unknown;
+	public $characterMap;
 	public $cssFile;
-
+	
 	function __construct($id=null) {
 		$this->id 	= $id;
 	}

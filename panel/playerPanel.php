@@ -215,6 +215,7 @@ class PlayerPanel extends ListPanel {
 	function printElement($g, $e, $i) {
 	?>	
 			<div class="divTableRow characterRow" >
+				<div class="divTableCell rowValue game" 	title="Game"><?php echo Ss::get()->gameMap[$e['id_game']]->code;?></div>
 				<div class="divTableCell rowValue" 			title="Tournament Group"><?php echo $e['tournament_group_name'];?></div>
 				<div class="divTableCell rowValue clickable" 			title="Tournament Name - Go to this tournament"	
 					onclick="setVar('selectIdTournament', <?php echo $e['id_tournament']; ?>);setAction('editTournament')"><?php echo $e['tournament_name']; ?></div>

@@ -196,7 +196,7 @@ EOS;
 			$char = $sess->game->char_unknown;
 			if(isset($player->id_char)) {
 				$id_char = $player->id_char;
-				$char = $sess->characterMap[$id_char];
+				$char = $sess->game->characterMap[$id_char];
 			}
 			$player->characterCSS = $char->css_class;
 			

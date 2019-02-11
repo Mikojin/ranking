@@ -138,7 +138,7 @@ class AdminPanel implements IPanel {
 		$out .= LibCSS::printFontCss('font_name' 		);
 		LibTools::writeFile("./css/font.css", $out);
 		
-		$out = LibCSS::writeCharacterCSS($s->characterPath, $s->characterMap);
+		$out = LibCSS::writeCharacterCSS($s->characterPath, $s->game->characterMap);
 		LibTools::writeFile($s->game->cssFile, $out);
 		return $g;
 	}

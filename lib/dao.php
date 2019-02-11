@@ -166,7 +166,7 @@ class ParticipantDao extends AbstractDao {
 	 * renvoie la liste des participants pour ce tournoi 
 	 */
 	function getList($id_tournament) {
-		$sql = "select pp.*, p.*, s.score
+		$sql = "select t.id_game, pp.*, p.*, s.score
 			 from participant pp
 			 join tournament t
 			   on t.id = pp.id_tournament

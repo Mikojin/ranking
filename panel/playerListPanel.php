@@ -197,11 +197,9 @@ class PlayerListPanel extends ListPanel {
 		$id = $player->id;
 	?>	
 			<div class="divTableRow characterRow" >
-				<div class="divTableCell edit" 		title="Go to Player page"	>
-					<input type="button" 
-						onclick="setVar('select_id_player', <?php echo $id; ?>);setAction('editPlayer')" 
-						value="See" /></div>
-				<div class="divTableCell pseudo" 	title="Pseudo"	><?php echo $player->pseudo;?></div>
+				<div class="divTableCell clickable pseudo"
+					onclick="setVar('select_id_player', <?php echo $id; ?>);setAction('editPlayer')" 	
+					title="Pseudo - Go to Player profile"><?php echo $player->pseudo;?></div>
 				<div class="divTableCell prenom" 	title="Prenom"	><?php echo $player->prenom; ?></div>
 				<div class="divTableCell nom" 		title="Nom"		><?php echo $player->nom; ?></div>
 			</div>

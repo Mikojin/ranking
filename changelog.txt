@@ -11,9 +11,12 @@ TODO
  
 DONE
  + Mettre en place une page de sélection du jeu
+ + Revoir l'affichage du profile d'un joueur afin d'afficher les jeux des tournois	
  
 ================================================================================
 2019-02-11
+ + PlayerListPanel : suppression du bouton "See" => clic direct sur le nom du joueur
+ + PlayerPanel : ajout du nom du jeu dans la liste des tournois
  * Gestion de plusieurs CSS de personnage afin d'afficher correctement le main 
 	character dans l'ecran PlayerPanel
  + Mettre en place une page de sélection du jeu => combobox dans le menu
