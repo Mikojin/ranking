@@ -73,12 +73,14 @@ class TournamentPanel extends ListPanel {
 	 * */
 	function doInit($g) {
 		$sess 					= Ss::get();
-		$id_game 				= $sess->game->id;
 		
-		$gameCode 				= $sess->gameMap[$id_game]->code;
 		$g['typeScoreList'] 	= $sess->dao->typeScoreDao->getList();
 		$this->tournament 		= $sess->dao->tournamentDao->get($this->id);
 		$g['tournament'] 		= $this->tournament;
+		
+		$id_game 				= $this->tournament->id_game;
+		$gameCode 				= $sess->gameMap[$id_game]->code;
+
 		
 		$g['participantList'] 	= $sess->dao->participantDao->getList($this->id);
 		$g['playerCharList']	= $sess->dao->participantDao->getPlayerCharacterList($this->id);
@@ -100,6 +102,9 @@ class TournamentPanel extends ListPanel {
 		}
 		$id 			= $this->id;
 		$id_game		= Ss::get()->game->id;
+		if(isset($id)) {
+			$id_game		= $this->tournament->id_game;	
+		}
 		$group_name 	= $_POST['tournament_group_name'];
 		$name 			= $_POST['tournament_name'];
 		$id_type_score	= $_POST['tournament_id_type_score'];
@@ -424,7 +429,11 @@ class TournamentPanel extends ListPanel {
 		$g = parent::printPageHeader($g);
 		?>
 			<input type="hidden" id="select_id_player" name="select_id_player" value=""/>
-			<div class="divTitle scoring"><div class="divTableCell">Tournament</div></div>		
+			<div class="divTitle scoring">
+				<div class="divTableCell"><?php echo Ss::get()->gameMap[$this->tournament->id_game]->name ?></div>
+				<div class="spaceRow">&nbsp;</div>
+				<div class="divTableCell">Tournament</div>
+			</div>		
 			<div id="tournamentList" class="ranking">
 			<div class="spaceRow">&nbsp;</div>
 		<?php

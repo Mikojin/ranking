@@ -246,7 +246,12 @@ class TournamentListPanel extends ListPanel {
 		$g = parent::printPageHeader($g);
 		?>
 			<input type="hidden" id="selectIdTournament" name="selectIdTournament" value=""/>
-			<div class="divTitle scoring"><div class="divTableCell">Tournament History</div></div>		
+			<div class="divTitle scoring">
+				<div class="divTableCell"><?php echo Ss::get()->game->name ?></div>
+				<div class="spaceRow">&nbsp;</div>
+				<div class="divTableCell">Tournament History</div>
+			</div>		
+			<div class="spaceRow">&nbsp;</div>
 			<div id="tournamentList" class="ranking">
 			<div class="spaceRow">&nbsp;</div>
 		<?php
