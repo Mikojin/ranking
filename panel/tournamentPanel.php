@@ -123,6 +123,9 @@ class TournamentPanel extends ListPanel {
 			return;
 		}
 		$idTournament		= $this->id;
+		if(!array_key_exists('participant', $_POST)) {
+			return $g;
+		}
 		$participantList 	= $_POST['participant'];
 		if(!isset($participantList)) {
 			return $g;

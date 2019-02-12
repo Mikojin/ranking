@@ -102,6 +102,9 @@ class TournamentListPanel extends ListPanel {
 			LibTools::setLog("Delete Tournament KO : idTournament is blank");
 			return $g;
 		}
+		// d'abord, il faut supprimer tous les participants 
+		// => mettre en cascade la fk de participant
+		// puis on supprime le tournoi
 		$r = Ss::get()->dao->tournamentDao->deleteTournament($idTournament);
 		return $g;
 	}
