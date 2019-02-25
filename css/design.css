@@ -429,7 +429,9 @@ input[type="button"].deletePlayerRanking {
 /*********************************************************
  *  Column description
  *********************************************************/
-
+.ranking .divTable {
+	width:100%
+}
 .progress {
 	width: 75px ;
 	text-align: center;

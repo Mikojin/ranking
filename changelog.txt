@@ -8,6 +8,12 @@ Legende :
 TODO
  = Mettre en GET certaine partie des données afin de naviguer directement sur certaine page
  + Permettre de regler le background et le titre en fonction du jeu
+ + Créer une page par jeu avec la liste des persos
+ + admin : améliorer l'interface de sélection d'un joueur pour l'ajouter à un tournoi
+ + admin : améliorer l'interface de sélection d'un personnage pour l'ajouter à joueur
+ + Ajouter un lien dans la liste des tournois pour aller sur le scoring
+ + Liste Joueur : ajouter la possibilité de filtrer par jeu
+ + Ajout de participant : filtrer par jeu aussi
  
 DONE
  + Mettre en place une page de sélection du jeu
