@@ -12,28 +12,80 @@
 
 class LibCSS {
 
-	static function writeCharacterClass($default_path, $classs, $filename) {
+	/***********************************************************************
+	 * Renvoie une String représentant le CSS du titre de la page ranking pour un jeu Game donné
+	 * $game : le jeu pour lequel on écrit le CSS du titre
+	 */ 
+	static function writeRankingTitle($rootPath, $game) {
+		$gameCode = $game->code;
+		
 		$cssLine = <<<EOS
-.$classs {
-	background-image: url("$default_path/$filename");
+.divTitle.rankingTitle.$gameCode {
+	background-image: url("$rootPath/Images/Design/$gameCode/RankingTitle.png");
+}		
+
+EOS;
+		return $cssLine;
+	}
+	
+	static function writeCssImport($gameMap) {
+		foreach( $gameMap as $game) {
+			echo '<link rel="stylesheet" type="text/css" href="'.($game->cssFile).'">';
+		}
+
+	}
+	
+	/***********************************************************************
+	 * Renvoie une String représentant le CSS de la classe permettant d'affiché l'image d'un personnage
+	 * $path : le chemin des images des personnage pour ce jeu
+	 * $gameCode : le code du jeu
+	 * $classs : la classe CSS utilisé pour le personnage
+	 * $filename : le nom du fichier de l'image du personnage
+	 */ 
+	static function writeCharacterClass($path, $gameCode, $classs, $filename) {
+		$css = $gameCode.'_'.$classs;
+		$cssLine = <<<EOS
+.$css {
+	background-image: url("$path/$filename");
 }
 
 EOS;
 		return $cssLine;
 	}
 
-	static function writeCharacterCSS($charPath, $charList) {
+	/***********************************************************************
+	 * Ecrit les fichiers CSS de chaque jeu de la map donnée.
+	 * $gameMap : la map de chaque jeu Game pour lesquels on souhaite écrire le CSS
+	 */ 
+	static function writeGameCSS($gameMap) {
+		$rootPath = '/ranking';
+		foreach($gameMap as $game) {
+			$out = LibCSS::writeRankingTitle( $rootPath, $game);
+			$out .= LibCSS::writeCharacterCSS($rootPath, $game);
+			LibTools::writeFile($game->cssFile, $out);
+		}
+	}
+	
+	/***********************************************************************
+	 * Renvoie une String contenant les classes CSS de chaque personnage du jeu donné
+	 * $rootPath : le chemin de racine du site (<host>/<rootPath>/<reste du site>
+	 * $game : un objet Game
+	 */ 
+	static function writeCharacterCSS($rootPath, $game ) {
 		$out = '';
+		$gameCode = $game->code; 
+		$charList = $game->characterMap;
+		$charPath = "$rootPath/Images/Character/$gameCode";
 		foreach ($charList as $id => $char) {
 			if($char->css_class && $char->filename) {
-				$out .= LibCSS::writeCharacterClass($charPath, $char->css_class, $char->filename);
+				$out .= LibCSS::writeCharacterClass($charPath, $gameCode, $char->css_class, $char->filename);
 			}
 		}
 		
 		return $out;
 	}
 	
-		/***********************************************************************
+	/***********************************************************************
 	 * Déclare le css pour la font donnée
 	 */ 
 	static function printFontCss($familly) {

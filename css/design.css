@@ -388,9 +388,7 @@ input[type="button"].deletePlayerRanking {
 /*********************************************************
  *  Div Ranking
  *********************************************************/
-.divTitle.rankingTitle {
-	background-image: url("../Images/Background/SFVR.png");
-}
+
 
 .rankingAdmin {
 	width: 1075px;	
@@ -562,7 +560,7 @@ input[type="button"].deletePlayerRanking {
  *********************************************************/
 
 .divTitle.playerListTitle {
-	background-image: url("../Images/Background/SFVR.png");
+/*	background-image: url("../Images/Background/SFVR.png"); */
 }
 
 .playerList {
@@ -661,7 +659,8 @@ input[type="button"].deletePlayerRanking {
 
 #selectPlayerList {
 	height : 300px;
-	width  : 300px;
+	width  : 500px;
+	padding : 5px;
 }
 
 /*********************************************************

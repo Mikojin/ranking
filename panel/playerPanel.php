@@ -342,14 +342,16 @@ class PlayerPanel extends ListPanel {
 	 * affiche la cellule character
 	 * */
 	function printPlayerCharacter($g, $gamePlayed, $charList) {
+		$gameMap 	= Ss::get()->gameMap;
 		$player 	= $this->player;
 		$id_game	= $gamePlayed['id'];
 		$char 		= $charList[$gamePlayed['id_character']];
 		$id_char 	= $char->id;
+		$game 		= $gameMap[$id_game];
 		if(LibTools::isAdmin()) {
 	?>	
 			<div class="divTableCell rowValue characterCell noselect" >
-				<div class="character <?php echo $char->css_class; ?> clickable"
+				<div class="character <?php echo $game->code.'_'.$char->css_class; ?> clickable"
 					title="<?php echo $char->name; ?> : click to edit"
 					onclick="toggleDisplay('<?php echo "gamePlayed[$id_game]";?>');">&nbsp;</div>
 	<?php	
@@ -366,7 +368,7 @@ class PlayerPanel extends ListPanel {
 	<?php	
 		} else {
 	?>	
-			<div class="character <?php echo $char->css_class; ?> divTableCell noselect" title="<?php echo $char->name; ?>">&nbsp;</div>
+			<div class="character <?php echo $game->code.'_'.$char->css_class; ?> divTableCell noselect" title="<?php echo $char->name; ?>">&nbsp;</div>
 	<?php
 		}
 	}

@@ -132,14 +132,14 @@ class AdminPanel implements IPanel {
 		$this->saveParamIfChange('font_pseudo');
 		$this->saveParamIfChange('font_name');
 		
-		$out  = LibCSS::printFontCss('font_rank' 		);
+		$out  = LibCSS::printFontCss('font_rank' 	);
 		$out .= LibCSS::printFontCss('font_score' 	);
 		$out .= LibCSS::printFontCss('font_pseudo' 	);
-		$out .= LibCSS::printFontCss('font_name' 		);
-		LibTools::writeFile("./css/font.css", $out);
+		$out .= LibCSS::printFontCss('font_name' 	);
 		
-		$out = LibCSS::writeCharacterCSS($s->characterPath, $s->game->characterMap);
-		LibTools::writeFile($s->game->cssFile, $out);
+		LibTools::writeFile("./css/font.css", $out);
+		LibCSS::writeGameCSS($s->gameMap);
+		
 		return $g;
 	}
 

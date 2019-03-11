@@ -254,6 +254,10 @@ class LibTools {
 
 
 	static function writeFile($fileName, $data) {
+		$dirname = dirname($fileName);
+		if(!file_exists($dirname)) {
+			mkdir($dirname, 0777, true);
+		}
 		return file_put_contents($fileName, $data);
 	}
 	
@@ -285,6 +289,7 @@ class Combobox {
 	public $title;
 	public $onchange;
 	public $emptyLine = true;
+	public $emptyLineLabel = "";
 	
 	function doPrint() {
 		?>
@@ -297,7 +302,7 @@ class Combobox {
 			
 		<?php 
 		if($this->emptyLine) {
-			echo '<option value=""></option>';
+			echo '<option value="">'.($this->emptyLineLabel).'</option>';
 		}
 		$libelleCallback = $this->libelleCallback;
 		if(isset($libelleCallback)) {

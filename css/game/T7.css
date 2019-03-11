@@ -1,102 +1,105 @@
-.unknown {
+.divTitle.rankingTitle.T7 {
+	background-image: url("/ranking/Images/Design/T7/RankingTitle.png");
+}		
+.T7_unknown {
 	background-image: url("/ranking/Images/Character/T7/Unknown.png");
 }
-.alisa {
+.T7_alisa {
 	background-image: url("/ranking/Images/Character/T7/Alisa.png");
 }
-.asuka {
+.T7_asuka {
 	background-image: url("/ranking/Images/Character/T7/Asuka.png");
 }
-.bob {
+.T7_bob {
 	background-image: url("/ranking/Images/Character/T7/Bob.png");
 }
-.bryan {
+.T7_bryan {
 	background-image: url("/ranking/Images/Character/T7/Bryan.png");
 }
-.chloe {
+.T7_chloe {
 	background-image: url("/ranking/Images/Character/T7/L.Chloe.png");
 }
-.claudio {
+.T7_claudio {
 	background-image: url("/ranking/Images/Character/T7/Claudio.png");
 }
-.deviljin {
+.T7_deviljin {
 	background-image: url("/ranking/Images/Character/T7/DevilJin.png");
 }
-.dragunov {
+.T7_dragunov {
 	background-image: url("/ranking/Images/Character/T7/Dragunov.png");
 }
-.eddy {
+.T7_eddy {
 	background-image: url("/ranking/Images/Character/T7/Eddy.png");
 }
-.gigas {
+.T7_gigas {
 	background-image: url("/ranking/Images/Character/T7/Gigas.png");
 }
-.gouki {
+.T7_gouki {
 	background-image: url("/ranking/Images/Character/T7/Gouki.png");
 }
-.heihachi {
+.T7_heihachi {
 	background-image: url("/ranking/Images/Character/T7/Heihachi.png");
 }
-.hwoarang {
+.T7_hwoarang {
 	background-image: url("/ranking/Images/Character/T7/Hwoarang.png");
 }
-.jack7 {
+.T7_jack7 {
 	background-image: url("/ranking/Images/Character/T7/Jack7.png");
 }
-.jin {
+.T7_jin {
 	background-image: url("/ranking/Images/Character/T7/Jin.png");
 }
-.katarina {
+.T7_katarina {
 	background-image: url("/ranking/Images/Character/T7/Katarina.png");
 }
-.kazuya {
+.T7_kazuya {
 	background-image: url("/ranking/Images/Character/T7/Kazuya.png");
 }
-.king {
+.T7_king {
 	background-image: url("/ranking/Images/Character/T7/King.png");
 }
-.kuma {
+.T7_kuma {
 	background-image: url("/ranking/Images/Character/T7/Kuma.png");
 }
-.lars {
+.T7_lars {
 	background-image: url("/ranking/Images/Character/T7/Lars.png");
 }
-.law {
+.T7_law {
 	background-image: url("/ranking/Images/Character/T7/Law.png");
 }
-.lee {
+.T7_lee {
 	background-image: url("/ranking/Images/Character/T7/Lee.png");
 }
-.leo {
+.T7_leo {
 	background-image: url("/ranking/Images/Character/T7/Leo.png");
 }
-.lili {
+.T7_lili {
 	background-image: url("/ranking/Images/Character/T7/Lili.png");
 }
-.lin {
+.T7_lin {
 	background-image: url("/ranking/Images/Character/T7/Lin.png");
 }
-.miguel {
+.T7_miguel {
 	background-image: url("/ranking/Images/Character/T7/Miguel.png");
 }
-.nina {
+.T7_nina {
 	background-image: url("/ranking/Images/Character/T7/Nina.png");
 }
-.panda {
+.T7_panda {
 	background-image: url("/ranking/Images/Character/T7/Panda.png");
 }
-.paul {
+.T7_paul {
 	background-image: url("/ranking/Images/Character/T7/Paul");
 }
-.raven {
+.T7_raven {
 	background-image: url("/ranking/Images/Character/T7/M.Raven.png");
 }
-.shaheen {
+.T7_shaheen {
 	background-image: url("/ranking/Images/Character/T7/Shaheen.png");
 }
-.steve {
+.T7_steve {
 	background-image: url("/ranking/Images/Character/T7/Steve.png");
 }
-.yoshimitsu {
+.T7_yoshimitsu {
 	background-image: url("/ranking/Images/Character/T7/Yoshi.png");
 }

@@ -1,105 +1,111 @@
-.unknown {
+.divTitle.rankingTitle.SFV {
+	background-image: url("/ranking/Images/Design/SFV/RankingTitle.png");
+}		
+.SFV_unknown {
 	background-image: url("/ranking/Images/Character/SFV/Unknown.png");
 }
-.abigail {
+.SFV_abigail {
 	background-image: url("/ranking/Images/Character/SFV/Abigail.png");
 }
-.akuma {
+.SFV_akuma {
 	background-image: url("/ranking/Images/Character/SFV/Gouki.png");
 }
-.alex {
+.SFV_alex {
 	background-image: url("/ranking/Images/Character/SFV/Alex.png");
 }
-.balrog {
+.SFV_balrog {
 	background-image: url("/ranking/Images/Character/SFV/Balrog.png");
 }
-.birdie {
+.SFV_birdie {
 	background-image: url("/ranking/Images/Character/SFV/Birdie.png");
 }
-.bison {
+.SFV_bison {
 	background-image: url("/ranking/Images/Character/SFV/M.Bison.png");
 }
-.blanka {
+.SFV_blanka {
 	background-image: url("/ranking/Images/Character/SFV/Blanka.png");
 }
-.cammy {
+.SFV_cammy {
 	background-image: url("/ranking/Images/Character/SFV/Cammy.png");
 }
-.chunli {
+.SFV_chunli {
 	background-image: url("/ranking/Images/Character/SFV/Chun-Li.png");
 }
-.cody {
+.SFV_cody {
 	background-image: url("/ranking/Images/Character/SFV/Cody.png");
 }
-.dhalsim {
+.SFV_dhalsim {
 	background-image: url("/ranking/Images/Character/SFV/Dhalsim.png");
 }
-.ed {
+.SFV_ed {
 	background-image: url("/ranking/Images/Character/SFV/ED.png");
 }
-.falke {
+.SFV_falke {
 	background-image: url("/ranking/Images/Character/SFV/Falke.png");
 }
-.fang {
+.SFV_fang {
 	background-image: url("/ranking/Images/Character/SFV/F.A.N.G.png");
 }
-.g {
+.SFV_g {
 	background-image: url("/ranking/Images/Character/SFV/G.png");
 }
-.guile {
+.SFV_guile {
 	background-image: url("/ranking/Images/Character/SFV/Guile.png");
 }
-.ibuki {
+.SFV_ibuki {
 	background-image: url("/ranking/Images/Character/SFV/Ibuki.png");
 }
-.juri {
+.SFV_juri {
 	background-image: url("/ranking/Images/Character/SFV/Juri.png");
 }
-.karin {
+.SFV_kage {
+	background-image: url("/ranking/Images/Character/SFV/Kage.png");
+}
+.SFV_karin {
 	background-image: url("/ranking/Images/Character/SFV/Karin.png");
 }
-.ken {
+.SFV_ken {
 	background-image: url("/ranking/Images/Character/SFV/Ken.png");
 }
-.kolin {
+.SFV_kolin {
 	background-image: url("/ranking/Images/Character/SFV/Kolin.png");
 }
-.laura {
+.SFV_laura {
 	background-image: url("/ranking/Images/Character/SFV/Laura.png");
 }
-.menat {
+.SFV_menat {
 	background-image: url("/ranking/Images/Character/SFV/Menat.png");
 }
-.mika {
+.SFV_mika {
 	background-image: url("/ranking/Images/Character/SFV/Mika.png");
 }
-.nash {
+.SFV_nash {
 	background-image: url("/ranking/Images/Character/SFV/Nash.png");
 }
-.nekali {
+.SFV_nekali {
 	background-image: url("/ranking/Images/Character/SFV/Necali.png");
 }
-.rashid {
+.SFV_rashid {
 	background-image: url("/ranking/Images/Character/SFV/Rashid.png");
 }
-.ryu {
+.SFV_ryu {
 	background-image: url("/ranking/Images/Character/SFV/Ryu.png");
 }
-.sagat {
+.SFV_sagat {
 	background-image: url("/ranking/Images/Character/SFV/Sagat.png");
 }
-.sakura {
+.SFV_sakura {
 	background-image: url("/ranking/Images/Character/SFV/Sakura.png");
 }
-.urien {
+.SFV_urien {
 	background-image: url("/ranking/Images/Character/SFV/Urien.png");
 }
-.vega {
+.SFV_vega {
 	background-image: url("/ranking/Images/Character/SFV/Vega.png");
 }
-.zangief {
+.SFV_zangief {
 	background-image: url("/ranking/Images/Character/SFV/Zangief");
 }
-.zeku {
+.SFV_zeku {
 	background-image: url("/ranking/Images/Character/SFV/Zeku.png");
 }

@@ -245,7 +245,7 @@ EOS;
 					<div class="pseudo"><?php echo $player->pseudo;?></div>
 					<div class="nom"><?php echo "$player->prenom $player->nom"; ?></div>
 				</div>
-				<div class="character <?php echo $player->characterCSS; ?> divTableCell noselect" title="<?php echo $player->character; ?>">&nbsp;</div>
+				<div class="character <?php echo Ss::get()->game->code.'_'.$player->characterCSS; ?> divTableCell noselect" title="<?php echo $player->character; ?>">&nbsp;</div>
 				<div class="points divTableCell "
 					title="Points - previous : <?php echo $player->previous_points; ?>"
 					><?php echo $player->points?$player->points:0; ?></div>
@@ -287,7 +287,7 @@ EOS;
 		$g = parent::printPageHeader($g);
 		?>
 			<input type="hidden" id="select_id_player" name="select_id_player" value=""/>
-			<div class="divTitle rankingTitle">&nbsp;</div>		
+			<div class="divTitle rankingTitle <?php echo Ss::get()->game->code;?>">&nbsp;</div>		
 			<div class="<?php echo LibTools::isAdmin()?'rankingAdmin':'rankingPublic'; ?> ranking">
 			<div class="spaceRow">&nbsp;</div>
 		<?php

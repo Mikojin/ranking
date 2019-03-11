@@ -30,6 +30,8 @@ class PlayerListPanel extends ListPanel {
 	
 	public function init($g) {
 		$g = parent::init($g);
+		$playerListFilter = Ss::get()->playerListFilter;
+		LibTools::setLog("init playerListFilter = $playerListFilter");
 		$g = $this->initPanelPlayerList($g);
 		return $g;
 	}
@@ -41,6 +43,10 @@ class PlayerListPanel extends ListPanel {
 		}
 		
 		switch($action) {
+			case "changeSelectGame" :
+				Ss::get()->playerListFilter = $_POST['playerListFilter'];
+				$g = $this->initPanelPlayerList($g);				
+				break;
 			case "savePlayer" :
 				$this->doSavePlayer();
 				break;
@@ -71,10 +77,12 @@ class PlayerListPanel extends ListPanel {
 	 * Initialisation du panel PlayerList
 	 * */
 	function initPanelPlayerList($g) {
+		$playerListFilter = Ss::get()->playerListFilter;
+		LibTools::setLog("playerListFilter = $playerListFilter");
 		if(LibTools::isAdmin()) {
-			$g['playerList'] = Ss::get()->dao->playerDao->getListAll();
+			$g['playerList'] = Ss::get()->dao->playerDao->getListAll($playerListFilter);
 		} else {
-			$g['playerList'] = Ss::get()->dao->playerDao->getList();
+			$g['playerList'] = Ss::get()->dao->playerDao->getList($playerListFilter);
 		}
 		return $g;
 	}
@@ -273,7 +281,9 @@ class PlayerListPanel extends ListPanel {
 		$g = parent::printPageHeader($g);
 		?>
 			<input type="hidden" id="select_id_player" name="select_id_player" value=""/>
-			<div class="divTitle playerListTitle">&nbsp;</div>		
+			<div class="divTitle scoring">
+				<div class="divTableCell">Player List</div>
+			</div>		
 			<div class="playerList ">
 		<?php
 			if(LibTools::isAdmin()) {
@@ -287,6 +297,22 @@ class PlayerListPanel extends ListPanel {
 			</div>
 		<?php
 			}
+		?>
+			<div id="divSeasonSelect" class="divSeasonSelect">
+			<?php	
+				$this->combobox->emptyLineLabel		= "&nbsp;All";
+				$this->combobox->emptyLine		 	= true;
+				$this->combobox->id_select			= Ss::get()->playerListFilter;
+				$this->combobox->id_elem 			= "playerListFilter";
+				$this->combobox->arr 				= Ss::get()->gameMap;
+				$this->combobox->libelleCallback	= 'labelGame';
+				$this->combobox->title				= 'Filter by game';
+				$this->combobox->cssClass 			= 'game_select';
+				$this->combobox->onchange			= "setAction('changeSelectGame');";
+				$this->combobox->doPrint();
+			?>
+			</div>
+		<?php
 		return $g;
 	}
 

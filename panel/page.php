@@ -6,6 +6,7 @@
  * Contient les fonction lié à la gestion du ranking
  *****************************************************************************/
 
+require_once "./lib/lib_css.php";
 require_once "./lib/session.php";
 require_once "./lib/lib_tools.php";
 require_once "./panel/iPanel.php";
@@ -55,10 +56,7 @@ class Page implements IPanel {
 			<link rel="stylesheet" type="text/css" href="./css/design.css">
 			<link rel="stylesheet" type="text/css" href="./css/font.css">
 		<?php
-			foreach( Ss::get()->gameMap as $game) {
-				echo '<link rel="stylesheet" type="text/css" href="'.($game->cssFile).'">';
-			}
-
+			LibCSS::writeCssImport(Ss::get()->gameMap);
 		
 			$this->g = $this->printHeader($this->g);
 		?>

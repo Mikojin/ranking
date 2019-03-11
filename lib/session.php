@@ -54,7 +54,7 @@ class Ss {
 		$sess->gameMap 			= $sess->dao->gameDao->getList();
 		
 		foreach( $sess->gameMap as $id_game => $game) {
-			$game->cssFile 			= "./css/".($game->code)."/character.css";
+			$game->cssFile 			= "./css/game/".($game->code).".css";
 			$game->characterMap 	= $sess->dao->characterDao->getList($id_game);
 			
 			$id_char_unknown 		= $game->id_char_unknown;

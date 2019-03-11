@@ -353,10 +353,17 @@ class PlayerDao extends AbstractDao {
 	/***********************************************************************
 	 * Renvoie la liste de tous les joueurs
 	 * */
-	function getListAll() {	
+	function getListAll($idGame = null) {
 		$sql = "select p.* 
 		from player p
-		order by p.pseudo, p.prenom, p.nom ";
+		";
+		if(isset($idGame) && $idGame != '') {
+			$sql .= "join player_game pg
+			 on pg.id_player = p.id
+			 where pg.id_game = $idGame
+			 ";
+		}
+		$sql .= "order by p.pseudo, p.prenom, p.nom ";
 
 		$playerList = $this->fetch_map($sql, 'id', 'mapperPlayer');
 		
@@ -366,11 +373,21 @@ class PlayerDao extends AbstractDao {
 	/***********************************************************************
 	 * Renvoie la liste de tous les joueurs actif
 	 * */
-	function getList() {	
+	function getList($idGame = null) {
 		$sql = "select p.* 
 		from player p
-		where p.status is null
-		order by p.pseudo, p.prenom, p.nom ";
+		";
+		if(isset($idGame) && $idGame != '') {
+			$sql .= "join player_game pg
+			 on pg.id_player = p.id
+			 where pg.id_game = $idGame
+			   and p.status is null
+			 ";
+		} else {
+			$sql .= "where p.status is null 
+			";
+		}
+		$sql .= "order by p.pseudo, p.prenom, p.nom ";
 
 		$playerList = $this->fetch_map($sql, 'id', 'mapperPlayer');
 		

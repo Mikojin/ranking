@@ -19,6 +19,7 @@ class Session {
 	
 	public $characterPath;
 
+	public $playerListFilter;
 	
 	function __construct() {
 		$init = false;

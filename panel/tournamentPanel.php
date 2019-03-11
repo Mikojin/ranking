@@ -263,7 +263,7 @@ class TournamentPanel extends ListPanel {
 					<div class="nom"><?php echo "$participant->prenom $participant->nom"; ?></div>
 				</div>
 				<div class="divTableCell rowValue characterCell noselect" title="MainChar">
-					<div class="character <?php echo $mainchar->css_class; ?>" 
+					<div class="character <?php echo $game->code.'_'.$mainchar->css_class; ?>" 
 						title="<?php echo $mainchar->name; ?>">&nbsp;</div></div>
 				<div class="divTableCell rowValue points" 	title="Points"	><?php echo $participant->score; 		?></div>
 			</div>
@@ -292,6 +292,7 @@ class TournamentPanel extends ListPanel {
 		$id_player = $participant->id_player;
 		$game = $sess->gameMap[$participant->id_game];
 		$mainchar = $game->char_unknown;
+		
 		if(array_key_exists($id_player, $playerCharlist)) {
 			$id_main_char = $playerCharlist[$id_player]['id_char'];
 			$mainchar = $game->characterMap[$id_main_char];
@@ -310,7 +311,7 @@ class TournamentPanel extends ListPanel {
 					<div class="nom"><?php echo "$participant->prenom $participant->nom"; ?></div>
 				</div>
 				<div class="divTableCell rowValue characterCell noselect" title="MainChar">
-					<div class="character <?php echo $mainchar->css_class; ?>" 
+					<div class="character <?php echo $game->code.'_'.$mainchar->css_class; ?>" 
 						title="<?php echo $mainchar->name; ?>">&nbsp;</div></div>
 				<div class="divTableCell rowValue points" 	title="Points"	><?php echo $participant->score; 		?></div>
 				<div class="divTableCell rowValue" >
@@ -413,7 +414,36 @@ class TournamentPanel extends ListPanel {
 	/***********************************************************************
 	 * affiche la liste des joueurs pouvant participer à ce tournoi
 	 * */
+	function printPlayerList_old($g) {
+		$playerList = $g['playerList'];
+		echo '<div id="divPlayerList" class="hiddenDiv">';
+		echo '<select id="selectPlayerList" multiple="multiple" name="new_participants[]">';
+		foreach($playerList as $id => $player) {
+			echo '<option value="'.$id.'">'.$player->pseudo.' - '.$player->prenom.' '.$player->nom.'</option>';
+		}
+		echo '</select>';
+		echo '</div>';
+		return $g;
+	}
+	
+	/***********************************************************************
+	 * affiche la liste des joueurs pouvant participer à ce tournoi
+	 * */
 	function printPlayerList($g) {
+		/*
+		echo '<div id="divSeasonSelect" class="divSeasonSelect">';
+		$this->combobox->emptyLine		 	= true;
+		$this->combobox->id_select			= Ss::get()->playerListFilter;
+		$this->combobox->id_elem 			= "playerListFilter";
+		$this->combobox->arr 				= Ss::get()->gameMap;
+		$this->combobox->libelleCallback	= 'labelGame';
+		$this->combobox->title				= 'Select the game';
+		$this->combobox->cssClass 			= 'game_select';
+		$this->combobox->onchange			= "setAction('changeSelectGame');";
+		$this->combobox->doPrint();
+		echo '</div>';
+			*/
+			
 		$playerList = $g['playerList'];
 		echo '<div id="divPlayerList" class="hiddenDiv">';
 		echo '<select id="selectPlayerList" multiple="multiple" name="new_participants[]">';
