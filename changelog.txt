@@ -5,21 +5,42 @@ Legende :
 * correction de bug
 
 ================================================================================
-TODO
- = Mettre en GET certaine partie des données afin de naviguer directement sur certaine page
- + Permettre de regler le background et le titre en fonction du jeu
- + Créer une page par jeu avec la liste des persos
- + admin : améliorer l'interface de sélection d'un joueur pour l'ajouter à un tournoi
- + admin : améliorer l'interface de sélection d'un personnage pour l'ajouter à joueur
+EN COURS :
+ = remplacer $_post par $_request
+ = corriger l'initialisation de la page et du jeu
+
+
+TODO P0
+ = Passer à AngularJS !!
+ + Tournement Panel - Admin : améliorer l'interface de sélection d'un joueur pour l'ajouter à un tournoi
+	=> Ajout de participant : 
+		- filtrer par jeu aussi
+		- affichage du main character pour le jeu
+		- checkbox plutot que multi combo
+ + Player Panel - Admin : améliorer l'interface de sélection d'un personnage pour l'ajouter à joueur
+	=> Afficher les icones des persos
+
+TODO P1
+ + Game Panel : Créer une page par jeu avec la liste des persos
+ + Game Panel - Admin : 
+	=> ajout de joueur en batch : le main character sera "unknown" pour ce jeu
+
+TODO P2
  + Ajouter un lien dans la liste des tournois pour aller sur le scoring
+
+TODO P3
+ + Faire une doc d'utilisation pour l'admin
+ = Mettre en GET certaine partie des données afin de naviguer directement sur certaine page
+    => pas certain que ça fonctionne bien avec le system actuel.
+
+================================================================================
+2019-03-11
  + Liste Joueur : ajouter la possibilité de filtrer par jeu
- + Ajout de participant : filtrer par jeu aussi
- 
-DONE
  + Mettre en place une page de sélection du jeu
  + Revoir l'affichage du profile d'un joueur afin d'afficher les jeux des tournois	
- 
-================================================================================
+ + Permettre de regler le background et le titre en fonction du jeu
+
+  ================================================================================
 2019-02-11
  + PlayerListPanel : suppression du bouton "See" => clic direct sur le nom du joueur
  + PlayerPanel : ajout du nom du jeu dans la liste des tournois
