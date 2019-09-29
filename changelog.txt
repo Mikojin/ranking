@@ -34,6 +34,12 @@ TODO P3
     => pas certain que ça fonctionne bien avec le system actuel.
 
 ================================================================================
+2019-09-29 
+ + Liste des jeux : masquage des jeux n'ayant pas d'id_char_unknown car tant 
+	que ce champs n'est pas alimenter, il n'est pas possible d'utiliser le jeu
+	(risque de plantage).
+
+================================================================================
 2019-03-11
  + Liste Joueur : ajouter la possibilité de filtrer par jeu
  + Mettre en place une page de sélection du jeu

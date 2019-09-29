@@ -44,6 +44,7 @@ class GameDao extends AbstractDao {
 	function getList() {		
 		$sql = "select g.* 
 		from `game` g
+		where g.id_char_unknown is not null
 		order by g.name ";
 		
 		$arr = $this->fetch_map($sql, 'id', 'mapperGame');
